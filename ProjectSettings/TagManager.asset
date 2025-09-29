@@ -1,0 +1,70 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!78 &1
+TagManager:
+  serializedVersion: 3
+  tags:
+  - Ground
+  layers:
+  - Default
+  - TransparentFX
+  - Ignore Raycast
+  - 
+  - Water
+  - UI
+  - Ground
+  - Bullet1
+  - Bullet2
+  - 
+  - 
+  - Tank1
+  - Tank2
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  m_SortingLayers:
+  - name: Default
+    uniqueID: 0
+    locked: 0
+  - name: Background
+    uniqueID: 1076640053
+    locked: 0
+  - name: Ground
+    uniqueID: 3287808257
+    locked: 0
+  - name: Ground1
+    uniqueID: 1218770703
+    locked: 0
+  - name: Ground2
+    uniqueID: 2904118679
+    locked: 0
+  - name: Button
+    uniqueID: 4170260543
+    locked: 0
+  - name: Player
+    uniqueID: 1259479677
+    locked: 0
+  - name: PlayerF1
+    uniqueID: 1036274959
+    locked: 0
+  - name: PlayerF2
+    uniqueID: 3253268161
+    locked: 0
+  m_RenderingLayers:
+  - Default

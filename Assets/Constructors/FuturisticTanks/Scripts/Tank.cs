@@ -24,14 +24,13 @@ namespace Assets.Constructors.FuturisticTanks.Scripts
 
         private void HandleMovement()
         {
-            float moveInput = Input.GetAxis("Horizontal_WASD"); // dùng Horizontal mặc định (A/D, Left/Right)
+            float moveInput = Input.GetAxis("Horizontal_AD_Left/Right"); // dùng Horizontal mặc định (A/D, Left/Right)
             rb.linearVelocity = new Vector2(moveInput * moveSpeed, rb.linearVelocity.y);
 
             if (moveInput > 0)
                 transform.localScale = new Vector3(-0.3f, 0.3f, 1f);
             else if (moveInput < 0)
                 transform.localScale = new Vector3(0.3f, 0.3f, 1f);
-
 
 
             // Gọi state Idle / Move
@@ -45,7 +44,7 @@ namespace Assets.Constructors.FuturisticTanks.Scripts
         {
             if (Input.GetKeyDown(KeyCode.Space))
             {
-                Shot(); // gọi animation bắn thay vì nhảy
+                Shot();
             }
         }
 

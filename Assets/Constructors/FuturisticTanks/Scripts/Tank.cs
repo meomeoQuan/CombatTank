@@ -33,7 +33,6 @@ namespace Assets.Constructors.FuturisticTanks.Scripts
                 transform.localScale = new Vector3(0.3f, 0.3f, 1f);
 
 
-
             // Gọi state Idle / Move
             if (Mathf.Abs(moveInput) > 0.1f)
                 Move();
@@ -45,7 +44,7 @@ namespace Assets.Constructors.FuturisticTanks.Scripts
         {
             if (Input.GetKeyDown(KeyCode.Space))
             {
-                Shot(); // gọi animation bắn thay vì nhảy
+                Shot();
             }
         }
 

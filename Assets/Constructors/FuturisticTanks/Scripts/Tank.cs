@@ -24,7 +24,7 @@ namespace Assets.Constructors.FuturisticTanks.Scripts
 
         private void HandleMovement()
         {
-            float moveInput = Input.GetAxis("Horizontal_WASD"); // dùng Horizontal mặc định (A/D, Left/Right)
+            float moveInput = Input.GetAxis("Horizontal_AD_Left/Right"); // dùng Horizontal mặc định (A/D, Left/Right)
             rb.linearVelocity = new Vector2(moveInput * moveSpeed, rb.linearVelocity.y);
 
             if (moveInput > 0)

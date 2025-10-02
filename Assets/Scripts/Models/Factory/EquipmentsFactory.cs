@@ -82,24 +82,39 @@ namespace Assets.Scripts.Models.Factory
                 atkFlat: 2,
                 atkPercent: 0,
                 speedPercent: 0.1f,
-                bulletSpeed: 8f,
-                reloadRate: 0.8f,
+                bulletSpeed: 10f,
+                reloadRate: 3f,
                 maxAmmo: 15,
                 fireRate: 2f
             );
         }
 
-        public static Weapon CreateGun()
+        public static Weapon CreateDT_10()
         {
             return new Weapon(
-                id: "weapon_gun",
+                id: "Gun_DT10",
                 name: "Gun",
-                icon: LoadIcon("gun_icon"),
+                icon: LoadIcon("Gun_DT10"),
+                atkFlat: 4,
+                atkPercent: 0,
+                speedPercent: 0.15f,
+                bulletSpeed: 12f,
+                reloadRate: 4f,
+                maxAmmo: 20,
+                fireRate: 5f
+            );
+        }
+        public static Weapon CreatePlasma()
+        {
+            return new Weapon(
+                id: "Gun_Plasma",
+                name: "Plasma",
+                icon: LoadIcon("Gun_Plasma"),
                 atkFlat: 2,
                 atkPercent: 0,
                 speedPercent: 0.15f,
-                bulletSpeed: 25f,
-                reloadRate: 2f,
+                bulletSpeed: 15f,
+                reloadRate: 3f,
                 maxAmmo: 30,
                 fireRate: 5f
             );

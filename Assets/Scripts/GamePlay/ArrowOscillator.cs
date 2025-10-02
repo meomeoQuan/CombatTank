@@ -5,7 +5,7 @@ public class ArrowOscillator : MonoBehaviour
     [Header("Cài đặt góc (theo Z)")]
     public float minAngle = -130f;   // Góc nhỏ nhất
     public float maxAngle = -50f;    // Góc lớn nhất
-    public float speed = 50f;        // Tốc độ quay
+    public float speed = 30f;        // Tốc độ quay
 
     private float currentAngle;
     private int direction = 1;       // 1 = tăng (lên), -1 = giảm (xuống)

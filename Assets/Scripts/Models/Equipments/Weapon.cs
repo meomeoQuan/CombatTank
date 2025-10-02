@@ -10,7 +10,7 @@ namespace Assets.Scripts.Models.Equipments
         public float SpeedPercent { get; private set; }
 
         public float BulletSpeed { get; private set; } // tốc độ bay của viên đạn
-        public float ReloadRate { get; private set; }  // mỗi giây hồi được bao nhiêu viên đạn
+        public float ReloadRate { get; private set; }  // thời gian hồi đạn (giây)
         public int Ammo { get; private set; }          // số lượng đạn hiện tại
         public int MaxAmmo { get; private set; }       // băng đạn tối đa
 

@@ -1,4 +1,5 @@
-using Assets.Scripts.Models;
+﻿using Assets.Scripts.Models;
+using System;
 using System.Collections.Generic;
 using Assets.Scripts.Models.Equipments;
 
@@ -14,8 +15,10 @@ namespace Assets.Scripts.Models.Characters
         public int BaseArmor { get; set; }
         public int BaseRegen { get; set; }
 
-        public List<EquipmentBase> Equipments { get; private set; } = new List<EquipmentBase>();
+        // Đảm bảo 1 loại Equipment chỉ có 1 slot
+        private Dictionary<Type, EquipmentBase> equippedItems = new();
 
+        // Thuộc tính tính toán chỉ số
         public int HP => (int)(BaseHP * (1 + GetTotalBonusPercent(StatType.HP)) + GetTotalFlat(StatType.HP));
         public int ATK => (int)(BaseATK * (1 + GetTotalBonusPercent(StatType.ATK)) + GetTotalFlat(StatType.ATK));
         public float Speed => BaseSpeed * (1 + GetTotalBonusPercent(StatType.Speed)) + GetTotalFlat(StatType.Speed);
@@ -23,13 +26,39 @@ namespace Assets.Scripts.Models.Characters
         public int Armor => (int)(BaseArmor * (1 + GetTotalBonusPercent(StatType.Armor)) + GetTotalFlat(StatType.Armor));
         public int Regen => (int)(BaseRegen * (1 + GetTotalBonusPercent(StatType.Regen)) + GetTotalFlat(StatType.Regen));
 
-        public void Equip(EquipmentBase eq) => Equipments.Add(eq);
-        public void Unequip(EquipmentBase eq) => Equipments.Remove(eq);
+        // Equip: tự động thay thế nếu loại đó đã có
+        public void Equip(EquipmentBase eq)
+        {
+            var type = eq.GetType();
+
+            // Nếu đã có cùng loại -> tháo ra trước
+            if (equippedItems.ContainsKey(type))
+            {
+                Unequip(type);
+            }
+
+            equippedItems[type] = eq;
+        }
+
+        // Unequip theo type
+        public void Unequip(Type type)
+        {
+            if (equippedItems.ContainsKey(type))
+            {
+                equippedItems.Remove(type);
+            }
+        }
+
+        // Unequip theo object
+        public void Unequip(EquipmentBase eq) => Unequip(eq.GetType());
+
+        // Lấy toàn bộ trang bị hiện tại (nếu cần duyệt)
+        public IEnumerable<EquipmentBase> GetEquippedItems() => equippedItems.Values;
 
         private float GetTotalBonusPercent(StatType stat)
         {
             float total = 0;
-            foreach (var eq in Equipments)
+            foreach (var eq in equippedItems.Values)
                 if (eq.PercentBonuses.ContainsKey(stat))
                     total += eq.PercentBonuses[stat];
             return total;
@@ -38,7 +67,7 @@ namespace Assets.Scripts.Models.Characters
         private float GetTotalFlat(StatType stat)
         {
             float total = 0;
-            foreach (var eq in Equipments)
+            foreach (var eq in equippedItems.Values)
                 if (eq.FlatBonuses.ContainsKey(stat))
                     total += eq.FlatBonuses[stat];
             return total;

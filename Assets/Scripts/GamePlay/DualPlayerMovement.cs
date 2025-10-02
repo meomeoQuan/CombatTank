@@ -1,68 +1,87 @@
 ﻿using UnityEngine;
+using Assets.Scripts.DataController;
+using Assets.Scripts.Models.Characters;
+using UnityEngine.UI;
 
 public class DualPlayerMovement : MonoBehaviour
 {
-    public enum PlayerType { PlayerA, PlayerB }
-    public PlayerType player;
+    public enum CharacterType { CharacterA, CharacterB }
+    public CharacterType characterType;
 
-    public float moveSpeed = 2f;
+    private Character characterData;
     private Rigidbody2D rb;
     private Vector2 movement;
+    [Header("UI")]
+    public Image healthImage; // drag Image máu trong Canvas vào đây
+    public Transform spawnPoint; // Kéo vào từ GameManager hoặc gán sẵn trong Inspector
 
-    // Thêm biến để xác định ranh giới di chuyển
+    // HP hiện tại (có thể bị trừ khi trúng đạn)
+    public int currentHP { get; private set; }
+    public int maxHP { get; private set; }
+
+    // Ranh giới di chuyển
     public BoxCollider2D boundaryCollider;
     private Bounds boundary;
-
+    //========================================== SETUP DỮ LIỆU VÀ DI CHUYỂN CHO NHÂN VẬT ========================================
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
-        // Lấy ranh giới từ collider
+        
+
+        if (DataController.Characters.Count >= 2)
+        {
+            characterData = (characterType == CharacterType.CharacterA)
+                ? DataController.Characters[0]
+                : DataController.Characters[1];
+        }
+
+        if (characterData != null)
+        {
+            maxHP = characterData.HP; // gán máu ban đầu
+            currentHP = maxHP;
+            Debug.Log($"{characterType} Start HP = {currentHP}");
+        }
+
         if (boundaryCollider != null)
         {
             boundary = boundaryCollider.bounds;
         }
     }
-
+    //========================================== DI CHUYỂN NHÂN VẬT ========================================
     void Update()
     {
-        if (player == PlayerType.PlayerA)
+        if (!GameManager.Instance || !GameManager.Instance.IsGameRunning)
+        
+            return; // 🔒 Chặn mọi input khi game chưa chạy hoặc đã kết thúc
+
+        if (characterType == CharacterType.CharacterA)
         {
-            // Sử dụng trục WASD để di chuyển PlayerA
             movement.x = Input.GetAxisRaw("Horizontal_WASD");
             movement.y = Input.GetAxisRaw("Vertical_WASD");
         }
-        else if (player == PlayerType.PlayerB)
+        else if (characterType == CharacterType.CharacterB)
         {
-            // Sử dụng trục phím mũi tên để di chuyển PlayerB
             movement.x = Input.GetAxisRaw("Horizontal_Arrows");
             movement.y = Input.GetAxisRaw("Vertical_Arrows");
         }
 
-        // ---- Xử lý rotation ----
         if (movement != Vector2.zero)
         {
             float angle = Mathf.Atan2(movement.y, movement.x) * Mathf.Rad2Deg;
-
-            if (player == PlayerType.PlayerA)
-            {
-                // Player 1 quay đúng hướng
-                transform.rotation = Quaternion.Euler(0, 0, angle-90);
-            }
-            else if (player == PlayerType.PlayerB)
-            {
-                // Player 2 quay ngược lại
-                transform.rotation = Quaternion.Euler(0, 0, angle-90);
-            }
+            transform.rotation = Quaternion.Euler(0, 0, angle - 90);
         }
     }
 
-
     void FixedUpdate()
     {
+        if (!GameManager.Instance || !GameManager.Instance.IsGameRunning)
+            return; // 🔒 Chặn di chuyển luôn
+
         Vector2 normalizedMovement = movement.normalized;
+        float moveSpeed = (characterData != null) ? characterData.Speed : 2f;
+
         Vector2 newPosition = rb.position + normalizedMovement * moveSpeed * Time.fixedDeltaTime;
 
-        // Giới hạn vị trí mới trong ranh giới đã định
         if (boundaryCollider != null)
         {
             newPosition.x = Mathf.Clamp(newPosition.x, boundary.min.x, boundary.max.x);
@@ -70,5 +89,69 @@ public class DualPlayerMovement : MonoBehaviour
         }
 
         rb.MovePosition(newPosition);
+    }
+
+
+    //========================================== XỬ LÝ ĐẠN BẮN TRÚNG ========================================
+    void OnTriggerEnter2D(Collider2D collision)
+    {
+        Bullet bullet = collision.GetComponent<Bullet>();
+        if (bullet != null)
+        {
+            // Đạn của phe A chỉ trúng B và ngược lại
+            if ((characterType == CharacterType.CharacterA && bullet.owner == OwnerType.CharacterB) ||
+                (characterType == CharacterType.CharacterB && bullet.owner == OwnerType.CharacterA))
+            {
+                TakeDamage(bullet.Damage);
+            }
+
+        }
+    }
+
+    private void TakeDamage(int damage)
+    {
+        int armor = (characterData != null) ? characterData.Armor : 0;
+        int finalDamage = Mathf.Max(1, damage - armor); // đảm bảo ít nhất gây 1 damage
+
+        currentHP -= finalDamage;
+        if (currentHP < 0) currentHP = 0;
+        UpdateHealthUI();
+        Debug.Log($"{characterType} bị trúng đạn! Dame: {damage}, Armor: {armor}, Mất {finalDamage} HP, còn {currentHP} HP");
+
+        if (currentHP == 0)
+        {
+            Die();
+        }
+    }
+
+
+    private void Die()
+    {
+        Debug.Log($"{characterType} đã chết!");
+        GameManager.Instance.EndGame(characterType);
+        // TODO: Thêm hiệu ứng nổ, disable nhân vật hoặc reload game
+
+    }
+    public void ResetCharacter()
+    {
+        // Reset máu
+        currentHP = maxHP;
+        UpdateHealthUI();
+
+        // Reset vị trí
+        if (spawnPoint != null)
+        {
+            rb.position = spawnPoint.position;
+            transform.position = spawnPoint.position;
+            transform.rotation = Quaternion.identity;
+        }
+    }
+
+    void UpdateHealthUI()
+    {
+        if (healthImage != null)
+        {
+            healthImage.fillAmount = (float)currentHP / maxHP;
+        }
     }
 }

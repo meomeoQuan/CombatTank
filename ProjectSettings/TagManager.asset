@@ -66,5 +66,8 @@ TagManager:
   - name: PlayerF2
     uniqueID: 3253268161
     locked: 0
+  - name: PlayerF3
+    uniqueID: 1908883209
+    locked: 0
   m_RenderingLayers:
   - Default

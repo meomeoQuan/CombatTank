@@ -12,6 +12,8 @@ public class InfiniteScene : MonoBehaviour
     private TileBase[] sceneTiles;
     private int sceneWidth;
     private int leftBound;
+
+    
     private int rightBound;
 
     void Start()

@@ -17,14 +17,13 @@ MonoBehaviour:
     m_Hash: 388159394
     m_CategoryList:
     - m_Name: 0
-      m_Hash: -186917087
-      m_Sprite: {fileID: -5027509340213622084, guid: e312132ddd7145b44a840b1d8502518b,
-        type: 3}
+      m_Hash: 886824737
+      m_Sprite: {fileID: -5027509340213622084, guid: e312132ddd7145b44a840b1d8502518b, type: 3}
     - m_Name: 1
-      m_Hash: -2082672713
-      m_Sprite: {fileID: -2374222918679686493, guid: e312132ddd7145b44a840b1d8502518b,
-        type: 3}
+      m_Hash: 64810935
+      m_Sprite: {fileID: -2374222918679686493, guid: e312132ddd7145b44a840b1d8502518b, type: 3}
     - m_Name: 2
       m_Hash: 450215437
-      m_Sprite: {fileID: -761933863725385812, guid: e312132ddd7145b44a840b1d8502518b,
-        type: 3}
+      m_Sprite: {fileID: -761933863725385812, guid: e312132ddd7145b44a840b1d8502518b, type: 3}
+  m_ModificationHash: 0
+  m_Version: 1

@@ -6,8 +6,7 @@ public class InfiniteScene : MonoBehaviour
     public Transform mainCam;         // Camera chính
     public Tilemap sceneTilemap;      // Tilemap bạn đã vẽ cảnh
     public int buffer = 20;           // Khoảng cách an toàn trước khi spawn thêm
-    public int repeatCount = 3;       // Bao nhiêu lần nhân bản trước và sau
-
+    // public int repeatCount = 3;       // Bao nhiêu lần nhân bản trước và sau
     private BoundsInt sceneBounds;
     private TileBase[] sceneTiles;
     private int sceneWidth;
@@ -54,8 +53,9 @@ public class InfiniteScene : MonoBehaviour
         // Copy block gốc ra các vị trí mới
         for (int offsetX = xStart; offsetX <= xEnd; offsetX += sceneWidth)
         {
-            Vector3Int pos = new Vector3Int(offsetX, sceneBounds.yMin, 0);
-            sceneTilemap.SetTilesBlock(new BoundsInt(pos, sceneBounds.size), sceneTiles);
+            Vector3Int checkPos = new Vector3Int(offsetX, sceneBounds.yMin, 0);
+            if (sceneTilemap.HasTile(checkPos)) continue;
+            sceneTilemap.SetTilesBlock(new BoundsInt(checkPos, sceneBounds.size), sceneTiles);
         }
     }
 }

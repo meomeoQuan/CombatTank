@@ -69,5 +69,11 @@ TagManager:
   - name: PlayerF3
     uniqueID: 1908883209
     locked: 0
+  - name: GroundDEMO
+    uniqueID: 982821229
+    locked: 0
+  - name: BlindBox
+    uniqueID: 2838747839
+    locked: 0
   m_RenderingLayers:
   - Default

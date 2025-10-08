@@ -28716,33 +28716,21 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8657560824875400257, guid: 82a5df19b072ed34fa77db89eace5545, type: 3}
-      propertyPath: finalDisplayDuration
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 8657560824875400257, guid: 82a5df19b072ed34fa77db89eace5545, type: 3}
       propertyPath: destroyedSprites.Array.size
-      value: 5
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 8657560824875400257, guid: 82a5df19b072ed34fa77db89eace5545, type: 3}
       propertyPath: 'destroyedSprites.Array.data[0]'
       value: 
-      objectReference: {fileID: 21300000, guid: 54a87fa732ece854bba7a991017a7c22, type: 3}
+      objectReference: {fileID: 3555408923929336453, guid: 2497fd6e6e7706747a1fad8ddcdc8d16, type: 3}
     - target: {fileID: 8657560824875400257, guid: 82a5df19b072ed34fa77db89eace5545, type: 3}
       propertyPath: 'destroyedSprites.Array.data[1]'
       value: 
-      objectReference: {fileID: 21300000, guid: c1cec7610d066174192073dd81dd59d9, type: 3}
+      objectReference: {fileID: -5727552233157754764, guid: 2497fd6e6e7706747a1fad8ddcdc8d16, type: 3}
     - target: {fileID: 8657560824875400257, guid: 82a5df19b072ed34fa77db89eace5545, type: 3}
       propertyPath: 'destroyedSprites.Array.data[2]'
       value: 
-      objectReference: {fileID: 21300000, guid: 9dce2714e89d2a34ba53f326b50c0090, type: 3}
-    - target: {fileID: 8657560824875400257, guid: 82a5df19b072ed34fa77db89eace5545, type: 3}
-      propertyPath: 'destroyedSprites.Array.data[3]'
-      value: 
-      objectReference: {fileID: 21300000, guid: 23390a00f6d75664c9422297ade57db1, type: 3}
-    - target: {fileID: 8657560824875400257, guid: 82a5df19b072ed34fa77db89eace5545, type: 3}
-      propertyPath: 'destroyedSprites.Array.data[4]'
-      value: 
-      objectReference: {fileID: 21300000, guid: b7a6be0d22cff844abc7229a030829df, type: 3}
+      objectReference: {fileID: 5356835828483885667, guid: 2497fd6e6e7706747a1fad8ddcdc8d16, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

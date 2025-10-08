@@ -28668,6 +28668,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 461811183321904768, guid: 82a5df19b072ed34fa77db89eace5545, type: 3}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 6200000, guid: b078badc1016c124d8e6840ca152a17b, type: 2}
+    - target: {fileID: 461811183321904768, guid: 82a5df19b072ed34fa77db89eace5545, type: 3}
       propertyPath: m_IsTrigger
       value: 1
       objectReference: {fileID: 0}
@@ -28717,7 +28721,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8657560824875400257, guid: 82a5df19b072ed34fa77db89eace5545, type: 3}
       propertyPath: finalDisplayDuration
-      value: 2
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 8657560824875400257, guid: 82a5df19b072ed34fa77db89eace5545, type: 3}
       propertyPath: destroyedSprites.Array.size

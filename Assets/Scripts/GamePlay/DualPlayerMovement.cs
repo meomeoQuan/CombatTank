@@ -68,8 +68,15 @@ public class DualPlayerMovement : MonoBehaviour
         if (movement != Vector2.zero)
         {
             float angle = Mathf.Atan2(movement.y, movement.x) * Mathf.Rad2Deg;
-            transform.rotation = Quaternion.Euler(0, 0, angle - 90);
+            Quaternion targetRotation = Quaternion.Euler(0, 0, angle - 90);
+
+            transform.rotation = Quaternion.RotateTowards(
+                transform.rotation,
+                targetRotation,
+                300f * Time.deltaTime // tốc độ xoay (độ/giây)
+            );
         }
+
     }
 
     void FixedUpdate()

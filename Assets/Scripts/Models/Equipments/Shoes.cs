@@ -5,6 +5,9 @@ namespace Assets.Scripts.Models.Equipments
     public class Shoes : EquipmentBase
     {
         // TRACKS: BÁNH XÍCH
+        public float speedPercent; // % tăng Speed
+        public float dodgePercent; // % tăng Dodge
+        public float regenFlat;    // Tăng thẳng máu mỗi giây
         public Shoes(
             string id,
             string name,
@@ -14,6 +17,9 @@ namespace Assets.Scripts.Models.Equipments
             float regenFlat = 0
         ) : base(id, name, icon)
         {
+            this.speedPercent = speedPercent;
+            this.dodgePercent = dodgePercent;
+            this.regenFlat = regenFlat;
             if (speedPercent != 0) AddPercentBonus(StatType.Speed, speedPercent);
             if (dodgePercent != 0) AddPercentBonus(StatType.Dodge, dodgePercent);
             if (regenFlat != 0) AddFlatBonus(StatType.Regen, regenFlat);

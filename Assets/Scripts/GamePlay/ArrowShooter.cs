@@ -50,7 +50,7 @@ public class ArrowShooter : MonoBehaviour
         if (weapon != null)
         {
             bulletSpeed = weapon.BulletSpeed;
-            bulletTypeTag = weapon.Name + (character == CharacterType.CharacterA ? "1" : "2");
+            bulletTypeTag = weapon.Id + (character == CharacterType.CharacterA ? "1" : "2");
 
             // 🔥 Gán các giá trị mới
             maxAmmo = weapon.MaxAmmo;
@@ -224,5 +224,13 @@ public class ArrowShooter : MonoBehaviour
             // Hiển thị số đạn
             ammoAndReloadText.text = $"{currentAmmo}/{maxAmmo}";
         }
+    }
+    public void ReloadImmediate()
+    {
+        StopAllCoroutines();       // Ngăn coroutine reload cũ (nếu có)
+        currentAmmo = maxAmmo;     // Nạp đầy
+        isReloading = false;       // Tắt trạng thái reload
+        UpdateAmmoUI();            // Cập nhật UI
+        Debug.Log($"[{character}] Reset Ammo: {currentAmmo}/{maxAmmo}");
     }
 }

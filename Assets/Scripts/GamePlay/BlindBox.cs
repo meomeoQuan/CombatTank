@@ -12,6 +12,13 @@ public class BlindBox : MonoBehaviour
     public float finalDisplayDuration = 5f; // Thời gian hiển thị sprite cuối cùng (0.5 giây)
     public GameObject destructionEffectPrefab; // Hiệu ứng khi box vỡ (tùy chọn)
 
+
+    [Header("Tank Interaction Settings")]
+    public float pushForce = 0.5f; // Lực đẩy box khi tank chạm vào
+    public float pushInterval = 0.1f; // Khoảng thời gian giữa các lần đẩy liên tục
+    private bool isPushingCoroutineActive = false; // Biến cờ để quản lý Coroutine đẩy
+
+
     // [Header("Drone Settings")]
     // public GameObject[] dronePrefabs; // Mảng chứa các drone prefab có thể spawn
     // public GameObject destructionEffectPrefab; // Hiệu ứng khi box vỡ (tùy chọn)
@@ -19,6 +26,7 @@ public class BlindBox : MonoBehaviour
     private Animator animator;
     private SpriteRenderer spriteRenderer;
     private BoxCollider2D boxCollider;
+    private Rigidbody2D rb; // Thêm Rigidbody2D để quản lý vật lý và đẩy
     private bool isDestroyed = false;
 
     void Awake()
@@ -26,19 +34,99 @@ public class BlindBox : MonoBehaviour
         animator = GetComponent<Animator>();
         spriteRenderer = GetComponent<SpriteRenderer>();
         boxCollider = GetComponent<BoxCollider2D>();
+        rb = GetComponent<Rigidbody2D>();
 
         currentHealth = maxHealth;
 
         if (animator == null) Debug.LogError("Animator not found on BlindBox!");
         if (spriteRenderer == null) Debug.LogError("SpriteRenderer not found on BlindBox!");
         if (boxCollider == null) Debug.LogError("BoxCollider2D not found on BlindBox!");
+        if (rb == null) Debug.LogWarning("Rigidbody2D not found on BlindBox! Push effect might not work.");
     }
+
+    // Hàm OnEnable() sẽ được gọi khi GameObject được kích hoạt hoặc khi được sinh ra (Instantiate)
+    void OnEnable()
+    {
+        // 1. Reset máu về mức tối đa
+        currentHealth = maxHealth;
+
+        // 2. Reset trạng thái phá hủy
+        isDestroyed = false;
+
+        // 3. Đặt lại sprite/animation về trạng thái ban đầu
+        if (spriteRenderer != null)
+        {
+            // Nếu bạn dùng Animator, reset trigger/boolean để về trạng thái idle
+            if (animator != null)
+            {
+                animator.SetBool("isDestroyed", false);
+                // Đảm bảo animator ở trạng thái ban đầu, hoặc reset một trigger nếu cần
+            }
+            // Nếu bạn dùng mảng sprite và có originalSprite
+            // else if (originalSprite != null) {
+            //     spriteRenderer.sprite = originalSprite;
+            // }
+            // Hoặc nếu destroyedSprites[0] là sprite nguyên vẹn
+            // else if (destroyedSprites != null && destroyedSprites.Length > 0) {
+            //     spriteRenderer.sprite = destroyedSprites[0];
+            // }
+            // Nếu bạn chỉ dựa vào Animator để quản lý sprite, không cần đặt ở đây
+        }
+
+
+        // 4. Kích hoạt lại Collider (nếu nó bị tắt khi box bị phá hủy)
+        if (boxCollider != null)
+        {
+            boxCollider.enabled = true;
+        }
+
+        // 5. Đảm bảo Rigidbody dừng mọi chuyển động (đề phòng trạng thái cũ)
+        if (rb != null)
+        {
+            rb.linearVelocity = Vector2.zero;     // Dừng chuyển động tuyến tính
+            rb.angularVelocity = 0f;        // Dừng chuyển động xoay
+            // Nếu Rigidbody có thể ngủ để tối ưu, có thể gọi rb.Sleep();
+        }
+
+        Debug.Log("BlindBox has been enabled/reset. Health: " + currentHealth);
+    }
+
+    void OnTriggerStay2D(Collider2D collision)
+    {
+        if (isDestroyed) return;
+
+        // Xử lý va chạm với Tank (Player) khi nó vẫn đang trong trigger của box
+        if (collision.gameObject.CompareTag("Player"))
+        {
+            if (rb != null && rb.bodyType != RigidbodyType2D.Static && !isPushingCoroutineActive)
+            {
+                StartCoroutine(ApplyContinuousPush(collision.transform.position));
+            }
+        }
+    }
+
+    IEnumerator ApplyContinuousPush(Vector3 tankPosition)
+    {
+        isPushingCoroutineActive = true;
+        while (true) // Lặp vô hạn cho đến khi tank rời khỏi trigger
+        {
+            if (rb == null || rb.bodyType == RigidbodyType2D.Static) break; // Thoát nếu không có Rigidbody hoặc là Static
+
+            // Tính hướng đẩy ra xa tank
+            Vector2 pushDirection = (transform.position - tankPosition).normalized;
+            rb.AddForce(pushDirection * pushForce, ForceMode2D.Impulse); // Áp dụng lực đẩy
+
+            yield return new WaitForSeconds(pushInterval); // Chờ một chút trước khi đẩy lại
+        }
+        isPushingCoroutineActive = false; // Đặt lại cờ khi Coroutine kết thúc
+    }
+
 
     void OnTriggerEnter2D(Collider2D collision)
     {
         // Kiểm tra xem đối tượng va chạm có phải là đạn và box chưa bị phá hủy không
-        if (!isDestroyed) // Chỉ xử lý va chạm nếu chưa bị phá hủy
-        {
+        if (!isDestroyed) return;// Chỉ xử lý va chạm nếu chưa bị phá hủy
+        
             // --- Xử lý va chạm với Đạn ---
             if (collision.gameObject.CompareTag("Bullet")) // Giả sử đạn có tag là "Bullet"
             {
@@ -70,8 +158,19 @@ public class BlindBox : MonoBehaviour
 
                 // 3. Không có gì xảy ra, hoặc box bị đẩy nhẹ (nếu Rigidbody của box là Dynamic)
                 // Hiện tại, chúng ta chỉ Debug.Log, bạn có thể thêm logic ở đây.
+
+                // Nếu bạn muốn box bị đẩy nhẹ, bạn cần Rigidbody2D trên BlindBox
+                // và áp dụng lực bằng code. Logic này sẽ cần thêm OnTriggerStay2D
+                // và một Coroutine như đã thảo luận trước đây nếu bạn muốn nó liên tục đẩy.
+                // Ví dụ đơn giản:
+                if (rb != null && rb.bodyType != RigidbodyType2D.Static)
+                {
+                    // Hướng đẩy từ tank ra khỏi box
+                    Vector2 pushDirection = (transform.position - collision.transform.position).normalized;
+                    rb.AddForce(pushDirection * 0.5f, ForceMode2D.Impulse); // Áp dụng một lực đẩy nhẹ
+                }
             }
-        }
+        
     }
 
     public void TakeDamage(int damageAmount)
@@ -88,7 +187,6 @@ public class BlindBox : MonoBehaviour
         else
         {
             // (Tùy chọn) Thêm hiệu ứng visual hoặc âm thanh khi bị bắn nhưng chưa vỡ
-            // Ví dụ: Nhấp nháy màu, phát âm thanh "bị trúng"
             StartCoroutine(FlashDamageEffect());
         }
     }
@@ -107,6 +205,19 @@ public class BlindBox : MonoBehaviour
         isDestroyed = true;
         // Tắt collider để đạn không va chạm nữa
         if (boxCollider != null) boxCollider.enabled = false;
+
+        // Dừng mọi chuyển động vật lý ngay lập tức
+        if (rb != null)
+        {
+            rb.linearVelocity = Vector2.zero;
+            rb.angularVelocity = 0f;
+        }
+        // Dừng Coroutine đẩy liên tục nếu đang chạy
+        if (isPushingCoroutineActive)
+        {
+            StopCoroutine("ApplyContinuousPush");
+            isPushingCoroutineActive = false;
+        }
 
         // Bắt đầu animation phá hủy
         if (animator != null) animator.SetBool("isDestroyed", true);

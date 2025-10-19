@@ -4,7 +4,7 @@
 TagManager:
   serializedVersion: 3
   tags:
-  - Ground
+  - Bullet
   layers:
   - Default
   - TransparentFX
@@ -63,6 +63,9 @@ TagManager:
   - name: Player
     uniqueID: 1259479677
     locked: 0
+  - name: BlindBox
+    uniqueID: 2838747839
+    locked: 0
   - name: PlayerF1
     uniqueID: 1036274959
     locked: 0
@@ -71,6 +74,9 @@ TagManager:
     locked: 0
   - name: PlayerF3
     uniqueID: 1908883209
+    locked: 0
+  - name: GroundDEMO
+    uniqueID: 982821229
     locked: 0
   m_RenderingLayers:
   - Default

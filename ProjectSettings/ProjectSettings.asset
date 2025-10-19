@@ -656,7 +656,13 @@ PlayerSettings:
   XboxOneOverrideIdentityName: 
   XboxOneOverrideIdentityPublisher: 
   vrEditorSettings: {}
-  cloudServicesEnabled: {}
+  cloudServicesEnabled:
+    Build: 0
+    Game Performance: 0
+    Legacy Analytics: 0
+    Purchasing: 0
+    UDP: 0
+    Unity Ads: 0
   luminIcon:
     m_Name: 
     m_ModelFolderPath: 
@@ -678,11 +684,11 @@ PlayerSettings:
   captureStartupLogs: {}
   activeInputHandler: 2
   windowsGamepadBackendHint: 0
-  cloudProjectId: 3825fa34-85b4-4b6d-8826-5578fa3b1db2
+  cloudProjectId: 96ed4c2c-7e2e-420e-8996-ad63aada4bfe
   framebufferDepthMemorylessMode: 0
   qualitySettingsNames: []
   projectName: Mortal Duel
-  organizationId: thanhvxde180524
+  organizationId: huynhleductho123
   cloudEnabled: 0
   legacyClampBlendShapeWeights: 0
   hmiLoadingImage: {fileID: 0}

@@ -11,11 +11,16 @@ public class EnemyMovement : MonoBehaviour
     private Rigidbody2D _rigibody; //muốn di chuyển kẻ thù
     private PlayerAwarenessController _playerAwarenessController;
     private Vector2 _targetDriection; //hướng mục tiêu
-
+    private float _changeDirectionCoolDown; //lưu trữ tgian còn lại trước khi đổi hướng tiếp theo 
+    [SerializeField]
+    private float _screenBorder;
+    private Camera _camera;
     private void Awake()
     {
         _rigibody = GetComponent<Rigidbody2D>();
         _playerAwarenessController = GetComponent<PlayerAwarenessController>();
+        _targetDriection = transform.up; //hướng mục tiêu ban đầu sẽ là hướng hiện tại của enemy 
+        _camera = Camera.main;
     }
 
     // Update is called once per frame
@@ -28,23 +33,50 @@ public class EnemyMovement : MonoBehaviour
 
     private void UpdateTargetDirection() //cập nhật hướng mục tiêu 
     {
+        HandleRandomDirectionChange(); //enemy sẽ đi lang thang nhưng khi tank đủ gần, sẽ ghi đè hướng ngẫu nhiên 
+        HandlePlayerTargeting();
+        HandleEnemyOffScreen();
+    }
+
+    private void HandleRandomDirectionChange() //thay đổi hướng ngẫu nhiên lúc lang thang 
+    {
+        _changeDirectionCoolDown -= Time.fixedDeltaTime; //giảm tgian chờ đổi hướng
+        if (_changeDirectionCoolDown < 0) { 
+            float angleChange = Random.Range(-90f, 90f); //tạo góc ngẫu nhiên
+            Quaternion rotation = Quaternion.AngleAxis(angleChange, transform.forward);
+            _targetDriection = rotation * _targetDriection; //cập nhật hướng mục tiêu mới
+
+            _changeDirectionCoolDown = Random.Range(1f, 5f); //tgian hồi chiêu trước khi đổi hướng tiếp theo 
+        }
+    }    
+
+    private void HandlePlayerTargeting() //xử lí nhắm xe tank 
+    {
         if (_playerAwarenessController.AwareOfPlayer) //ktra xem enemy có nhận được player không
         {
             _targetDriection = _playerAwarenessController.DirectionToPlayer; //nếu có thì hướng mục tiêu theo hướng của player
         }
-        else
+    }
+
+    private void HandleEnemyOffScreen() //thay vì ngăn enemy ko di chuyển khi đến rìa màn hình, thì sẽ đổi hướng
+    {
+        Vector2 screenPosition = _camera.WorldToScreenPoint(transform.position);
+
+        if ((screenPosition.x < _screenBorder && _targetDriection.x < 0) 
+        || (screenPosition.x > _camera.pixelWidth - _screenBorder && _targetDriection.x > 0)) 
         {
-            _targetDriection = Vector2.zero; //nếu không thì hướng mục tiêu là 0
+            _targetDriection = new Vector2(-_targetDriection.x, _targetDriection.y); //nếu đến rìa của chiều rộng thì quay hướng bằng cách thay đổi hướng ngược lại trục x
+        }
+
+        if ((screenPosition.y < _screenBorder && _targetDriection.y < 0) 
+        || (screenPosition.y > _camera.pixelHeight - _screenBorder && _targetDriection.y > 0))
+        {
+            _targetDriection = new Vector2(_targetDriection.x, - _targetDriection.y); //đi lạc phần trên cùng hoặc dưới cùng thì đảo ngược hướng y, giữ nguyên x
         }
     }
 
     private void RotateTowardsTarget() //xoay hướng về phía mục tiêu
-    {  
-        //kiểm tra trước xem hướng mục tiêu có bằng 0 không 
-        if(_targetDriection == Vector2.zero)
-        {
-            return; //nếu bằng 0 thì không làm gì cả
-        }
+    {   
         Quaternion targetRotation = Quaternion.LookRotation(transform.forward, _targetDriection); //tạo một quaternion để xoay về hướng mục tiêu
         Quaternion newRotation = Quaternion.RotateTowards(transform.rotation, targetRotation, _rotationSpeed * Time.deltaTime); //tạo một quaternion mới để xoay từ vị trí hiện tại đến vị trí mục tiêu với tốc độ xoay
         _rigibody.SetRotation(newRotation); //đặt vị trí xoay mới cho rigidbody
@@ -52,13 +84,6 @@ public class EnemyMovement : MonoBehaviour
 
     private void SetVelocity() //đặt vận tốc
     {
-        if(_targetDriection == Vector2.zero)
-        {
-            _rigibody.linearVelocity = Vector2.zero; 
-        }
-        else
-        {
             _rigibody.linearVelocity = transform.up * _speed;
-        }
     }
 }

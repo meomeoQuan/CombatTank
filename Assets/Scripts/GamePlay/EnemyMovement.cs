@@ -14,6 +14,15 @@ public class EnemyMovement : MonoBehaviour
     private float _changeDirectionCoolDown; //lưu trữ tgian còn lại trước khi đổi hướng tiếp theo 
     [SerializeField]
     private float _screenBorder;
+    [SerializeField]
+    private float _obstacleCheckCircleRadius;
+    [SerializeField]
+    private float _obstacleCheckDistance;
+    [SerializeField]
+    private LayerMask _obstacleLayerMask;
+    private RaycastHit2D[] _obstacleCollisions;
+    private Vector2 _obstacleAvoidanceTargetDirection;
+    private float _obstacleAvoidanceCoolDown;
     private Camera _camera;
     private void Awake()
     {
@@ -21,6 +30,7 @@ public class EnemyMovement : MonoBehaviour
         _playerAwarenessController = GetComponent<PlayerAwarenessController>();
         _targetDriection = transform.up; //hướng mục tiêu ban đầu sẽ là hướng hiện tại của enemy 
         _camera = Camera.main;
+        _obstacleCollisions = new RaycastHit2D[10];
     }
 
     // Update is called once per frame
@@ -35,6 +45,7 @@ public class EnemyMovement : MonoBehaviour
     {
         HandleRandomDirectionChange(); //enemy sẽ đi lang thang nhưng khi tank đủ gần, sẽ ghi đè hướng ngẫu nhiên 
         HandlePlayerTargeting();
+        HandleObstacles();
         HandleEnemyOffScreen();
     }
 
@@ -73,6 +84,45 @@ public class EnemyMovement : MonoBehaviour
         {
             _targetDriection = new Vector2(_targetDriection.x, - _targetDriection.y); //đi lạc phần trên cùng hoặc dưới cùng thì đảo ngược hướng y, giữ nguyên x
         }
+    }
+
+    private void HandleObstacles()
+    {
+        _obstacleAvoidanceCoolDown -= Time.deltaTime;
+
+        var contactFilter = new ContactFilter2D();
+        contactFilter.SetLayerMask(_obstacleLayerMask);
+
+        int numberOfCollisions = Physics2D.CircleCast(
+            transform.position, 
+            _obstacleCheckCircleRadius,
+            transform.up,
+            contactFilter,
+            _obstacleCollisions,
+            _obstacleCheckDistance);
+
+        for (int index = 0; index < numberOfCollisions; index++)
+        { 
+            var obstalceCollision = _obstacleCollisions[index];
+
+            if(obstalceCollision.collider.gameObject == gameObject)
+            {
+                continue;
+            }
+
+            if (_obstacleAvoidanceCoolDown <= 0)
+            {
+                _obstacleAvoidanceTargetDirection = obstalceCollision.normal;
+                _obstacleAvoidanceCoolDown = 0.5f;
+            }
+
+            var targetRotation = Quaternion.LookRotation(transform.forward, _obstacleAvoidanceTargetDirection);
+            var rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, _rotationSpeed * Time.deltaTime);
+
+            _targetDriection = rotation * Vector2.up;
+            break;
+        }
+
     }
 
     private void RotateTowardsTarget() //xoay hướng về phía mục tiêu

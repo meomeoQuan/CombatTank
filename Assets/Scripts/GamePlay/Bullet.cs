@@ -56,12 +56,23 @@ public class Bullet : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D collision)
     {
-        if (!isExploding)
+        if (isExploding) return;
+
+        Debug.Log("Bullet hit: " + collision.name + $" | Damage: {Damage}");
+
+        // --- Gây sát thương cho FortressGun ---
+        if (collision.CompareTag("FortressGun"))
         {
-            Debug.Log("Bullet hit: " + collision.name + $" | Damage: {Damage}");
-            Explode();
+            FortressGun fortress = collision.GetComponent<FortressGun>();
+            if (fortress != null)
+            {
+                fortress.TakeDamage(Damage);
+            }
         }
+
+        Explode();
     }
+
 
     private void Explode()
     {

@@ -57,6 +57,9 @@ TagManager:
   - name: Button
     uniqueID: 4170260543
     locked: 0
+  - name: Bullet
+    uniqueID: 1619016603
+    locked: 0
   - name: Player
     uniqueID: 1259479677
     locked: 0

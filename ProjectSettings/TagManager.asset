@@ -15,7 +15,7 @@ TagManager:
   - Ground
   - Bullet1
   - Bullet2
-  - 
+  - Obstacle
   - 
   - Tank1
   - Tank2
@@ -68,6 +68,9 @@ TagManager:
     locked: 0
   - name: PlayerF3
     uniqueID: 1908883209
+    locked: 0
+  - name: Enemy
+    uniqueID: 4192724961
     locked: 0
   m_RenderingLayers:
   - Default

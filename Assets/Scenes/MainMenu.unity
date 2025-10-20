@@ -2850,14 +2850,6 @@ PrefabInstance:
       propertyPath: m_SpriteHash
       value: 514190838
       objectReference: {fileID: 0}
-    - target: {fileID: 6227530303059463890, guid: 506e68302986f92478ca2628475caa68, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -0.7
-      objectReference: {fileID: 0}
-    - target: {fileID: 6227530303059463890, guid: 506e68302986f92478ca2628475caa68, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: -0.79
-      objectReference: {fileID: 0}
     - target: {fileID: 6229477269167900438, guid: 506e68302986f92478ca2628475caa68, type: 3}
       propertyPath: m_Enabled
       value: 1

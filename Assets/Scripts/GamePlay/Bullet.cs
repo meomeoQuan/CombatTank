@@ -14,29 +14,11 @@ public class Bullet : MonoBehaviour
     private Collider2D col;
     private bool isExploding = false;
 
-    private float LiveAvailableBulletRangeX1 = 9.0f;
-    private float LiveAvailableBulletRangeX2 = -9.0f;
-    private float LiveAvailableBulletRangeY1 = 5.0f;
-    private float LiveAvailableBulletRangeY2 = -5.0f;
-
     void Awake()
     {
         animator = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
         col = GetComponent<Collider2D>();
-    }
-
-       void Update()
-    {
-        // Kiểm tra bullet ra khỏi range
-        if (   rb.position.x > LiveAvailableBulletRangeX1
-            || rb.position.y > LiveAvailableBulletRangeY1
-            || rb.position.x < LiveAvailableBulletRangeX2
-            || rb.position.y < LiveAvailableBulletRangeY2 )
-        {
-            Debug.Log("Bullet out of range -> destroy");
-            ReturnToPool();
-        }
     }
 
     void OnEnable()
@@ -102,7 +84,6 @@ public class Bullet : MonoBehaviour
     void OnBecameInvisible()
     {
         ReturnToPool();
-       
     }
 
     private void ReturnToPool()

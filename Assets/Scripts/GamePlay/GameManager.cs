@@ -49,7 +49,7 @@ public class GameManager : MonoBehaviour
                 
             }
 
-            if (Input.GetKeyDown(KeyCode.L))
+            if (Input.GetKeyDown(KeyCode.Keypad3))
             {
                 isBReady = true;
             }
@@ -67,7 +67,7 @@ public class GameManager : MonoBehaviour
         string dots = new string('.', dotCount);
 
         aReadyText.text = "Player A: " + (isAReady ? "READY" : "WAITING" + " (PRESS N) \n" + dots);
-        bReadyText.text = "Player B: " + (isBReady ? "READY" : "WAITING" + " (PRESS L) \n" + dots);
+        bReadyText.text = "Player B: " + (isBReady ? "READY" : "WAITING" + " (PRESS 3) \n" + dots);
     }
 
 

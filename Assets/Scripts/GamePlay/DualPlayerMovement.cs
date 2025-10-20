@@ -16,11 +16,9 @@ public class DualPlayerMovement : MonoBehaviour
     public Transform spawnPoint; // Kéo vào từ GameManager hoặc gán sẵn trong Inspector
 
     // HP hiện tại (có thể bị trừ khi trúng đạn)
-    
-
-
-public int currentHP { get; private set; }
+    public int currentHP { get; private set; }
     public int maxHP { get; private set; }
+
     // Ranh giới di chuyển
     public BoxCollider2D boundaryCollider;
     private Bounds boundary;

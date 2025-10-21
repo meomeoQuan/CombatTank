@@ -10,11 +10,11 @@ namespace Assets.Scripts.Models.Factory
             var character = new Character
             {
                 Name = "A",
-                BaseHP = 50,
-                BaseATK = 15,
+                BaseHP = 100,
+                BaseATK = 5,
                 BaseSpeed = 2,
                 BaseDodge = 0,
-                BaseArmor = 10,
+                BaseArmor = 1,
                 BaseRegen = 0
             };
 
@@ -27,11 +27,11 @@ namespace Assets.Scripts.Models.Factory
             var character = new Character
             {
                 Name = "B",
-                BaseHP = 60,
-                BaseATK = 14,
+                BaseHP = 120,
+                BaseATK = 4,
                 BaseSpeed = 2,
                 BaseDodge = 0,
-                BaseArmor = 10,
+                BaseArmor = 1,
                 BaseRegen = 0
             };
 

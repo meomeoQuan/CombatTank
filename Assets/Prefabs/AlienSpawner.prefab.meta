@@ -1,6 +1,12 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/Prefabs/AlienSpawner.prefab.meta
 guid: c53f71b1aab9e0843b999ad0e48dd2c0
 PrefabImporter:
+========
+guid: 844c0a7ae9bfc094d8beb0f9d2f4e9bf
+folderAsset: yes
+DefaultImporter:
+>>>>>>>> parent of 520a9b8 (Merge remote-tracking branch 'origin/thanh' into Tho):Assets/Constructors/Common/Fonts.meta
   externalObjects: {}
   userData: 
   assetBundleName: 

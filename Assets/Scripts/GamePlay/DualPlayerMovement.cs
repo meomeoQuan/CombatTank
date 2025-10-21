@@ -24,11 +24,14 @@ public int currentHP { get; private set; }
     // Ranh giới di chuyển
     public BoxCollider2D boundaryCollider;
     private Bounds boundary;
+
+    [Header("Movement Settings")]
+    [SerializeField] private float turnSmoothing = 10f; // Mượt xoay hướng tank
+    private float lastMoveMagnitude = 0f;
     //========================================== SETUP DỮ LIỆU VÀ DI CHUYỂN CHO NHÂN VẬT ========================================
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
-        
 
         if (DataController.Characters.Count >= 2)
         {
@@ -53,8 +56,8 @@ public int currentHP { get; private set; }
     void Update()
     {
         if (!GameManager.Instance || !GameManager.Instance.IsGameRunning)
-        
-            return; // 🔒 Chặn mọi input khi game chưa chạy hoặc đã kết thúc
+
+            return; // Chặn mọi input khi game chưa chạy hoặc đã kết thúc
 
         if (characterType == CharacterType.CharacterA)
         {
@@ -67,17 +70,25 @@ public int currentHP { get; private set; }
             movement.y = Input.GetAxisRaw("Vertical_Arrows");
         }
 
-        if (movement != Vector2.zero)
+        // if (movement != Vector2.zero)
+        // {
+        //     float angle = Mathf.Atan2(movement.y, movement.x) * Mathf.Rad2Deg;
+        //     transform.rotation = Quaternion.Euler(0, 0, angle - 90);
+        // }
+        // Mượt xoay hướng tank khi di chuyển
+        if (movement.sqrMagnitude > 0.01f)
         {
-            float angle = Mathf.Atan2(movement.y, movement.x) * Mathf.Rad2Deg;
-            transform.rotation = Quaternion.Euler(0, 0, angle - 90);
+            float targetAngle = Mathf.Atan2(movement.y, movement.x) * Mathf.Rad2Deg - 90f;
+            float currentAngle = transform.eulerAngles.z;
+            float angle = Mathf.LerpAngle(currentAngle, targetAngle, Time.deltaTime * turnSmoothing);
+            transform.rotation = Quaternion.Euler(0, 0, angle);
         }
     }
 
     void FixedUpdate()
     {
         if (!GameManager.Instance || !GameManager.Instance.IsGameRunning)
-            return; // 🔒 Chặn di chuyển luôn
+            return; // Chặn di chuyển luôn
 
         Vector2 normalizedMovement = movement.normalized;
         float moveSpeed = (characterData != null) ? characterData.Speed : 2f;

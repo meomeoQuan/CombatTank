@@ -1783,7 +1783,6 @@ MonoBehaviour:
   mainCam: {fileID: 519420032}
   sceneTilemap: {fileID: 26686136}
   buffer: 30
-  repeatCount: 3
 --- !u!1 &231374440
 GameObject:
   m_ObjectHideFlags: 0
@@ -2096,7 +2095,7 @@ Transform:
   m_GameObject: {fileID: 519420028}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.56, y: 0.23000002, z: -10}
+  m_LocalPosition: {x: 0.51, y: 0.00999999, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2313,12 +2312,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7ef8d7c6c60140e4085e30e70b154bfb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
-  moveSpeed: 5
-  jumpForce: 15
-  groundLayer:
-    serializedVersion: 2
-    m_Bits: 64
-  groundCheck: {fileID: 0}
 --- !u!95 &552248665
 Animator:
   serializedVersion: 7
@@ -2803,11 +2796,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4914679803896205880, guid: 506e68302986f92478ca2628475caa68, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.44
+      value: -0.49
       objectReference: {fileID: 0}
     - target: {fileID: 4914679803896205880, guid: 506e68302986f92478ca2628475caa68, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -3.77
+      value: -3.99
       objectReference: {fileID: 0}
     - target: {fileID: 4914679803896205880, guid: 506e68302986f92478ca2628475caa68, type: 3}
       propertyPath: m_LocalPosition.z
@@ -3826,7 +3819,7 @@ Transform:
   m_GameObject: {fileID: 1857981730}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.56, y: 0.23000002, z: -10}
+  m_LocalPosition: {x: 0.51, y: 0.00999999, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

@@ -1,5 +1,6 @@
 fileFormatVersion: 2
 <<<<<<< HEAD
+<<<<<<< HEAD
 <<<<<<<< HEAD:Assets/Constructors/Common/Fonts.meta
 guid: 844c0a7ae9bfc094d8beb0f9d2f4e9bf
 folderAsset: yes
@@ -11,13 +12,23 @@ DefaultImporter:
 <<<<<<<< HEAD:Assets/Prefabs/EnemyAlien.prefab.meta
 guid: 959ab5beac3f4964cb8057e9f2139ee7
 PrefabImporter:
+=======
+<<<<<<<< HEAD:Assets/Animation/EnemyAlien.controller.meta
+guid: 862d748ffd66bff4f81b8a0afc97120c
+NativeFormatImporter:
+>>>>>>> parent of 520a9b8 (Merge remote-tracking branch 'origin/thanh' into Tho)
 ========
 guid: 844c0a7ae9bfc094d8beb0f9d2f4e9bf
 folderAsset: yes
 DefaultImporter:
 >>>>>>>> parent of 520a9b8 (Merge remote-tracking branch 'origin/thanh' into Tho):Assets/Constructors/Common/Fonts.meta
+<<<<<<< HEAD
 >>>>>>> parent of 520a9b8 (Merge remote-tracking branch 'origin/thanh' into Tho)
   externalObjects: {}
+=======
+  externalObjects: {}
+  mainObjectFileID: 9100000
+>>>>>>> parent of 520a9b8 (Merge remote-tracking branch 'origin/thanh' into Tho)
   userData: 
   assetBundleName: 
   assetBundleVariant: 

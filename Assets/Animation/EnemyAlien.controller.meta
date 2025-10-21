@@ -1,6 +1,12 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/Animation/EnemyAlien.controller.meta
 guid: 862d748ffd66bff4f81b8a0afc97120c
 NativeFormatImporter:
+========
+guid: 844c0a7ae9bfc094d8beb0f9d2f4e9bf
+folderAsset: yes
+DefaultImporter:
+>>>>>>>> parent of 520a9b8 (Merge remote-tracking branch 'origin/thanh' into Tho):Assets/Constructors/Common/Fonts.meta
   externalObjects: {}
   mainObjectFileID: 9100000
   userData: 

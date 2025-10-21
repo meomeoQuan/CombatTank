@@ -1,10 +1,15 @@
 fileFormatVersion: 2
+<<<<<<< HEAD
 <<<<<<<< HEAD:Assets/Constructors/Common/Images.meta
 guid: b87c7c9ebae34c24b8bb5ea1a9763986
 folderAsset: yes
 ========
 guid: 3dc4d170c23408c4081e5df31717f3e3
 >>>>>>>> parent of 520a9b8 (Merge remote-tracking branch 'origin/thanh' into Tho):Assets/_Recovery/0 (2).unity.meta
+=======
+guid: b87c7c9ebae34c24b8bb5ea1a9763986
+folderAsset: yes
+>>>>>>> parent of 520a9b8 (Merge remote-tracking branch 'origin/thanh' into Tho)
 DefaultImporter:
   externalObjects: {}
   userData: 

@@ -87,6 +87,7 @@ public class DualPlayerMovement : MonoBehaviour
             float angle = Mathf.LerpAngle(currentAngle, targetAngle, Time.deltaTime * turnSmoothing);
             transform.rotation = Quaternion.Euler(0, 0, angle);
         }
+
     }
 
     void FixedUpdate()

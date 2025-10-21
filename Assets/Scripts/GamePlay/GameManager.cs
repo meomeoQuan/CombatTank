@@ -36,7 +36,10 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         UpdateUI();
-        DataController.Initialize();
+        //==============================NHỚ XÓA========================//
+        if (DataController.Equipments == null || DataController.Equipments.Count == 0)
+            DataController.Initialize();
+        //==============================================================//
         countdownText.gameObject.SetActive(false);
         gameWinUI.SetActive(false);
     }
@@ -88,10 +91,11 @@ public class GameManager : MonoBehaviour
         countdownText.text = "FIGHT!";
         yield return new WaitForSeconds(1f);
 
+        gamePlay.SetActive(false);
         countdownText.gameObject.SetActive(false);
         aReadyText.gameObject.SetActive(false);
         bReadyText.gameObject.SetActive(false);
-        gamePlay.SetActive(false);
+        
 
 
         foreach (var enabler in FindObjectsByType<RequireGameStart>(FindObjectsSortMode.None))
@@ -110,7 +114,10 @@ public class GameManager : MonoBehaviour
 
             player.ResetCharacter();
         }
-
+        foreach (var shooter in FindObjectsByType<ArrowShooter>(FindObjectsSortMode.None))
+        {
+            shooter.ReloadImmediate();
+        }
         // Reset UI
         gameWinUI.SetActive(false);
 

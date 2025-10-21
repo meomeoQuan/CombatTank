@@ -4,8 +4,8 @@ using System.Collections.Generic;
 
 public class BlindBoxSpawner : MonoBehaviour
 {
-    public GameObject blindBoxPrefab; // Kéo Prefab Blind Box vào đây từ Inspector
-    public float spawnInterval = 20f; // Khoảng thời gian giữa các lần spawn (20 giây)
+    public GameObject blindBoxPrefab; // Kéo Prefab vào đây từ Inspector
+    public float spawnInterval = 20f; // Khoảng thời gian giữa các lần spawn (giây)
     public List<Vector2> spawnPoints; // Danh sách các vị trí có thể spawn blind box
 
     private GameObject currentBlindBoxInstance; // Giữ tham chiếu đến blind box hiện tại
@@ -14,18 +14,19 @@ public class BlindBoxSpawner : MonoBehaviour
     {
         // Bắt đầu gọi hàm SpawnBlindBox sau 0 giây, và lặp lại mỗi `spawnInterval` giây
         InvokeRepeating("SpawnBlindBox", 20f, spawnInterval);
+        //20f delay lần gọi đầu tiên
     }
 
     void SpawnBlindBox()
     {
-        // 1. Kiểm tra và hủy blind box cũ nếu có
+        // Kiểm tra và hủy blind box cũ 
         if (currentBlindBoxInstance != null)
         {
             Destroy(currentBlindBoxInstance);
             currentBlindBoxInstance = null; // Đảm bảo không còn tham chiếu
         }
 
-        // 2. Chọn một vị trí spawn ngẫu nhiên
+        // Chọn một vị trí spawn ngẫu nhiên nếu spawnPoints kh có
         if (spawnPoints == null || spawnPoints.Count == 0)
         {
             Debug.LogWarning("BlindBoxSpawner: No spawn points defined! Spawning at spawner's position.");
@@ -33,26 +34,25 @@ public class BlindBoxSpawner : MonoBehaviour
             return;
         }
 
-        int randomIndex = Random.Range(0, spawnPoints.Count); // Lấy index ngẫu nhiên
+        int randomIndex = Random.Range(0, spawnPoints.Count);
         Vector2 randomSpawnPoint = spawnPoints[randomIndex];
 
-        // 3. Sinh ra blind box mới tại vị trí đã chọn
         currentBlindBoxInstance = Instantiate(blindBoxPrefab, randomSpawnPoint, Quaternion.identity);
         Debug.Log($"Spawned a new BlindBox at {randomSpawnPoint}");
     }
 
     // (Tùy chọn) Vẽ các điểm spawn trong Scene View để dễ nhìn
-    void OnDrawGizmos()
-    {
-        if (spawnPoints != null)
-        {
-            Gizmos.color = Color.cyan; // Màu xanh lam cho điểm spawn
-            foreach (Vector2 point in spawnPoints)
-            {
-                Gizmos.DrawWireSphere(point, 0.5f); // Vẽ hình cầu tại mỗi điểm spawn
-            }
-        }
-    }
+    // void OnDrawGizmos()
+    // {
+    //     if (spawnPoints != null)
+    //     {
+    //         Gizmos.color = Color.blue; // Màu xanh lam cho điểm spawn
+    //         foreach (Vector2 point in spawnPoints)
+    //         {
+    //             Gizmos.DrawWireSphere(point, 0.5f); // Vẽ hình cầu tại mỗi điểm spawn
+    //         }
+    //     }
+    // }
 }
 
 

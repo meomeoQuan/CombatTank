@@ -8,7 +8,7 @@
   - Layers:
     - Default, TransparentFX, Ignore Raycast, Water, UI, Ground, Bullet1, Bullet2, Tank1, Tank2
 - Active game object:
-  - Name: Cannon1
-  - Tag: Bullet
-  - Layer: Bullet1
+  - Name: arrow2
+  - Tag: Untagged
+  - Layer: Default
 <!-- UNITY CODE ASSIST INSTRUCTIONS END -->

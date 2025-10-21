@@ -19,6 +19,9 @@ public class GameManager : MonoBehaviour
     public Transform spawnA;
     public Transform spawnB;
 
+    private DualPlayerMovement playerA;
+    private DualPlayerMovement playerB;
+
     private bool isAReady = false;
     private bool isBReady = false;
     private bool gameStarted = false;
@@ -49,7 +52,7 @@ public class GameManager : MonoBehaviour
                 
             }
 
-            if (Input.GetKeyDown(KeyCode.Keypad3))
+            if (Input.GetKeyDown(KeyCode.Keypad2))
             {
                 isBReady = true;
             }
@@ -67,7 +70,7 @@ public class GameManager : MonoBehaviour
         string dots = new string('.', dotCount);
 
         aReadyText.text = "Player A: " + (isAReady ? "READY" : "WAITING" + " (PRESS N) \n" + dots);
-        bReadyText.text = "Player B: " + (isBReady ? "READY" : "WAITING" + " (PRESS 3) \n" + dots);
+        bReadyText.text = "Player B: " + (isBReady ? "READY" : "WAITING" + " (PRESS 2) \n" + dots);
     }
 
 
@@ -127,17 +130,43 @@ public class GameManager : MonoBehaviour
             req.DisableComponent();
         }
         gameStarted = false;
-        isAReady = false; 
-        isBReady = false; 
+        isAReady = false;
+        isBReady = false;
 
         // Tắt Game UI, bật màn hình thắng
         //gameUI.SetActive(false);
 
         gameWinUI.SetActive(true);
-        
+
         // Ai thua thì người kia thắng
         string winner = (loser == DualPlayerMovement.CharacterType.CharacterA) ? "Player B" : "Player A";
         winText.text = winner + " WINS!";
     }
 
+    // Tho
+    public void RegisterPlayer(DualPlayerMovement player)
+    {
+        if (player.characterType == DualPlayerMovement.CharacterType.CharacterA)
+        {
+            playerA = player;
+            Debug.Log("Player A has registered.");
+        }
+        else if (player.characterType == DualPlayerMovement.CharacterType.CharacterB)
+        {
+            playerB = player;
+            Debug.Log("Player B has registered.");
+        }
+    }
+    public DualPlayerMovement GetPlayerByType(OwnerType ownerType)
+    {
+        if (ownerType == OwnerType.CharacterA)
+        {
+            return playerA;
+        }
+        else if (ownerType == OwnerType.CharacterB)
+        {
+            return playerB;
+        }
+        return null; // Trả về null nếu ownerType là Null hoặc không hợp lệ
+    }
 }

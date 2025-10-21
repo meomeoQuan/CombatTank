@@ -29,6 +29,12 @@ public class DualPlayerMovement : MonoBehaviour
     //========================================== SETUP DỮ LIỆU VÀ DI CHUYỂN CHO NHÂN VẬT ========================================
     void Start()
     {
+        // Tho
+        if (GameManager.Instance != null)
+            GameManager.Instance.RegisterPlayer(this);
+        else
+            Debug.LogError("FATAL: GameManager not found in the scene!");
+        //
         rb = GetComponent<Rigidbody2D>();
 
         if (DataController.Characters.Count >= 2)
@@ -143,6 +149,27 @@ public class DualPlayerMovement : MonoBehaviour
         // TODO: Thêm hiệu ứng nổ, disable nhân vật hoặc reload game
 
     }
+    // Tho
+    public void Heal(int healAmount)
+    {
+        // Chỉ hồi máu nếu nhân vật chưa chết và chưa đầy máu
+        if (currentHP <= 0 || currentHP == maxHP)
+        {
+            Debug.Log($"{characterType} không thể hồi máu (đã chết hoặc đã đầy máu).");
+            return;
+        }
+
+        currentHP += healAmount;
+        // Đảm bảo máu không vượt quá mức tối đa
+        if (currentHP > maxHP)
+        {
+            currentHP = maxHP;
+        }
+
+        UpdateHealthUI(); // Cập nhật lại thanh máu trên UI
+        Debug.Log($"{characterType} được hồi {healAmount} HP, máu hiện tại: {currentHP}/{maxHP}");
+    }
+
     public void ResetCharacter()
     {
         // Reset máu

@@ -53,6 +53,8 @@ public class HealthController : MonoBehaviour
             OnDamaged.Invoke();
         }
 
+
+
     }
 
     public void AddHealth(float amountToAdd) //thêm máu

@@ -1197,7 +1197,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 38ed3745a7cf2204eb09039db14593ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PowerUpManager
-  possibleRewards: []
+  possibleRewards:
+  - {fileID: 11400000, guid: a0a74b264f66c99448094d3d0fbb1558, type: 2}
+  - {fileID: 11400000, guid: c6035b3c739ac7b48b9d514f3bb7df96, type: 2}
 --- !u!1 &397603079
 GameObject:
   m_ObjectHideFlags: 0
@@ -22243,7 +22245,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 38ed3745a7cf2204eb09039db14593ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PowerUpManager
-  possibleRewards: []
+  possibleRewards:
+  - {fileID: 11400000, guid: a0a74b264f66c99448094d3d0fbb1558, type: 2}
+  - {fileID: 11400000, guid: c6035b3c739ac7b48b9d514f3bb7df96, type: 2}
 --- !u!1001 &1642210587
 PrefabInstance:
   m_ObjectHideFlags: 0

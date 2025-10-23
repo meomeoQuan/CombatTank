@@ -6,9 +6,9 @@
   - Tags:
     - Untagged, Respawn, Finish, EditorOnly, MainCamera, Player, GameController, Ground
   - Layers:
-    - Default, TransparentFX, Ignore Raycast, Water, UI, Ground, Bullet1, Bullet2, Tank1, Tank2
+    - Default, TransparentFX, Ignore Raycast, Water, UI, Ground, Bullet1, Bullet2, Obstacle, Tank1, Tank2
 - Active game object:
-  - Name: SkeletonWhite (2)
+  - Name: Boss
   - Tag: Untagged
   - Layer: Default
 <!-- UNITY CODE ASSIST INSTRUCTIONS END -->

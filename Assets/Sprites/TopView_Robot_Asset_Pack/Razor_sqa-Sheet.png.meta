@@ -1,10 +1,19 @@
 fileFormatVersion: 2
-guid: e62260800edb7174c83a73058f7591ca
+guid: cedffcead083d184eb216cacd543ec33
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -2138761138921119770
-    second: Gun_03_0
+      213: 7605486207580756374
+    second: Razor_sqa-Sheet_0
+  - first:
+      213: 9108207436742336263
+    second: Razor_sqa-Sheet_1
+  - first:
+      213: 8113110388415572569
+    second: Razor_sqa-Sheet_2
+  - first:
+      213: 895878740277691340
+    second: Razor_sqa-Sheet_3
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -100,23 +109,89 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Gun_03_0
+      name: Razor_sqa-Sheet_0
       rect:
         serializedVersion: 2
-        x: 0
+        x: 6
         y: 0
-        width: 66
-        height: 176
-      alignment: 9
-      pivot: {x: 0.50994265, y: 0.17064379}
+        width: 91
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 6ef523763189152e0800000000000000
-      internalID: -2138761138921119770
+      spriteID: 699dbf2096d1c8960800000000000000
+      internalID: 7605486207580756374
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Razor_sqa-Sheet_1
+      rect:
+        serializedVersion: 2
+        x: 98
+        y: 0
+        width: 12
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 70f1997086ad66e70800000000000000
+      internalID: 9108207436742336263
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Razor_sqa-Sheet_2
+      rect:
+        serializedVersion: 2
+        x: 115
+        y: 0
+        width: 10
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 95aaa05c9ee879070800000000000000
+      internalID: 8113110388415572569
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Razor_sqa-Sheet_3
+      rect:
+        serializedVersion: 2
+        x: 132
+        y: 0
+        width: 22
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cc3831cb7fcce6c00800000000000000
+      internalID: 895878740277691340
       vertices: []
       indices: 
       edges: []
@@ -125,7 +200,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 2696b958bf74d5145bd6c1a5aef3c7f4
+    spriteID: 
     internalID: 0
     vertices: []
     indices: 
@@ -135,7 +210,10 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Gun_03_0: -2138761138921119770
+      Razor_sqa-Sheet_0: 7605486207580756374
+      Razor_sqa-Sheet_1: 9108207436742336263
+      Razor_sqa-Sheet_2: 8113110388415572569
+      Razor_sqa-Sheet_3: 895878740277691340
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

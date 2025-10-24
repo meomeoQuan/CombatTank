@@ -1,10 +1,13 @@
 fileFormatVersion: 2
-guid: e62260800edb7174c83a73058f7591ca
+guid: d786b00373a292843b19a8de0cf1c4df
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -2138761138921119770
-    second: Gun_03_0
+      213: -1696483441961272743
+    second: EnemyId_150111_bomb_blue_0
+  - first:
+      213: 1710785414535035143
+    second: EnemyId_150111_bomb_blue_1
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -100,23 +103,45 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Gun_03_0
+      name: EnemyId_150111_bomb_blue_0
       rect:
         serializedVersion: 2
         x: 0
-        y: 0
-        width: 66
-        height: 176
-      alignment: 9
-      pivot: {x: 0.50994265, y: 0.17064379}
+        y: 3
+        width: 31
+        height: 61
+      alignment: 0
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 6ef523763189152e0800000000000000
-      internalID: -2138761138921119770
+      spriteID: 95af0924c41e478e0800000000000000
+      internalID: -1696483441961272743
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: EnemyId_150111_bomb_blue_1
+      rect:
+        serializedVersion: 2
+        x: 33
+        y: 3
+        width: 29
+        height: 61
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 709b748354eedb710800000000000000
+      internalID: 1710785414535035143
       vertices: []
       indices: 
       edges: []
@@ -125,7 +150,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 2696b958bf74d5145bd6c1a5aef3c7f4
+    spriteID: 
     internalID: 0
     vertices: []
     indices: 
@@ -135,7 +160,8 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Gun_03_0: -2138761138921119770
+      EnemyId_150111_bomb_blue_0: -1696483441961272743
+      EnemyId_150111_bomb_blue_1: 1710785414535035143
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

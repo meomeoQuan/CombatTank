@@ -1,10 +1,19 @@
 fileFormatVersion: 2
-guid: e62260800edb7174c83a73058f7591ca
+guid: 0a81d634cd884c2428a9f2cc62b44cbc
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -2138761138921119770
-    second: Gun_03_0
+      213: -6159641853353087864
+    second: EnemyId_321022_razor_0
+  - first:
+      213: 8472832517023211745
+    second: EnemyId_321022_razor_1
+  - first:
+      213: 5035541483094601239
+    second: EnemyId_321022_razor_2
+  - first:
+      213: -6955239499071724729
+    second: EnemyId_321022_razor_3
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -100,23 +109,89 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Gun_03_0
+      name: EnemyId_321022_razor_0
       rect:
         serializedVersion: 2
-        x: 0
+        x: 6
         y: 0
-        width: 66
-        height: 176
-      alignment: 9
-      pivot: {x: 0.50994265, y: 0.17064379}
+        width: 91
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 6ef523763189152e0800000000000000
-      internalID: -2138761138921119770
+      spriteID: 88ca24b9e5e848aa0800000000000000
+      internalID: -6159641853353087864
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: EnemyId_321022_razor_1
+      rect:
+        serializedVersion: 2
+        x: 98
+        y: 0
+        width: 12
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1e02c82884c859570800000000000000
+      internalID: 8472832517023211745
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: EnemyId_321022_razor_2
+      rect:
+        serializedVersion: 2
+        x: 115
+        y: 0
+        width: 10
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 71ee897ac46d1e540800000000000000
+      internalID: 5035541483094601239
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: EnemyId_321022_razor_3
+      rect:
+        serializedVersion: 2
+        x: 132
+        y: 0
+        width: 22
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 743601aa6860a7f90800000000000000
+      internalID: -6955239499071724729
       vertices: []
       indices: 
       edges: []
@@ -125,7 +200,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 2696b958bf74d5145bd6c1a5aef3c7f4
+    spriteID: 
     internalID: 0
     vertices: []
     indices: 
@@ -135,7 +210,10 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Gun_03_0: -2138761138921119770
+      EnemyId_321022_razor_0: -6159641853353087864
+      EnemyId_321022_razor_1: 8472832517023211745
+      EnemyId_321022_razor_2: 5035541483094601239
+      EnemyId_321022_razor_3: -6955239499071724729
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

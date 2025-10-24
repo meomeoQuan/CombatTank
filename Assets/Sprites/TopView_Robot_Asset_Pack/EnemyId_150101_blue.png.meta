@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: e62260800edb7174c83a73058f7591ca
+guid: f5c76baa5aa9eba46afceeafe9a231ea
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -2138761138921119770
-    second: Gun_03_0
+      213: -9182222210258701187
+    second: EnemyId_150101_blue_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -100,23 +100,23 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Gun_03_0
+      name: EnemyId_150101_blue_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
-        width: 66
-        height: 176
-      alignment: 9
-      pivot: {x: 0.50994265, y: 0.17064379}
+        x: 1
+        y: 1
+        width: 63
+        height: 59
+      alignment: 0
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 6ef523763189152e0800000000000000
-      internalID: -2138761138921119770
+      spriteID: d74f3dc9c81329080800000000000000
+      internalID: -9182222210258701187
       vertices: []
       indices: 
       edges: []
@@ -125,7 +125,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 2696b958bf74d5145bd6c1a5aef3c7f4
+    spriteID: 
     internalID: 0
     vertices: []
     indices: 
@@ -135,7 +135,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Gun_03_0: -2138761138921119770
+      EnemyId_150101_blue_0: -9182222210258701187
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

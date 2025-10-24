@@ -1,10 +1,19 @@
 fileFormatVersion: 2
-guid: e62260800edb7174c83a73058f7591ca
+guid: cc5b68a0c9a7abc4fbc37ad3fe497e17
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -2138761138921119770
-    second: Gun_03_0
+      213: 503548975539786294
+    second: EnemyId_313103_origin_shields_0
+  - first:
+      213: 2167703628649482336
+    second: EnemyId_313103_origin_shields_1
+  - first:
+      213: 4019780921602331727
+    second: EnemyId_313103_origin_shields_2
+  - first:
+      213: -3910657303272514535
+    second: EnemyId_313103_origin_shields_3
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -100,23 +109,89 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Gun_03_0
+      name: EnemyId_313103_origin_shields_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
-        width: 66
-        height: 176
-      alignment: 9
-      pivot: {x: 0.50994265, y: 0.17064379}
+        x: 13
+        y: 96
+        width: 33
+        height: 30
+      alignment: 0
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 6ef523763189152e0800000000000000
-      internalID: -2138761138921119770
+      spriteID: 6329f061027fcf600800000000000000
+      internalID: 503548975539786294
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: EnemyId_313103_origin_shields_1
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 3
+        width: 97
+        height: 93
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0684afb17fa351e10800000000000000
+      internalID: 2167703628649482336
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: EnemyId_313103_origin_shields_2
+      rect:
+        serializedVersion: 2
+        x: 48
+        y: 96
+        width: 33
+        height: 30
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f44dff2537129c730800000000000000
+      internalID: 4019780921602331727
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: EnemyId_313103_origin_shields_3
+      rect:
+        serializedVersion: 2
+        x: 83
+        y: 96
+        width: 33
+        height: 30
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 91c9728f6ed8ab9c0800000000000000
+      internalID: -3910657303272514535
       vertices: []
       indices: 
       edges: []
@@ -125,7 +200,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 2696b958bf74d5145bd6c1a5aef3c7f4
+    spriteID: 
     internalID: 0
     vertices: []
     indices: 
@@ -135,7 +210,10 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Gun_03_0: -2138761138921119770
+      EnemyId_313103_origin_shields_0: 503548975539786294
+      EnemyId_313103_origin_shields_1: 2167703628649482336
+      EnemyId_313103_origin_shields_2: 4019780921602331727
+      EnemyId_313103_origin_shields_3: -3910657303272514535
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

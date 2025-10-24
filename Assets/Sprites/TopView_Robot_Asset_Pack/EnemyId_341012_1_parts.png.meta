@@ -1,10 +1,13 @@
 fileFormatVersion: 2
-guid: e62260800edb7174c83a73058f7591ca
+guid: c64c85a4503920242a564d366c594000
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -2138761138921119770
-    second: Gun_03_0
+      213: -3767693892501896004
+    second: EnemyId_341012_1_parts_0
+  - first:
+      213: -5410493633204556696
+    second: EnemyId_341012_1_parts_1
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -100,23 +103,45 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Gun_03_0
+      name: EnemyId_341012_1_parts_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
-        width: 66
-        height: 176
-      alignment: 9
-      pivot: {x: 0.50994265, y: 0.17064379}
+        x: 2
+        y: 31
+        width: 28
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 6ef523763189152e0800000000000000
-      internalID: -2138761138921119770
+      spriteID: cb4040bed5676bbc0800000000000000
+      internalID: -3767693892501896004
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: EnemyId_341012_1_parts_1
+      rect:
+        serializedVersion: 2
+        x: 31
+        y: 3
+        width: 28
+        height: 28
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 86c6455e4b01ae4b0800000000000000
+      internalID: -5410493633204556696
       vertices: []
       indices: 
       edges: []
@@ -125,7 +150,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 2696b958bf74d5145bd6c1a5aef3c7f4
+    spriteID: 
     internalID: 0
     vertices: []
     indices: 
@@ -135,7 +160,8 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Gun_03_0: -2138761138921119770
+      EnemyId_341012_1_parts_0: -3767693892501896004
+      EnemyId_341012_1_parts_1: -5410493633204556696
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

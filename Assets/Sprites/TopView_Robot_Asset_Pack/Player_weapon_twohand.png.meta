@@ -1,10 +1,13 @@
 fileFormatVersion: 2
-guid: e62260800edb7174c83a73058f7591ca
+guid: fa340de92d49bb14ab530d35e98e3b5a
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -2138761138921119770
-    second: Gun_03_0
+      213: -1417071317707064702
+    second: Player_weapon_twohand_0
+  - first:
+      213: 3799433186463185523
+    second: Player_weapon_twohand_1
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -100,23 +103,45 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Gun_03_0
+      name: Player_weapon_twohand_0
       rect:
         serializedVersion: 2
-        x: 0
+        x: 13
         y: 0
-        width: 66
-        height: 176
-      alignment: 9
-      pivot: {x: 0.50994265, y: 0.17064379}
+        width: 44
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 6ef523763189152e0800000000000000
-      internalID: -2138761138921119770
+      spriteID: 28afcaef42d855ce0800000000000000
+      internalID: -1417071317707064702
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Player_weapon_twohand_1
+      rect:
+        serializedVersion: 2
+        x: 71
+        y: 0
+        width: 43
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 37af7f25a5c4ab430800000000000000
+      internalID: 3799433186463185523
       vertices: []
       indices: 
       edges: []
@@ -125,7 +150,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 2696b958bf74d5145bd6c1a5aef3c7f4
+    spriteID: 
     internalID: 0
     vertices: []
     indices: 
@@ -135,7 +160,8 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Gun_03_0: -2138761138921119770
+      Player_weapon_twohand_0: -1417071317707064702
+      Player_weapon_twohand_1: 3799433186463185523
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

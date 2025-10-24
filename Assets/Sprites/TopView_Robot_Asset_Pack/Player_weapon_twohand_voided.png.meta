@@ -1,10 +1,13 @@
 fileFormatVersion: 2
-guid: e62260800edb7174c83a73058f7591ca
+guid: ca6066c6fe5d9cb4e8308d5316e84124
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -2138761138921119770
-    second: Gun_03_0
+      213: 5363484551593062121
+    second: Player_weapon_twohand_voided_0
+  - first:
+      213: -8204828406443448313
+    second: Player_weapon_twohand_voided_1
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -100,23 +103,45 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Gun_03_0
+      name: Player_weapon_twohand_voided_0
       rect:
         serializedVersion: 2
-        x: 0
+        x: 13
         y: 0
-        width: 66
-        height: 176
-      alignment: 9
-      pivot: {x: 0.50994265, y: 0.17064379}
+        width: 46
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 6ef523763189152e0800000000000000
-      internalID: -2138761138921119770
+      spriteID: 9eeefff58ccee6a40800000000000000
+      internalID: 5363484551593062121
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Player_weapon_twohand_voided_1
+      rect:
+        serializedVersion: 2
+        x: 67
+        y: 0
+        width: 48
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 70867ee0908922e80800000000000000
+      internalID: -8204828406443448313
       vertices: []
       indices: 
       edges: []
@@ -125,7 +150,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 2696b958bf74d5145bd6c1a5aef3c7f4
+    spriteID: 
     internalID: 0
     vertices: []
     indices: 
@@ -135,7 +160,8 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Gun_03_0: -2138761138921119770
+      Player_weapon_twohand_voided_0: 5363484551593062121
+      Player_weapon_twohand_voided_1: -8204828406443448313
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

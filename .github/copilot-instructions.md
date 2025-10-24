@@ -8,7 +8,7 @@
   - Layers:
     - Default, TransparentFX, Ignore Raycast, Water, UI, Ground, Bullet1, Bullet2, Obstacle, Tank1, Tank2
 - Active game object:
-  - Name: Boss
-  - Tag: Untagged
-  - Layer: Default
+  - Name: Tank
+  - Tag: Player
+  - Layer: Tank1
 <!-- UNITY CODE ASSIST INSTRUCTIONS END -->

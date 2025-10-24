@@ -2,7 +2,7 @@
 
 public class BulletMap2 : MonoBehaviour
 {
-
+        [SerializeField] private float _damageAmount = 25f; 
     private Camera _camera;
 
     private void Awake()
@@ -16,24 +16,22 @@ public class BulletMap2 : MonoBehaviour
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-   private void OnTriggerEnter2D(Collider2D collision)
-{
-    // Check if it’s an enemy (has either EnemyMovement or Enemy component)
-    EnemyMovement enemyMove = collision.GetComponent<EnemyMovement>();
-    Enemy enemy = collision.GetComponent<Enemy>();
-
-    if (enemyMove != null || enemy != null)
+private void OnTriggerEnter2D(Collider2D collision)
     {
-        // Print the enemy’s name for debugging
-        Debug.Log($"<color=red>[Bullet]</color> Hit and destroyed: <b>{collision.gameObject.name}</b>");
+        // Check if object has HealthController
+        HealthController health = collision.GetComponent<HealthController>();
+        if (health != null)
+        {
+            health.TakeDamage(_damageAmount);
+            Debug.Log($"<color=yellow>[Bullet]</color> Hit {collision.gameObject.name}, dealing {_damageAmount} damage!");
 
-        // Destroy the enemy
-        Destroy(collision.gameObject);
+            // Destroy bullet after hitting
+            Destroy(gameObject);
+            return;
+        }
 
-        // Destroy the bullet
-        Destroy(gameObject);
+       
     }
-}
 
     private void DestroyWhenOffScreen()
     {

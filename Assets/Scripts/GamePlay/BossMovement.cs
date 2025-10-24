@@ -76,11 +76,11 @@ public class BossMovement : MonoBehaviour
                 break;
 
           case BossState.Summon:
-    if (_canSummon)
-    {
-        StartCoroutine(HandleSummonState());
-    }
-    break;
+                if (_canSummon)
+                {
+                    StartCoroutine(HandleSummonState());
+                }
+                break;
 
 
             case BossState.Chase:

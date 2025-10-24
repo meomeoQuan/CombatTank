@@ -11,7 +11,7 @@ public class EnemyAttack : MonoBehaviour
         if (collision.gameObject.GetComponent<PlayerMovement>()) //ktra xem có phải người chơi va chạm không
         {
             var healthController = collision.gameObject.GetComponent<HealthController>();
-
+            Debug.Log($"<color=red>[Enemy]</color> Attacking player, dealing <b>{_damageAmount}</b> damage!");
             healthController.TakeDamage(_damageAmount);
         }
     }

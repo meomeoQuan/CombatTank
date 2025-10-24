@@ -22,7 +22,7 @@ public class BossMovement : MonoBehaviour
 [SerializeField] private int _monsterCount = 5;
 [SerializeField] private float _summonRadius = 2f;
       [SerializeField] private GameObject _fireballPrefab;   // Fireball prefab
-    [SerializeField] private Transform _firePoint;         // Fire spawn position
+          // Fire spawn position
     [SerializeField] private float _fireForce = 5f;
 
     private enum BossState { Patrol, Chase, Return, Summon, FireAttack, Recover, GetHit, Death }
@@ -50,64 +50,67 @@ public class BossMovement : MonoBehaviour
         _currentHP = _maxHP;
     }
 
-    private void FixedUpdate()
+private void FixedUpdate()
+{
+    CheckHPLogic();
+    CleanupDeadMinions();
+        if (!_playerAwarenessController && _currentState != BossState.Chase)
+        {
+            SetState(BossState.Patrol);
+        }
+        
+    switch (_currentState)
     {
-        CheckHPLogic();
-        CleanupDeadMinions();
-        if (_playerAwarenessController.AwareOfPlayer && _currentState != BossState.Chase)
-        {
-            // Debug.Log("<color=yellow>[Boss]</color> Player detected! Switching to <b>CHASE</b> mode 🧠");
-            _currentState = BossState.Chase;
-        }
-        else if (!_playerAwarenessController.AwareOfPlayer && _currentState == BossState.Chase) 
-        {
-            Debug.Log("<color=orange>[Boss]</color> Player lost... returning to <b>START POSITION</b> 🏠");
-            _currentState = BossState.Return; 
-        } else if(_activeMinions.Count == 1 && _currentState != BossState.FireAttack)
-        {
-             Debug.Log("<color=red>[Boss]</color> Only one minion left — activating <b>Fire Attack!</b> 🔥");
-    _currentState = BossState.FireAttack;
-        }
-        switch (_currentState)
-        {
-            case BossState.Patrol:
-               
+        case BossState.Patrol:
+            if (_playerAwarenessController.AwareOfPlayer)
+                SetState(BossState.Chase);
+            else
                 HandlePatternMovement();
-                break;
+            break;
 
-          case BossState.Summon:
-                if (_canSummon)
-                {
-                    StartCoroutine(HandleSummonState());
-                }
-                break;
+        case BossState.Chase:
+            HandlePlayerChase();
+            if (_playerAwarenessController.AwareOfPlayer)
+                SetState(BossState.Summon);
+            else
+                SetState(BossState.Return);
+            break;
 
+        case BossState.Summon:
+            if (_canSummon)
+                StartCoroutine(HandleSummonState());
+            break;
 
-            case BossState.Chase:
-                HandlePlayerChase();
-                if(_playerAwarenessController.AwareOfPlayer && _currentState == BossState.Chase)
-                {
-                  _currentState = BossState.Summon;  
-                }
-                  
-                break;
+        case BossState.Return:
+            HandleReturnToStart();
+            break;
 
-            case BossState.Return:
-                HandleReturnToStart();
-                break;
-
-            case BossState.Recover:
-                Recover();
-                break;
-
-            case BossState.Death:
-                Death();
-                break;
-            case BossState.FireAttack:
+        case BossState.FireAttack:
                 FireAttack();
-                break;
-        }
+          
+            break;
+
+        case BossState.Recover:
+            Recover();
+            break;
+
+        case BossState.Death:
+            Death();
+            break;
     }
+
+    // FireAttack trigger condition
+    if (_activeMinions.Count == 1 && _currentState != BossState.FireAttack && !_isFiring)
+        SetState(BossState.FireAttack);
+}
+
+private void SetState(BossState newState)
+{
+    if (_currentState == newState) return;
+    Debug.Log($"<color=cyan>[Boss]</color> State changed: {_currentState} → <b>{newState}</b>");
+    _currentState = newState;
+}
+
 
     private void HandlePatternMovement()
     {
@@ -156,16 +159,20 @@ public class BossMovement : MonoBehaviour
     // ==========================================================
     // 🔥 BOSS ABILITIES BELOW
     // ==========================================================
-    private IEnumerator HandleSummonState()
+private IEnumerator HandleSummonState()
 {
-    _canSummon = false; // prevent re-summon spam
+    if (!_canSummon) yield break; // ❌ don't start again
+
+    _canSummon = false;
+    _animator.SetBool("IsBossSumon", true);
+
     Summon();
 
-    // Wait for the summon animation to finish (adjust time as needed)
+    // Wait for summon animation (non-looped, only once)
     yield return new WaitForSeconds(3f);
 
-    _animator.SetBool("IsBossSumon", false); // stop summon animation
-    _currentState = BossState.Patrol; // return to patrol after animation
+    _animator.SetBool("IsBossSumon", false);
+    SetState(BossState.Patrol); // go back to patrol after summon
 }
 
 public void Summon()
@@ -218,19 +225,64 @@ if (enemyScript != null)
 
 
 
-    public void FireAttack()
-    {
-        _animator.SetBool("IsBossFireAttack",true);
-        Debug.Log("<color=red>[Boss]</color> Launching fireball!");
+   private bool _isFiring = false;
 
-        if (_fireballPrefab != null && _firePoint != null)
-        {
-            GameObject fire = Instantiate(_fireballPrefab, _firePoint.position, Quaternion.identity);
-            Rigidbody2D rb = fire.GetComponent<Rigidbody2D>();
-            if (rb != null)
-                rb.AddForce(transform.right * _fireForce * (transform.localScale.x > 0 ? 1 : -1), ForceMode2D.Impulse);
-        }
+public void FireAttack()
+{
+    if (_isFiring) return;
+    StartCoroutine(HandleFireAttack());
+}
+
+private IEnumerator HandleFireAttack()
+{
+    _isFiring = true;
+    _animator.SetBool("IsBossFireAttack", true);
+    Debug.Log("<color=orange>[Boss]</color> 🔥 Summoning fire trap...");
+
+    yield return new WaitForSeconds(0.5f); // wait for animation to reach the moment boss hits the ground or casts
+
+    SpawnFireTrap();
+
+    yield return new WaitForSeconds(1.5f); // wait until animation ends
+    _animator.SetBool("IsBossFireAttack", false);
+    _isFiring = false;
+
+    // switch back to normal state
+    if (_playerAwarenessController.AwareOfPlayer)
+        _currentState = BossState.Chase;
+    else
+        _currentState = BossState.Patrol;
+}
+
+public void SpawnFireTrap()
+{
+    if (_fireballPrefab == null)
+    {
+        Debug.LogWarning("⚠️ No fire prefab assigned!");
+        return;
     }
+
+    // define random spawn range (adjust as you want)
+    float minX = -10f;
+    float maxX = 10f;
+    float minY = -3f;
+    float maxY = 3f;
+
+    // number of fire traps per summon
+    int fireCount = Random.Range(2, 5); // 2~4 fires
+
+    for (int i = 0; i < fireCount; i++)
+    {
+        Vector3 randomPos = new Vector3(
+            Random.Range(minX, maxX),
+            Random.Range(minY, maxY),
+            0f
+        );
+
+        Instantiate(_fireballPrefab, randomPos, Quaternion.identity);
+        Debug.Log($"<color=red>🔥 Fire trap spawned at {randomPos}</color>");
+    }
+}
 
     public void Recover()
     {

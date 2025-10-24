@@ -8,6 +8,7 @@ using UnityEngine;
 using System.Collections;
 using TMPro;
 using UnityEngine.UI;
+using System.Collections.Generic;
 
 public class ArrowShooter : MonoBehaviour
 {
@@ -22,13 +23,15 @@ public class ArrowShooter : MonoBehaviour
 
     // 🔥 CÁC BIẾN CHO CƠ CHẾ ĐẠN/RELOAD
     public GameObject bulletPrefab;
+    // public List<GameObject> bulletPrefabs;
     private int maxAmmo;
     private float reloadRate;
     private int currentAmmo;
     public Image bulletIcon;
     private bool isReloading = false;
     // 🔥 KẾT THÚC CÁC BIẾN MỚI
-
+    private float damageMultiplier = 1.0f; // 1.0f = 100% (không tăng)
+    private Coroutine damageBoostCoroutine; // Để theo dõi coroutine đang chạy
     // 🔥 BIẾN UI
     [Header("Hiển thị UI")]
     public TMP_Text ammoAndReloadText;
@@ -158,8 +161,18 @@ public class ArrowShooter : MonoBehaviour
         Bullet bullet = bulletGO.GetComponent<Bullet>();
         if (bullet != null)
         {
-            bullet.myBulletTag = bulletTypeTag;
-            bullet.owner = (OwnerType)character;
+            // bullet.myBulletTag = bulletTypeTag;
+            // bullet.owner = (OwnerType)character;
+            // 🔥 CHANGED: Thay đổi cách gán sát thương cho viên đạn
+            int baseDamage = (character == CharacterType.CharacterA)
+                ? DataController.Characters[0].ATK
+                : DataController.Characters[1].ATK;
+
+            // Tính toán sát thương cuối cùng sau khi nhân với hệ số
+            int finalDamage = Mathf.RoundToInt(baseDamage * damageMultiplier);
+
+            // Khởi tạo viên đạn với sát thương đã được tăng cường
+            bullet.Initialize((OwnerType)character, finalDamage);
         }
 
 
@@ -232,5 +245,47 @@ public class ArrowShooter : MonoBehaviour
         isReloading = false;       // Tắt trạng thái reload
         UpdateAmmoUI();            // Cập nhật UI
         Debug.Log($"[{character}] Reset Ammo: {currentAmmo}/{maxAmmo}");
+    }
+    public void UpgradeAmmo(int upgradeAmount)
+    {
+        maxAmmo += upgradeAmount; // Tăng số đạn tối đa
+        currentAmmo += upgradeAmount; // Thêm đạn tức thì (hoặc chỉ tăng maxAmmo nếu muốn chỉ tăng tối đa)
+        UpdateAmmoUI(); // Cập nhật UI
+        Debug.Log($"[{character}] Ammo Upgraded! MaxAmmo: {maxAmmo}, CurrentAmmo: {currentAmmo}");
+    }
+
+    // 🔥 ADDED: HÀM CÔNG KHAI ĐỂ KÍCH HOẠT TĂNG SÁT THƯƠNG
+    public void ApplyDamageBoost(float multiplier, float duration)
+    {
+        // Nếu đã có một coroutine đang chạy, hãy dừng nó lại
+        // Điều này đảm bảo thời gian được reset nếu nhặt được power-up mới
+        if (damageBoostCoroutine != null)
+        {
+            StopCoroutine(damageBoostCoroutine);
+        }
+
+        // Bắt đầu một coroutine mới
+        damageBoostCoroutine = StartCoroutine(DamageBoostCoroutine(multiplier, duration));
+    }
+
+    // 🔥 ADDED: COROUTINE ĐỂ QUẢN LÝ THỜI GIAN HIỆU LỰC
+    private IEnumerator DamageBoostCoroutine(float multiplier, float duration)
+    {
+        damageMultiplier = multiplier; // Áp dụng hệ số nhân sát thương
+        Debug.Log($"[{character}] Sát thương được tăng x{multiplier} trong {duration} giây!");
+
+        // TODO: Thêm hiệu ứng hình ảnh/âm thanh cho tank để báo hiệu đang được tăng sức mạnh
+        // Ví dụ: spriteRenderer.color = Color.yellow;
+
+        // Chờ hết thời gian hiệu lực
+        yield return new WaitForSeconds(duration);
+
+        // Hết thời gian, trả về trạng thái bình thường
+        damageMultiplier = 1.0f;
+        damageBoostCoroutine = null;
+        Debug.Log($"[{character}] Hiệu ứng tăng sát thương đã hết.");
+
+        // TODO: Tắt hiệu ứng hình ảnh/âm thanh
+        // Ví dụ: spriteRenderer.color = Color.white;
     }
 }

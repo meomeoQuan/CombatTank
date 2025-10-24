@@ -4,7 +4,8 @@ public enum RewardType
 {
     Health,
     DamageBoost,
-    DroneSupport
+    DroneSupport,
+    AmmoUpgrade
 }
 
 [CreateAssetMenu(fileName = "NewReward", menuName = "Rewards/Reward Data")]

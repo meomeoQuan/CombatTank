@@ -7,7 +7,7 @@ public class DualPlayerMovement : MonoBehaviour
 {
     public enum CharacterType { CharacterA, CharacterB }
     public CharacterType characterType;
-
+    public PowerUpManager powerUpManager;
     private Character characterData;
     private Rigidbody2D rb;
     private Vector2 movement;
@@ -25,7 +25,7 @@ public class DualPlayerMovement : MonoBehaviour
 
     [Header("Movement Settings")]
     [SerializeField] private float turnSmoothing = 10f; // Mượt xoay hướng tank
-    private float lastMoveMagnitude = 0f;
+    // private float lastMoveMagnitude = 0f;
     //========================================== SETUP DỮ LIỆU VÀ DI CHUYỂN CHO NHÂN VẬT ========================================
     void Start()
     {

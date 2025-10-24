@@ -12,9 +12,8 @@ public class BlindBoxSpawner : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        // Bắt đầu gọi hàm SpawnBlindBox sau 0 giây, và lặp lại mỗi `spawnInterval` giây
+        // Bắt đầu gọi hàm SpawnBlindBox sau 20 giây, và lặp lại mỗi `spawnInterval` giây
         InvokeRepeating("SpawnBlindBox", 20f, spawnInterval);
-        //20f delay lần gọi đầu tiên
     }
 
     void SpawnBlindBox()

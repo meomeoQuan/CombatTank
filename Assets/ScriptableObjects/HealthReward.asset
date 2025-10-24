@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::RewardData
   rewardType: 0
   rewardName: +20 Health
-  weight: 50
+  weight: 22
   value: 20
   duration: 20
   prefab: {fileID: 0}

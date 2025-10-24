@@ -6,13 +6,25 @@ public class Bullet : MonoBehaviour
 {
     [Header("Bullet Settings")]
     public string myBulletTag = "Shell1";
-    public OwnerType owner = OwnerType.CharacterA; // chọn A hay B
+    public OwnerType owner { get; private set; }
     public int Damage { get; private set; }
 
     private Animator animator;
     private Rigidbody2D rb;
     private Collider2D col;
     private bool isExploding = false;
+
+
+    public void Initialize(OwnerType ownerType, int damageValue)
+    {
+        this.owner = ownerType;
+        this.Damage = damageValue;
+
+        // Reset lại trạng thái của viên đạn (giống như trong OnEnable)
+        isExploding = false;
+        if (animator != null) animator.SetBool("isExploding", false);
+        if (col != null) col.enabled = true;
+    }
 
     void Awake()
     {
@@ -29,8 +41,8 @@ public class Bullet : MonoBehaviour
         if (col != null) col.enabled = true;
         if (rb != null) rb.linearVelocity = Vector2.zero;
 
-        // Gán Damage dựa trên owner
-        SetDamage();
+        // Gán Damage dựa trên owner (nếu chưa được Initialize)
+        if (Damage == 0) SetDamage();
     }
 
     private void SetDamage()
@@ -50,8 +62,6 @@ public class Bullet : MonoBehaviour
                 Damage = DataController.Characters[1].ATK;
                 break;
         }
-
-        
     }
 
     void OnTriggerEnter2D(Collider2D other)
@@ -65,8 +75,11 @@ public class Bullet : MonoBehaviour
         // }
         if (!isExploding)
         {
-            Debug.Log("Bullet hit: " + other.name + $" | Damage: {Damage}");
-            Explode();
+            if (other.CompareTag("Player") )//|| other.CompareTag("BlindBox") || other.CompareTag("Wall")
+            {
+                Debug.Log($"Bullet của {owner} va vào {other.name} | Gây {Damage} sát thương");
+                Explode();
+            }
         }
         // ... other collision logic for hitting bots, walls, etc.
     }

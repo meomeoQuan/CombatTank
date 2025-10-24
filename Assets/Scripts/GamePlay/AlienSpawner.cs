@@ -34,6 +34,7 @@ public class EnemySpawner : MonoBehaviour
         if (_timeUntilSpawn <= 0)
         {
             Instantiate(_enemyPrefab, transform.position, Quaternion.identity);
+            _enemyPrefab.tag = "Enemy";
             _spawnedCount++; //  Tăng số lượng enemy đã spawn
             SetTimeUntilSpawn();
         }

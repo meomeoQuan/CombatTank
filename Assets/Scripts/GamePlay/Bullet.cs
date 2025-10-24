@@ -60,15 +60,15 @@ public class Bullet : MonoBehaviour
 
         Debug.Log("Bullet hit: " + collision.name + $" | Damage: {Damage}");
 
-        // --- Gây sát thương cho FortressGun ---
-        if (collision.CompareTag("FortressGun"))
-        {
-            FortressGun fortress = collision.GetComponent<FortressGun>();
-            if (fortress != null)
-            {
-                fortress.TakeDamage(Damage);
-            }
-        }
+        //// --- Gây sát thương cho FortressGun ---
+        //if (collision.CompareTag("FortressGun"))
+        //{
+        //    FortressGun fortress = collision.GetComponent<FortressGun>();
+        //    if (fortress != null)
+        //    {
+        //        fortress.TakeDamage(Damage);
+        //    }
+        //}
 
         Explode();
     }

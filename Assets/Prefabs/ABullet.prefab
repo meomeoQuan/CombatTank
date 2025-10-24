@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 621725595999301183}
   - component: {fileID: 7244057246336113641}
   - component: {fileID: 6546739094018785911}
+  - component: {fileID: 1867962397677245423}
   m_Layer: 0
   m_Name: ABullet
   m_TagString: Untagged
@@ -29,7 +30,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: -0.7071068, w: 0.7071068}
   m_LocalPosition: {x: -5.636, y: 0.25, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.7, y: 0.7, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -78,8 +79,8 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: 1619016603
+  m_SortingLayer: 6
   m_SortingOrder: 0
   m_Sprite: {fileID: 5011755978969936664, guid: 045f8080de55e044c85f794b81ea0acd, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -155,3 +156,19 @@ CircleCollider2D:
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
   m_Radius: 0.2
+--- !u!114 &1867962397677245423
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5412745503946633329}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b5d0f0bb29da2014981ee175a031e093, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ABullet
+  speed: 10
+  damage: 10
+  lifetime: 4
+  spriteAngleOffset: -90

@@ -44,12 +44,12 @@ public class GameManager : MonoBehaviour
         if (!gameStarted)
         {
             if (Input.GetKeyDown(KeyCode.N))
-            {
+            {   
                 isAReady = true;
                 
             }
 
-            if (Input.GetKeyDown(KeyCode.Keypad3))
+            if (Input.GetKeyDown(KeyCode.Alpha3) || Input.GetKeyDown(KeyCode.Keypad3))
             {
                 isBReady = true;
             }

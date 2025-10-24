@@ -1,72 +1,107 @@
 using UnityEngine;
 using System.Collections;
 
+[RequireComponent(typeof(HealthController))]
 public class FortressGun : MonoBehaviour
 {
-    [Header("Cài đặt súng")]
-    public Transform firePoint;
-    public GameObject energyShotPrefab;
-    public float fireRate = 1f;
-    public float range = 6f;
+    [Header("⚙️ Cài đặt súng")]
+    public Transform firePoint;                  // 🧩 Vị trí bắn ra đạn
+    public GameObject energyShotPrefab;          // 🧩 Prefab đạn bắn ra
+    public float fireRate = 1f;                  // 🧩 Số viên/giây
+    public float range = 6f;                     // 🧩 Phạm vi phát hiện Player
 
-    [Header("Cài đặt bắn nhiều lần")]
-    public int burstCount = 3;
-    public float burstDelay = 0.2f;
+    [Header("🎯 Cài đặt bắn loạt (bỏ burst nếu chỉ bắn 1 viên)")]
+    public int burstCount = 1;                   // 🧩 Số viên mỗi đợt bắn
+    public float burstDelay = 0.2f;              // 🧩 Thời gian delay giữa mỗi viên trong burst
 
-    [Header("Cài đặt băng đạn")]
-    public int magazineSize = 15;
-    public float reloadTime = 2f;
+    [Header("🔫 Cài đặt băng đạn")]
+    public int magazineSize = 15;                // 🧩 Dung lượng băng đạn
+    public float reloadTime = 2f;                // 🧩 Thời gian nạp lại đạn
 
-    [Header("Cài đặt máu Fortress")]
-    public int maxHP = 100;
-    private int currentHP;
+    [Header("💥 Hiệu ứng khi phá huỷ")]
+    public GameObject explosionEffect;           // 🧩 Hiệu ứng nổ khi chết
 
-    private int currentAmmo;
-    private bool isReloading = false;
-    private float fireCooldown = 0f;
-    private Transform target;
-    private bool isBursting = false;
-    private Animator animator;
+    // ========== Biến nội bộ ==========
+    private int currentAmmo;                     // 🧩 Số viên còn lại
+    private bool isReloading = false;            // 🧩 Đang nạp lại hay không
+    private float fireCooldown = 0f;             // 🧩 Thời gian chờ giữa các lần bắn
+    private Transform target;                    // 🧩 Mục tiêu hiện tại
+    private bool isBursting = false;             // 🧩 Có đang trong chế độ bắn loạt không
+    private Animator animator;                   // 🧩 Animator để chơi animation
+    private HealthController health;             // 🧩 Quản lý máu
+    private bool isDead = false;                 // 🧩 Đã chết hay chưa
+
+    // ========== KHỞI TẠO ==========
+    void Awake()
+    {
+        health = GetComponent<HealthController>();     // 🧩 Lấy HealthController
+        animator = GetComponent<Animator>();           // 🧩 Lấy Animator nếu có
+    }
 
     void Start()
     {
-        currentAmmo = magazineSize;
-        currentHP = maxHP;
-        animator = GetComponent<Animator>();
-        InvokeRepeating(nameof(FindTarget), 0f, 0.25f);
+        currentAmmo = magazineSize;                    // 🧩 Đặt lại đạn ban đầu
+
+        // 🧩 Gắn sự kiện cho HealthController
+        if (health != null)
+        {
+            health.OnDied.AddListener(Die);            // 🧩 Khi chết thì gọi Die()
+            health.OnDamaged.AddListener(OnDamagedFeedback); // 🧩 Khi bị trúng đạn gọi OnDamagedFeedback()
+        }
+
+        InvokeRepeating(nameof(FindTarget), 0f, 0.25f); // 🧩 Liên tục tìm player gần nhất
     }
 
+    void OnDisable()
+    {
+        // 🧩 Gỡ listener khi bị disable để tránh memory leak
+        if (health != null)
+        {
+            health.OnDied.RemoveListener(Die);
+            health.OnDamaged.RemoveListener(OnDamagedFeedback);
+        }
+    }
     void Update()
     {
-        if (isReloading || currentHP <= 0) return;
-        if (target == null) return;
+        if (isDead || isReloading) return;             // 🧩 Ngưng hoạt động khi chết hoặc đang reload
+        if (target == null) return;                    // 🧩 Không có mục tiêu thì không bắn
 
-        RotateToTarget();
+        RotateToTarget();                              // 🧩 Quay hướng nòng về phía Player
         fireCooldown -= Time.deltaTime;
 
-        if (fireCooldown <= 0f && !isBursting)
+        if (fireCooldown <= 0f)
         {
             if (currentAmmo > 0)
             {
-                StartCoroutine(BurstFire());
-                fireCooldown = 1f / fireRate;
+                if (burstCount <= 1)                   // 🧩 Nếu chỉ bắn 1 viên/lượt
+                {
+                    Shoot();
+                    currentAmmo--;
+                }
+                else if (!isBursting)                  // 🧩 Nếu bắn loạt
+                {
+                    StartCoroutine(BurstFire());
+                }
+
+                fireCooldown = 1f / Mathf.Max(0.0001f, fireRate);
             }
             else
             {
-                StartCoroutine(Reload());
+                StartCoroutine(Reload());              // 🧩 Hết đạn → reload
             }
         }
     }
-
     void FindTarget()
     {
+        if (isDead) { target = null; return; }
+
         Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position, range);
         float closestDistance = Mathf.Infinity;
         Transform closestEnemy = null;
 
         foreach (Collider2D hit in hits)
         {
-            if (hit.CompareTag("Player"))
+            if (hit.CompareTag("Player"))              // 🧩 Chỉ tìm đối tượng có tag Player
             {
                 float distance = Vector2.Distance(transform.position, hit.transform.position);
                 if (distance < closestDistance)
@@ -77,9 +112,8 @@ public class FortressGun : MonoBehaviour
             }
         }
 
-        target = closestEnemy;
+        target = closestEnemy;                         // 🧩 Cập nhật target
     }
-
     void RotateToTarget()
     {
         if (target == null) return;
@@ -87,13 +121,14 @@ public class FortressGun : MonoBehaviour
         float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg - 90f;
         transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
     }
-
     IEnumerator BurstFire()
     {
         isBursting = true;
 
         for (int i = 0; i < burstCount; i++)
         {
+            if (isDead) break;
+
             if (currentAmmo <= 0)
             {
                 StartCoroutine(Reload());
@@ -107,10 +142,9 @@ public class FortressGun : MonoBehaviour
 
         isBursting = false;
     }
-
     void Shoot()
     {
-        if (energyShotPrefab == null || firePoint == null || target == null) return;
+        if (isDead || energyShotPrefab == null || firePoint == null || target == null) return;
 
         GameObject bulletGO = Instantiate(energyShotPrefab, firePoint.position, Quaternion.identity);
         ABullet shotComp = bulletGO.GetComponent<ABullet>();
@@ -119,11 +153,12 @@ public class FortressGun : MonoBehaviour
             Vector2 shootDir = (target.position - firePoint.position).normalized;
             shotComp.Launch(shootDir, shotComp.speed, shotComp.damage);
         }
-    }
 
+        if (animator != null) animator.SetTrigger("Shoot"); // 🧩 Kích hoạt animation bắn
+    }
     IEnumerator Reload()
     {
-        if (isReloading) yield break;
+        if (isReloading || isDead) yield break;
 
         isReloading = true;
         Debug.Log($"{gameObject.name} đang nạp đạn...");
@@ -134,53 +169,39 @@ public class FortressGun : MonoBehaviour
         isReloading = false;
         Debug.Log($"{gameObject.name} đã nạp lại đạn xong!");
     }
-
     void OnTriggerEnter2D(Collider2D collision)
     {
-        // ✅ Nếu trúng đạn của tank
-        if (collision.CompareTag("Bullet"))
+        Debug.Log($"⚡ FortressGun chạm với: {collision.name}");
+        if (isDead || health == null) return;
+        if (collision.GetComponent<BulletMap2>()) // 🧩 Nếu trúng đạn BulletMap2
         {
-            var bullet = collision.GetComponent<Bullet>();
-            if (bullet != null)
-            {
-                TakeDamage(bullet.Damage);
-                bullet.SendMessage("Explode", SendMessageOptions.DontRequireReceiver);
-            }
+            health.TakeDamage(10);                     // 🧩 Giảm máu FortressGun 10 HP
+            Destroy(collision.gameObject);             // 🧩 Hủy viên đạn
         }
     }
-
-    public void TakeDamage(int dmg)
+    private void OnDamagedFeedback()
     {
-        if (currentHP <= 0) return;
-
-        currentHP -= dmg;
-        Debug.Log($"{name} trúng đạn! Mất {dmg} máu, còn {currentHP} HP");
-
         if (animator != null)
-        {
-            animator.SetTrigger("Hit"); // nếu có animation bị bắn
-        }
-
-        if (currentHP <= 0)
-        {
-            Die();
-        }
+            animator.SetTrigger("Hit");                // 🧩 Kích hoạt animation bị bắn
     }
-
-    private void Die()
+    public void Die()
     {
-        Debug.Log($"{name} đã bị phá huỷ!");
-        if (animator != null)
-            animator.SetBool("isDead", true); // hoặc hiệu ứng nổ
+        if (isDead) return;
+        isDead = true;
 
-        // Ngưng bắn
+        Debug.Log($"{gameObject.name} đã bị phá huỷ!");
+
+        if (explosionEffect != null)
+            Instantiate(explosionEffect, transform.position, Quaternion.identity); // 🧩 Hiệu ứng nổ
+
         StopAllCoroutines();
         CancelInvoke();
 
-        // Tắt súng
-        this.enabled = false;
-    }
+        if (animator != null)
+            animator.SetBool("isDead", true);          // 🧩 Animation chết
 
+        this.enabled = false;                          // 🧩 Dừng mọi hoạt động FortressGun
+    }
     void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.cyan;

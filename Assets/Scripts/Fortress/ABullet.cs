@@ -18,39 +18,45 @@ public class ABullet : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
     }
 
-    // Gọi từ FortressGun ngay sau khi Instantiate
     public void Launch(Vector2 direction, float shotSpeed, int shotDamage)
     {
         if (rb == null) rb = GetComponent<Rigidbody2D>();
-
         damage = shotDamage;
-        float usedSpeed = (shotSpeed > 0f) ? shotSpeed : speed;
-
-        rb.linearVelocity = direction.normalized * usedSpeed;
-
-        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+        float usedSpeed = (shotSpeed > 0f) ? shotSpeed : speed;        
+        rb.linearVelocity = direction.normalized * usedSpeed; // Dùng velocity chứ không phải linearVelocity (đảm bảo Unity nhận đúng)
+        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;// Xoay sprite theo hướng bắn
         transform.rotation = Quaternion.AngleAxis(angle + spriteAngleOffset, Vector3.forward);
-
         CancelInvoke();
         Invoke(nameof(Deactivate), lifetime);
     }
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        // Kiểm tra trúng nhân vật (tank)
-        var player = other.GetComponent<DualPlayerMovement>();
-        if (player != null)
+
+        if (other.gameObject.CompareTag("FortressGun")) return; // Nếu đạn chạm chính FortressGun (người bắn) thì bỏ qua
+        HealthController health = other.GetComponent<HealthController>(); // Nếu đối tượng có HealthController => gây sát thương
+        if (health != null)
         {
-            // 💥 Gây damage lên tank
-            player.SendMessage("TakeDamage", damage, SendMessageOptions.DontRequireReceiver);
+            health.TakeDamage(damage);
+            Debug.Log($"💥 {other.name} nhận {damage} sát thương từ {gameObject.name}");
             Deactivate();
             return;
         }
 
-        // Nếu đụng tường hoặc vật cản thì hủy luôn
-        if (other.CompareTag("Wall") || other.CompareTag("Obstacle"))
+        if (other.CompareTag("Player")) // Nếu va vào Player mà chưa có HealthController thì fallback
         {
+            DualPlayerMovement player = other.GetComponent<DualPlayerMovement>();
+            if (player != null)
+            {
+                player.SendMessage("TakeDamageFromFortress", damage, SendMessageOptions.DontRequireReceiver);
+            }
+            Debug.Log($"🔥 Player trúng đạn {damage} dmg!");
             Deactivate();
+        }
+        if (other.GetComponent<EnemyMovement>())
+        {
+            Destroy(other.gameObject);
+            Destroy(gameObject);
         }
     }
 

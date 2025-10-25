@@ -150,7 +150,8 @@ public class DualPlayerMovement : MonoBehaviour
         // TODO: Thêm hiệu ứng nổ, disable nhân vật hoặc reload game
 
     }
-    // Tho
+
+    #region Public Methods for Power-Ups - Reward
     public void Heal(int healAmount)
     {
         // Chỉ hồi máu nếu nhân vật chưa chết và chưa đầy máu
@@ -170,7 +171,8 @@ public class DualPlayerMovement : MonoBehaviour
         UpdateHealthUI(); // Cập nhật lại thanh máu trên UI
         Debug.Log($"{characterType} được hồi {healAmount} HP, máu hiện tại: {currentHP}/{maxHP}");
     }
-
+    #endregion
+    
     public void ResetCharacter()
     {
         // Reset máu

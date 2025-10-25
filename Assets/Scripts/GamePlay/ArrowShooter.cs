@@ -246,6 +246,9 @@ public class ArrowShooter : MonoBehaviour
         UpdateAmmoUI();            // Cập nhật UI
         Debug.Log($"[{character}] Reset Ammo: {currentAmmo}/{maxAmmo}");
     }
+
+    #region Public Methods for Power-Ups - Reward
+    
     public void UpgradeAmmo(int upgradeAmount)
     {
         maxAmmo += upgradeAmount; // Tăng số đạn tối đa
@@ -288,4 +291,5 @@ public class ArrowShooter : MonoBehaviour
         // TODO: Tắt hiệu ứng hình ảnh/âm thanh
         // Ví dụ: spriteRenderer.color = Color.white;
     }
+    #endregion
 }

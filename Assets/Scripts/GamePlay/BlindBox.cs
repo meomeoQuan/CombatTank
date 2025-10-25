@@ -148,8 +148,6 @@ public class BlindBox : MonoBehaviour
         if (rb != null) rb.linearVelocity = Vector2.zero;
         if (animator != null) animator.SetBool("isDestroyed", true);
         
-        // string attackerName = (lastAttacker == OwnerType.CharacterA) ? "Player A" : "Player B";
-        // Debug.Log($"Box bị phá bởi {attackerName}!");
 
         // if (destructionEffectPrefab != null)
         // {
@@ -181,17 +179,6 @@ public class BlindBox : MonoBehaviour
         {
             Debug.LogWarning("Không xác định được người phá hủy Blind Box, không có phần thưởng nào được trao.");
         }
-
-        // PowerUpManager powerUpManager = FindObjectOfType<PowerUpManager>();
-        // if (powerUpManager != null)
-        // {
-        //     powerUpManager.GrantRandomReward();
-        // }
-        // else
-        // {
-        //     Debug.LogError("CRITICAL: PowerUpManager was not found in the scene! No reward can be granted.");
-        // }
-
         StartCoroutine(CleanupAfterAnimation());
     }
 

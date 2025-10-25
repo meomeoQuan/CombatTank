@@ -12,8 +12,6 @@ public class PowerUpManager : MonoBehaviour
     [Header("UI")]
     public TMP_Text rewardDisplayText; // Kéo TMP_Text vào đây để hiển thị reward
 
-    // We'll need references to the other scripts on the tank.
-    // Make sure your tank has these components!
     [Header("Player Components")]
     public ArrowShooter arrowShooter; // Ô trống sẽ hiện ra trong Inspector
     private DualPlayerMovement playerMovement;
@@ -23,29 +21,19 @@ public class PowerUpManager : MonoBehaviour
 
     void Awake()
     {
-        // Example of getting references:
         // droneManager = GetComponent<DroneManager>();
 
         // Lấy component DualPlayerMovement khi game bắt đầu
         playerMovement = GetComponent<DualPlayerMovement>();
-        if (playerMovement == null)
-        {
-            Debug.LogError("PowerUpManager không tìm thấy script DualPlayerMovement trên tank!");
-        }
-
-        if (arrowShooter == null)
-        {
-            Debug.LogError("PowerUpManager không tìm thấy script ArrowShooter trên tank!");
-        }
-
+        if (playerMovement == null)  Debug.LogError("PowerUpManager không tìm thấy script DualPlayerMovement trên tank!");
+        if (arrowShooter == null) Debug.LogError("PowerUpManager không tìm thấy script ArrowShooter trên tank!");
     }
-    void Start()
-    {
-         // Lấy component ArrowShooter
-        // arrowShooter = GetComponent<ArrowShooter>();
+    // void Start()
+    // {
+    //      // Lấy component ArrowShooter
+    //     // arrowShooter = GetComponent<ArrowShooter>();
  
-        
-    }
+    // }
 
     // This is the public method our BlindBox will call!
     public void GrantRandomReward()
@@ -81,8 +69,6 @@ public class PowerUpManager : MonoBehaviour
 
     private void ApplyReward(RewardData reward)
     {
-        // For now, we'll just log it. You will replace this with calls
-        // to your actual player scripts.
         Debug.Log($"<color=cyan>Reward Granted: {reward.rewardName}!</color>");
 
         // Hiển thị reward trên UI

@@ -67,7 +67,7 @@ public class GameManager : MonoBehaviour
         string dots = new string('.', dotCount);
 
         aReadyText.text = "Player A: " + (isAReady ? "READY" : "WAITING" + " (PRESS N) \n" + dots);
-        bReadyText.text = "Player B: " + (isBReady ? "READY" : "WAITING" + " (PRESS 3) \n" + dots);
+        bReadyText.text = "Player B: " + (isBReady ? "READY" : "WAITING" + " (PRESS L) \n" + dots);
     }
 
 

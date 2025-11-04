@@ -4,18 +4,28 @@ public class PlayerAwarenessController : MonoBehaviour
 {
     // Start is called once before the first execution of Update after the MonoBehaviour is created
 
-    public bool AwareOfPlayer { get; private set; } //enemy nhận thức xe tank 
-    public Vector2 DirectionToPlayer { get; private set; } //enemy biết hướng xe tank
-    [SerializeField]
-    private float _playerAwarenessDistance; //khoảng cách enemy nhận thức xe tank
-    private Transform _player; //cần để biết xe tank ở đâu 
+ public bool AwareOfPlayer { get; private set; }
+    public Vector2 DirectionToPlayer { get; private set; }
 
-    //dò chuyển động của xe tank
+    [SerializeField] 
+    private float _playerAwarenessDistance;
+
+    [SerializeField] 
+    public Transform _player; // now assignable in Inspector 💪
+
     private void Awake()
     {
-        _player = Object.FindFirstObjectByType<PlayerMovement>().transform;
-    }
+        // if not manually assigned, auto-find it
+        if (_player == null)
+        {
+            var playerMovement = Object.FindFirstObjectByType<PlayerMovement>();
+            var singlePlayerMovement = Object.FindFirstObjectByType<SinglePlayerMovement>();
 
+            _player = playerMovement != null
+                ? playerMovement.transform
+                : singlePlayerMovement?.transform;
+        }
+    }
     // Update is called once per frame
 
     //kiểm tra xe tank có trong phạm vi không

@@ -197,7 +197,7 @@ GameObject:
   - component: {fileID: -8202612850489510383}
   m_Layer: 0
   m_Name: EnemyAlien
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -304,6 +304,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerAwarenessController
   _playerAwarenessDistance: 5
+  _player: {fileID: 0}
 --- !u!58 &7120183220103189055
 CircleCollider2D:
   m_ObjectHideFlags: 0

@@ -15,6 +15,8 @@ public class PlayerMovement : MonoBehaviour
     private Camera _camera; //camera để biết được những thứ có và không có trên màn hình
     [SerializeField]
     private float _screenBorder; //thêm đường viền màn hình để player không thể tràn 1 xí ra khỏi màn hình 
+
+    // [SerializeField] private bool _isCinematicActive = false;
     private void Awake()
     {
         _rigibody = GetComponent<Rigidbody2D>();
@@ -38,6 +40,8 @@ public class PlayerMovement : MonoBehaviour
 
     private void PreventPlayerGoingOffScreen() //Vận tốc = 0 nếu player di chuyển ra khoải màn hình 
     {
+        // if (_isCinematicActive) return; // Skip during cutscene
+          
         Vector2 screenPosition = _camera.WorldToScreenPoint(transform.position); //lấy vị trí của ng chơi đễ ktra
 
         if((screenPosition.x < _screenBorder && _rigibody.linearVelocity.x < 0) //nếu player ra khoải bên trái thì xét vận tốc = 0, giữ nguyên vị trí y hiện tại 

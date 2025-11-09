@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.Events;
-
+using UnityEngine.UI;
+using TMPro;
 public class HealthController : MonoBehaviour
 {
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -10,6 +11,9 @@ public class HealthController : MonoBehaviour
 
     [SerializeField]
     private float _maximumHealth;
+
+    public Image fillBar;
+    // public TextMeshProUGUI healthText;
 
     public float RemainingHealthPercentage
     {
@@ -23,6 +27,17 @@ public class HealthController : MonoBehaviour
 
     public UnityEvent OnDied; //gọi sự kiện này khi hết máu -> chết
     public UnityEvent OnDamaged; //nhận sát thương để kích hoạt bất khả chiến bại 
+
+public void UpdateHealth(int currentHP, int maxHP)
+{
+    if (fillBar == null)
+        Debug.LogError("fillBar is NULL! Assign it in the Inspector.", this);
+    
+
+    if (fillBar != null)
+        fillBar.fillAmount = (float)currentHP / (float)maxHP;
+  
+}
 
     public void TakeDamage(float damageAmount)
     {
@@ -43,7 +58,7 @@ public class HealthController : MonoBehaviour
             _currentHealth = 0;
         }
 
-        if(_currentHealth == 0)
+        if (_currentHealth == 0)
         {
             OnDied.Invoke();
         }

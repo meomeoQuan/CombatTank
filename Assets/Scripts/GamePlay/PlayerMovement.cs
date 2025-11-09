@@ -1,8 +1,16 @@
 ﻿using UnityEngine;
 using UnityEngine.InputSystem;
-
+using UnityEngine.Events;
+using Unity.VisualScripting;
 public class PlayerMovement : MonoBehaviour
 {
+    [SerializeField] int maxHP = 100;
+    int currentHP;
+   
+   [SerializeField]
+    private HealthController healthController;
+    public UnityEvent OnDeath;
+    
     [SerializeField]
     private float _speed;
 
@@ -17,12 +25,36 @@ public class PlayerMovement : MonoBehaviour
     private float _screenBorder; //thêm đường viền màn hình để player không thể tràn 1 xí ra khỏi màn hình 
 
     // [SerializeField] private bool _isCinematicActive = false;
-    private void Awake()
+
+    private void Onable()
     {
-        _rigibody = GetComponent<Rigidbody2D>();
-        _camera = Camera.main;
+        OnDeath.AddListener(Death);
+    }
+private void Awake()
+{
+    _rigibody = GetComponent<Rigidbody2D>();
+    _camera = Camera.main;
+
+    // ⚠️ Check if HealthController was assigned in Inspector
+    if (healthController == null)
+    {
+        Debug.LogError("HealthController not assigned! Please drag it in the Inspector.");
+        return;
     }
 
+    currentHP = maxHP;
+    healthController.UpdateHealth(currentHP, maxHP);
+}
+
+private void Update()
+{
+    if (Keyboard.current.spaceKey.wasPressedThisFrame)
+    {
+        Key keyPressed = Keyboard.current.spaceKey.keyCode; // Get the key code
+        Debug.Log("Space key code: " + keyPressed);
+        TakeDamage(20);
+    }
+}
     // Update is called once per frame
     private void FixedUpdate()
     {
@@ -70,6 +102,27 @@ public class PlayerMovement : MonoBehaviour
 
     private void OnMove(InputValue inputValue) //nhận tham số từ input system
     {
-        _movementInput = inputValue.Get<Vector2>(); 
+        _movementInput = inputValue.Get<Vector2>();
+    }
+
+    public void TakeDamage(int damageAmount)
+    {
+        currentHP -= damageAmount;
+        if (currentHP < 0)
+        {
+            currentHP = 0;
+        }
+        healthController.UpdateHealth(currentHP, maxHP);
+        if (currentHP == 0)
+        {
+            OnDeath.Invoke();
+            // Xử lý khi người chơi chết (ví dụ: kết thúc trò chơi, tải lại cấp độ, v.v.)
+        }
+    }
+    
+  
+    public void Death()
+    {
+        Destroy(gameObject);
     }
 }

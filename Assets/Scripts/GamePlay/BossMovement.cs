@@ -6,6 +6,9 @@ public class BossMovement : MonoBehaviour
 {
     [SerializeField] private Transform _player;
 
+    [Header("Healthbar")]
+    public EnemyHealthController Healthbar;  // ✅ Healthbar reference
+
     [Header("Movement Settings")]
     [SerializeField] private float _speed = 3f;
     [SerializeField] private float _moveDuration = 2f;
@@ -17,12 +20,11 @@ public class BossMovement : MonoBehaviour
     private bool _hasRecovered = false;
 
     [Header("Boss Abilities")]
-  [SerializeField] private GameObject _summonMonster;
-[SerializeField] private Transform _summonPoint; // optional (can be null)
-[SerializeField] private int _monsterCount = 5;
-[SerializeField] private float _summonRadius = 2f;
-      [SerializeField] private GameObject _fireballPrefab;   // Fireball prefab
-          // Fire spawn position
+    [SerializeField] private GameObject _summonMonster;
+    [SerializeField] private Transform _summonPoint;
+    [SerializeField] private int _monsterCount = 5;
+    [SerializeField] private float _summonRadius = 2f;
+    [SerializeField] private GameObject _fireballPrefab;
     [SerializeField] private float _fireForce = 5f;
 
     private enum BossState { Patrol, Chase, Return, Summon, FireAttack, Recover, GetHit, Death }
@@ -36,9 +38,9 @@ public class BossMovement : MonoBehaviour
     private Vector3 _startPosition;
     private Vector2 _targetDirection;
 
-    // 🧠 Summon tracking
     private List<GameObject> _activeMinions = new List<GameObject>();
     private bool _canSummon = true;
+    private bool _isFiring = false;
 
     private void Awake()
     {
@@ -50,67 +52,72 @@ public class BossMovement : MonoBehaviour
         _currentHP = _maxHP;
     }
 
-private void FixedUpdate()
-{
-    CheckHPLogic();
-    CleanupDeadMinions();
+    private void Start()
+    {
+        // ✅ Initialize healthbar
+        UpdateHealthbar();
+    }
+
+    private void FixedUpdate()
+    {
+        CheckHPLogic();
+        CleanupDeadMinions();
+        
         if (!_playerAwarenessController && _currentState != BossState.Chase)
         {
             SetState(BossState.Patrol);
         }
         
-    switch (_currentState)
-    {
-        case BossState.Patrol:
-            if (_playerAwarenessController.AwareOfPlayer)
-                SetState(BossState.Chase);
-            else
-                HandlePatternMovement();
-            break;
+        switch (_currentState)
+        {
+            case BossState.Patrol:
+                if (_playerAwarenessController.AwareOfPlayer)
+                    SetState(BossState.Chase);
+                else
+                    HandlePatternMovement();
+                break;
 
-        case BossState.Chase:
-            HandlePlayerChase();
-            if (_playerAwarenessController.AwareOfPlayer)
-                SetState(BossState.Summon);
-            else
-                SetState(BossState.Return);
-            break;
+            case BossState.Chase:
+                HandlePlayerChase();
+                if (_playerAwarenessController.AwareOfPlayer)
+                    SetState(BossState.Summon);
+                else
+                    SetState(BossState.Return);
+                break;
 
-        case BossState.Summon:
-            if (_canSummon)
-                StartCoroutine(HandleSummonState());
-            break;
+            case BossState.Summon:
+                if (_canSummon)
+                    StartCoroutine(HandleSummonState());
+                break;
 
-        case BossState.Return:
-            HandleReturnToStart();
-            break;
+            case BossState.Return:
+                HandleReturnToStart();
+                break;
 
-        case BossState.FireAttack:
+            case BossState.FireAttack:
                 FireAttack();
-          
-            break;
+                break;
 
-        case BossState.Recover:
-            Recover();
-            break;
+            case BossState.Recover:
+                Recover();
+                break;
 
-        case BossState.Death:
-            Death();
-            break;
+            case BossState.Death:
+                Death();
+                break;
+        }
+
+        // FireAttack trigger condition
+        if (_activeMinions.Count == 1 && _currentState != BossState.FireAttack && !_isFiring)
+            SetState(BossState.FireAttack);
     }
 
-    // FireAttack trigger condition
-    if (_activeMinions.Count == 1 && _currentState != BossState.FireAttack && !_isFiring)
-        SetState(BossState.FireAttack);
-}
-
-private void SetState(BossState newState)
-{
-    if (_currentState == newState) return;
-    Debug.Log($"<color=cyan>[Boss]</color> State changed: {_currentState} → <b>{newState}</b>");
-    _currentState = newState;
-}
-
+    private void SetState(BossState newState)
+    {
+        if (_currentState == newState) return;
+        Debug.Log($"<color=cyan>[Boss]</color> State changed: {_currentState} → <b>{newState}</b>");
+        _currentState = newState;
+    }
 
     private void HandlePatternMovement()
     {
@@ -127,7 +134,6 @@ private void SetState(BossState newState)
     private void HandlePlayerChase()
     {
         _targetDirection = _playerAwarenessController.DirectionToPlayer;
-        // Debug.Log($"<color=orange>[Boss]</color> Chasing player towards {_targetDirection}");
         if ((_targetDirection.x < 0 && transform.localScale.x > 0) ||
             (_targetDirection.x > 0 && transform.localScale.x < 0))
             FlipSprite();
@@ -157,150 +163,109 @@ private void SetState(BossState newState)
     }
 
     // ==========================================================
-    // 🔥 BOSS ABILITIES BELOW
+    // 🔥 BOSS ABILITIES (unchanged)
     // ==========================================================
-private IEnumerator HandleSummonState()
-{
-    if (!_canSummon) yield break; // ❌ don't start again
-
-    _canSummon = false;
-    _animator.SetBool("IsBossSumon", true);
-
-    Summon();
-
-    // Wait for summon animation (non-looped, only once)
-    yield return new WaitForSeconds(3f);
-
-    _animator.SetBool("IsBossSumon", false);
-    SetState(BossState.Patrol); // go back to patrol after summon
-}
-
-public void Summon()
-{
-    _animator.SetBool("IsBossSumon",true);
-    Debug.Log("<color=purple>[Boss]</color> Summoning minions...");
-
-    _canSummon = false;
-    _activeMinions.Clear();
-
-    int summonCount = _monsterCount;
-    float radius = _summonRadius;
-
-    // make sure we have a prefab
-    if (_summonMonster == null)
+    private IEnumerator HandleSummonState()
     {
-        Debug.LogWarning("⚠️ No summon monster prefab assigned!");
-        return;
+        if (!_canSummon) yield break;
+        _canSummon = false;
+        _animator.SetBool("IsBossSumon", true);
+
+        Summon();
+        yield return new WaitForSeconds(3f);
+        _animator.SetBool("IsBossSumon", false);
+        SetState(BossState.Patrol);
     }
 
-    // pick the center point (boss or summon point)
-    Vector3 center = _summonPoint != null ? _summonPoint.position : transform.position;
-
-    for (int i = 0; i < summonCount; i++)
+    public void Summon()
     {
-        // calculate position around the boss in a circle
-        float angle = i * Mathf.PI * 2f / summonCount;
-        Vector3 offset = new Vector3(Mathf.Cos(angle), Mathf.Sin(angle), 0) * radius;
-        Vector3 spawnPos = center + offset;
+        _animator.SetBool("IsBossSumon", true);
+        Debug.Log("<color=purple>[Boss]</color> Summoning minions...");
+        _canSummon = false;
+        _activeMinions.Clear();
 
-        // spawn the monster
-        GameObject minion = Instantiate(_summonMonster, spawnPos, Quaternion.identity);
+        if (_summonMonster == null) return;
 
-        // assign player reference (auto)
-  Enemy enemyScript = minion.GetComponent<Enemy>();
-if (enemyScript != null)
-{
-    // if player reference not set manually, find it automatically
-    if (_player == null)
-        _player = GameObject.FindGameObjectWithTag("Player")?.transform;
+        Vector3 center = _summonPoint != null ? _summonPoint.position : transform.position;
 
-    enemyScript.player = _player;
-}
+        for (int i = 0; i < _monsterCount; i++)
+        {
+            float angle = i * Mathf.PI * 2f / _monsterCount;
+            Vector3 offset = new Vector3(Mathf.Cos(angle), Mathf.Sin(angle), 0) * _summonRadius;
+            Vector3 spawnPos = center + offset;
 
+            GameObject minion = Instantiate(_summonMonster, spawnPos, Quaternion.identity);
+            
+            Enemy enemyScript = minion.GetComponent<Enemy>();
+            if (enemyScript != null && _player == null)
+                _player = GameObject.FindGameObjectWithTag("Player")?.transform;
 
-        _activeMinions.Add(minion);
-    }
-}
-
-
-
-
-   private bool _isFiring = false;
-
-public void FireAttack()
-{
-    if (_isFiring) return;
-    StartCoroutine(HandleFireAttack());
-}
-
-private IEnumerator HandleFireAttack()
-{
-    _isFiring = true;
-    _animator.SetBool("IsBossFireAttack", true);
-    Debug.Log("<color=orange>[Boss]</color> 🔥 Summoning fire trap...");
-
-    yield return new WaitForSeconds(0.5f); // wait for animation to reach the moment boss hits the ground or casts
-
-    SpawnFireTrap();
-
-    yield return new WaitForSeconds(1.5f); // wait until animation ends
-    _animator.SetBool("IsBossFireAttack", false);
-    _isFiring = false;
-
-    // switch back to normal state
-    if (_playerAwarenessController.AwareOfPlayer)
-        _currentState = BossState.Chase;
-    else
-        _currentState = BossState.Patrol;
-}
-
-public void SpawnFireTrap()
-{
-    if (_fireballPrefab == null)
-    {
-        Debug.LogWarning("⚠️ No fire prefab assigned!");
-        return;
+            enemyScript.player = _player;
+            _activeMinions.Add(minion);
+        }
     }
 
-    // define random spawn range (adjust as you want)
-    float minX = -10f;
-    float maxX = 10f;
-    float minY = -3f;
-    float maxY = 3f;
-
-    // number of fire traps per summon
-    int fireCount = Random.Range(2, 5); // 2~4 fires
-
-    for (int i = 0; i < fireCount; i++)
+    public void FireAttack()
     {
-        Vector3 randomPos = new Vector3(
-            Random.Range(minX, maxX),
-            Random.Range(minY, maxY),
-            0f
-        );
-
-        Instantiate(_fireballPrefab, randomPos, Quaternion.identity);
-        Debug.Log($"<color=red>🔥 Fire trap spawned at {randomPos}</color>");
+        if (_isFiring) return;
+        StartCoroutine(HandleFireAttack());
     }
-}
+
+    private IEnumerator HandleFireAttack()
+    {
+        _isFiring = true;
+        _animator.SetBool("IsBossFireAttack", true);
+        Debug.Log("<color=orange>[Boss]</color> 🔥 Summoning fire trap...");
+
+        yield return new WaitForSeconds(0.5f);
+        SpawnFireTrap();
+
+        yield return new WaitForSeconds(1.5f);
+        _animator.SetBool("IsBossFireAttack", false);
+        _isFiring = false;
+
+        _currentState = _playerAwarenessController.AwareOfPlayer ? BossState.Chase : BossState.Patrol;
+    }
+
+    public void SpawnFireTrap()
+    {
+        if (_fireballPrefab == null) return;
+
+        float minX = -10f, maxX = 10f, minY = -3f, maxY = 3f;
+        int fireCount = Random.Range(2, 5);
+
+        for (int i = 0; i < fireCount; i++)
+        {
+            Vector3 randomPos = new Vector3(
+                Random.Range(minX, maxX),
+                Random.Range(minY, maxY),
+                0f
+            );
+            Instantiate(_fireballPrefab, randomPos, Quaternion.identity);
+        }
+    }
 
     public void Recover()
     {
         _animator.SetTrigger("IsBossRecover");
         Debug.Log("<color=green>[Boss]</color> Recovering HP...");
-
         _currentHP = _maxHP * 0.8f;
+        UpdateHealthbar();  // ✅ Update healthbar on recover
         _hasRecovered = true;
         _currentState = BossState.Chase;
     }
 
+    // ==========================================================
+    // ❤️ HEALTH SYSTEM WITH HEALTHBAR
+    // ==========================================================
     public void GetHit(float damage)
     {
         if (_currentState == BossState.Death) return;
 
         _currentHP -= damage;
-        _animator.SetTrigger("IsBossGetHit");
-        Debug.Log($"<color=yellow>[Boss]</color> Got hit! HP: {_currentHP}/{_maxHP}");
+        UpdateHealthbar();  // ✅ Update healthbar on hit
+        _animator.SetBool("IsBossGetHit", true);
+        Debug.Log($"<color=yellow>[Boss]</color> Got hit! HP: {_currentHP:F1}/{_maxHP}");
 
         if (_currentHP <= 0)
         {
@@ -312,13 +277,14 @@ public void SpawnFireTrap()
     public void Death()
     {
         _animator.SetTrigger("IsBossDeath");
+        
+        // ✅ Hide healthbar on death
+        if (Healthbar != null)
+            Healthbar.gameObject.SetActive(false);
+            
         Debug.Log("<color=gray>[Boss]</color> Boss is dead 💀");
         Destroy(gameObject, 2f);
     }
-
-    // ==========================================================
-    // ⚙️ Logic Helpers
-    // ==========================================================
 
     private void CheckHPLogic()
     {
@@ -331,8 +297,6 @@ public void SpawnFireTrap()
     private void CleanupDeadMinions()
     {
         _activeMinions.RemoveAll(m => m == null);
-
-        // All dead → can summon again
         if (_activeMinions.Count == 0)
         {
             _canSummon = true;
@@ -340,13 +304,16 @@ public void SpawnFireTrap()
         }
     }
 
-    private int CountDeadMinions()
+    // ✅ HEALTHBAR HELPER
+    private void UpdateHealthbar()
     {
-        int deadCount = 0;
-        foreach (var minion in _activeMinions)
+        if (Healthbar != null)
         {
-            if (minion == null) deadCount++;
+            Healthbar.SetHealth(_currentHP, _maxHP);
         }
-        return deadCount;
+        else
+        {
+            Debug.LogWarning("<color=red>[Boss]</color> Healthbar not assigned!");
+        }
     }
 }

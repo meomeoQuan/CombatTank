@@ -10,14 +10,19 @@ public class EnemyHealthController : MonoBehaviour
 
    public void SetHealth(float health, float maxHealth)
 {
-    Slider.gameObject.SetActive(true);  // ← ALWAYS SHOW!
-    Slider.value = health;
-    Slider.maxValue = maxHealth;
-    Slider.fillRect.GetComponentInChildren<Image>().color = Color.Lerp(Low, High, Slider.normalizedValue);
+    Slider.gameObject.SetActive(health < maxHealth);
+        Slider.value = health;
+        Slider.maxValue = maxHealth;
+
+        Slider.fillRect.GetComponentInChildren<Image>().color = Color.Lerp(Low, High, Slider.normalizedValue);
 }
 
     void Update()
-    {
-        Slider.transform.position = Camera.main.WorldToScreenPoint(transform.parent.position + Offset);
-    }
+{
+    if (Slider == null || Camera.main == null) return;
+
+    Vector3 targetPos = transform.parent ? transform.parent.position : transform.position;
+    Slider.transform.position = Camera.main.WorldToScreenPoint(targetPos + Offset);
+}
+
 }

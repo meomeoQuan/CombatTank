@@ -34,6 +34,14 @@ public class BulletMap2 : MonoBehaviour
             Destroy(gameObject);
             return;
         }
+
+        if (collision.TryGetComponent<BossMovement>(out var boss))
+        {
+            Debug.Log($"<color=green>[Bullet]</color> Hit <b>{collision.gameObject.name}</b> (Skeleton) for <b>{_damageAmount}</b> damage!");
+            boss.GetHit(_damageAmount);  // ✅ Use TakeDamage for Enemy!
+            Destroy(gameObject);
+            return;
+        }
     }
 
     private void DestroyWhenOffScreen()

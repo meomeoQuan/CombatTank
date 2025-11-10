@@ -132,7 +132,7 @@ public class EnemyMovement : MonoBehaviour
         _rigibody.SetRotation(newRotation); //đặt vị trí xoay mới cho rigidbody
     }
 
-    private void SetVelocity() //đặt vận tốc
+    private void SetVelocity() //di chuyển theo hướng đã xoay theo vận tốc
     {
             _rigibody.linearVelocity = transform.up * _speed;
     }

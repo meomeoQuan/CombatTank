@@ -18,7 +18,7 @@ public class BulletMap2 : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.GetComponent<EnemyMovement>()) //nếu phát hiện chuyển động của enemy
+        if (collision.GetComponent<EnemyMovement>()) //Kiểm tra xem đối tượng chạm vào có script EnemyMovement đối tượng là enemy
         {
             Destroy(collision.gameObject); //destroy enemy
             Destroy(gameObject); //destroy đạn

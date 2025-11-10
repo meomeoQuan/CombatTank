@@ -13,7 +13,8 @@ public class PlayerAwarenessController : MonoBehaviour
     //dò chuyển động của xe tank
     private void Awake()
     {
-        _player = Object.FindFirstObjectByType<PlayerMovement>().transform;
+        //tìm instance đầu tiên của component PlayerMovement trong scene và lấy Transform của nó để biết vị trí player.
+        _player = Object.FindFirstObjectByType<PlayerMovement>().transform; 
     }
 
     // Update is called once per frame
@@ -23,7 +24,7 @@ public class PlayerAwarenessController : MonoBehaviour
     {
         Vector2 enemyToPlayerVector = _player.position - transform.position;
         DirectionToPlayer = enemyToPlayerVector.normalized;
-        if(enemyToPlayerVector.magnitude <= _playerAwarenessDistance)
+        if(enemyToPlayerVector.magnitude <= _playerAwarenessDistance) //magnitude là độ dài khoảng cách 
         {
             AwareOfPlayer = true;
         }

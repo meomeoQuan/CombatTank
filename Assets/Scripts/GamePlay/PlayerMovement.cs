@@ -38,6 +38,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void PreventPlayerGoingOffScreen() //Vận tốc = 0 nếu player di chuyển ra khoải màn hình 
     {
+        //_camera.WorldToScreenPoint: chuyển vị trí Player từ tọa độ thế giới sang tọa độ màn hình (pixel)
         Vector2 screenPosition = _camera.WorldToScreenPoint(transform.position); //lấy vị trí của ng chơi đễ ktra
 
         if((screenPosition.x < _screenBorder && _rigibody.linearVelocity.x < 0) //nếu player ra khoải bên trái thì xét vận tốc = 0, giữ nguyên vị trí y hiện tại 
@@ -46,7 +47,7 @@ public class PlayerMovement : MonoBehaviour
             _rigibody.linearVelocity = new Vector2(0, _rigibody.linearVelocity.y);
         }
 
-        if ((screenPosition.y < _screenBorder && _rigibody.linearVelocity.y < 0) //bên phải
+        if ((screenPosition.y < _screenBorder && _rigibody.linearVelocity.y < 0) //bên phải dưới
         || (screenPosition.y > _camera.pixelHeight - _screenBorder && _rigibody.linearVelocity.y > 0)) //chiều cao (phía trên cùng)
         {
             _rigibody.linearVelocity = new Vector2(_rigibody.linearVelocity.x, 0);

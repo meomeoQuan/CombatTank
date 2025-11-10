@@ -5,6 +5,8 @@ public class Enemy : MonoBehaviour
 {
     [Header("References")]
     public Transform player;
+    public EnemyHealthController Healthbar;  // ← ADD THIS
+
     private Rigidbody2D rb;
     private Animator animator;
 
@@ -19,7 +21,7 @@ public class Enemy : MonoBehaviour
     [SerializeField] private float attackRange = 1.5f;
     [SerializeField] private float attackCooldown = 0.5f;
     [SerializeField] private int damage = 10;
-    [SerializeField] private float attackAnimDuration = 2f; // how long attack animation lasts
+    [SerializeField] private float attackAnimDuration = 2f;
     private float lastAttackTime = 0f;
 
     [Header("Scale Settings")]
@@ -33,6 +35,9 @@ public class Enemy : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         currentHP = maxHP;
+
+        // Initialize healthbar
+        UpdateHealthbar();
 
         if (player == null)
             player = GameObject.FindGameObjectWithTag("Player")?.transform;
@@ -83,24 +88,20 @@ public class Enemy : MonoBehaviour
     {
         isAttacking = true;
 
-        // Stop movement
         rb.linearVelocity = Vector2.zero;
         animator.SetBool("IsAttack01", true);
 
         Debug.Log("<color=orange>[Enemy]</color> ⚔️ Attack started!");
 
-        // wait half duration, then deal damage (timed with hit frame)
         yield return new WaitForSeconds(attackAnimDuration * 0.5f);
         DealDamage();
 
-        // wait for rest of animation
         yield return new WaitForSeconds(attackAnimDuration * 0.5f);
 
-        // reset states
         animator.SetBool("IsAttack01", false);
         animator.SetBool("IsWalking", true);
-
         isAttacking = false;
+
         Debug.Log("<color=orange>[Enemy]</color> Attack finished.");
     }
 
@@ -115,9 +116,10 @@ public class Enemy : MonoBehaviour
         if (isDead) return;
 
         currentHP -= damage;
-         animator.SetBool("IsGetHit", true);
+        UpdateHealthbar();  // ← UPDATE HEALTHBAR
+        animator.SetBool("IsGetHit", true);
 
-        Debug.Log($"<color=yellow>[Enemy]</color> Got hit! HP: {currentHP}/{maxHP}");
+        Debug.Log($"<color=yellow>[Enemy]</color> Got hit! HP: {currentHP:F1}/{maxHP}");
 
         if (currentHP <= 0)
             Die();
@@ -128,9 +130,23 @@ public class Enemy : MonoBehaviour
         isDead = true;
         animator.SetBool("IsDie", true);
         rb.linearVelocity = Vector2.zero;
+
+        // Hide healthbar on death
+        if (Healthbar != null)
+            Healthbar.gameObject.SetActive(false);
+
         Debug.Log("<color=gray>[Enemy]</color> Skeleton is dead 💀");
 
         GetComponent<Collider2D>().enabled = false;
         Destroy(gameObject, 1.8f);
+    }
+
+    // === HEALTHBAR SUPPORT ===
+    private void UpdateHealthbar()
+    {
+        if (Healthbar != null)
+        {
+            Healthbar.SetHealth(currentHP, maxHP);
+        }
     }
 }

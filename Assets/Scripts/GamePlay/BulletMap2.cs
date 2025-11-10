@@ -2,7 +2,7 @@
 
 public class BulletMap2 : MonoBehaviour
 {
-        [SerializeField] private float _damageAmount = 25f; 
+    [SerializeField] private float _damageAmount = 25f;
     private Camera _camera;
 
     private void Awake()
@@ -15,35 +15,35 @@ public class BulletMap2 : MonoBehaviour
         DestroyWhenOffScreen();
     }
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-   private void OnTriggerEnter2D(Collider2D collision)
-{
-    // Check if it’s an enemy (has either EnemyMovement or Enemy component)
-    EnemyMovement enemyMove = collision.GetComponent<EnemyMovement>();
-    Enemy enemy = collision.GetComponent<Enemy>();
-
-    if (enemyMove != null || enemy != null)
+    private void OnTriggerEnter2D(Collider2D collision)
     {
-        // Print the enemy’s name for debugging
-        Debug.Log($"<color=red>[Bullet]</color> Hit and destroyed: <b>{collision.gameObject.name}</b>");
+        // === TYPE 1: EnemyMovement (Top-down) ===
+        if (collision.TryGetComponent<EnemyMovement>(out var enemyMovement))
+        {
+            Debug.Log($"<color=green>[Bullet]</color> Hit <b>{collision.gameObject.name}</b> (Top-down) for <b>{_damageAmount}</b> damage!");
+            enemyMovement.TakeHit(_damageAmount);
+            Destroy(gameObject);
+            return;
+        }
 
-        // Destroy the enemy
-        Destroy(collision.gameObject);
-
-        // Destroy the bullet
-        Destroy(gameObject);
+        // === TYPE 2: Enemy (Platformer Skeleton) ===
+        if (collision.TryGetComponent<Enemy>(out var enemy))
+        {
+            Debug.Log($"<color=green>[Bullet]</color> Hit <b>{collision.gameObject.name}</b> (Skeleton) for <b>{_damageAmount}</b> damage!");
+            enemy.TakeDamage(_damageAmount);  // ✅ Use TakeDamage for Enemy!
+            Destroy(gameObject);
+            return;
+        }
     }
-}
 
     private void DestroyWhenOffScreen()
     {
-        Vector2 screenPosition = _camera.WorldToScreenPoint(transform.position); //xác định vị trí đạn 
+        Vector2 screenPosition = _camera.WorldToScreenPoint(transform.position);
 
         if (screenPosition.x < 0 ||
-           screenPosition.x > _camera.pixelWidth ||
-           screenPosition.y < 0 ||
-           screenPosition.y > _camera.pixelHeight)
+            screenPosition.x > _camera.pixelWidth ||
+            screenPosition.y < 0 ||
+            screenPosition.y > _camera.pixelHeight)
         {
             Destroy(gameObject);
         }

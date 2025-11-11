@@ -19,6 +19,8 @@ public class BossMovement : MonoBehaviour
     private float _currentHP;
     private bool _hasRecovered = false;
 
+     private bool isDead = false;
+
     [Header("Boss Abilities")]
     [SerializeField] private GameObject _summonMonster;
     [SerializeField] private Transform _summonPoint;
@@ -247,14 +249,24 @@ public class BossMovement : MonoBehaviour
 
     public void Recover()
     {
-        _animator.SetTrigger("IsBossRecover");
+        _animator.SetBool("IsBossRecover",true);
         Debug.Log("<color=green>[Boss]</color> Recovering HP...");
         _currentHP = _maxHP * 0.8f;
+         StartCoroutine(ResetRecoverAnimation());
         UpdateHealthbar();  // ✅ Update healthbar on recover
         _hasRecovered = true;
         _currentState = BossState.Chase;
     }
+ private IEnumerator ResetRecoverAnimation()
+{
+    // Wait for the hit animation to finish (adjust duration as needed)
+    yield return new WaitForSeconds(0.9f); // Match your hit anim length!
 
+    if (!isDead) // Don't reset if already dead
+    {
+        _animator.SetBool("IsBossRecover", false);
+    }
+}
     // ==========================================================
     // ❤️ HEALTH SYSTEM WITH HEALTHBAR
     // ==========================================================
@@ -266,7 +278,7 @@ public class BossMovement : MonoBehaviour
         UpdateHealthbar();  // ✅ Update healthbar on hit
         _animator.SetBool("IsBossGetHit", true);
         Debug.Log($"<color=yellow>[Boss]</color> Got hit! HP: {_currentHP:F1}/{_maxHP}");
-
+        StartCoroutine(ResetHitAnimation());
         if (_currentHP <= 0)
         {
             _currentState = BossState.Death;
@@ -274,14 +286,25 @@ public class BossMovement : MonoBehaviour
         }
     }
 
+  private IEnumerator ResetHitAnimation()
+{
+    // Wait for the hit animation to finish (adjust duration as needed)
+    yield return new WaitForSeconds(0.9f); // Match your hit anim length!
+
+    if (!isDead) // Don't reset if already dead
+    {
+        _animator.SetBool("IsBossGetHit", false);
+    }
+}
     public void Death()
     {
-        _animator.SetTrigger("IsBossDeath");
-        
+        isDead = true;
+        _animator.SetBool("IsBossDeath",true);
+
         // ✅ Hide healthbar on death
         if (Healthbar != null)
             Healthbar.gameObject.SetActive(false);
-            
+
         Debug.Log("<color=gray>[Boss]</color> Boss is dead 💀");
         Destroy(gameObject, 2f);
     }

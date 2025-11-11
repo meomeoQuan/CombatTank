@@ -26,6 +26,8 @@ public class HealthController : MonoBehaviour
 
     public void TakeDamage(float damageAmount)
     {
+        Debug.Log($"[Health] {name} nhận {damageAmount} damage");
+
         if (_currentHealth == 0) //ktra lượng máu có = 0 
         {
             return;
@@ -37,14 +39,19 @@ public class HealthController : MonoBehaviour
         }
 
         _currentHealth -= damageAmount;
+        Debug.Log($"[Health] Máu còn lại: {_currentHealth}");
+
 
         if (_currentHealth < 0) //Tránh máu là số âm
         {
             _currentHealth = 0;
+            Debug.Log("[Health] Gọi OnDied");
+            OnDied.Invoke();
         }
 
-        if(_currentHealth == 0)
+        if (_currentHealth == 0)
         {
+            Debug.Log("[Health] Gọi OnDied");
             OnDied.Invoke();
         }
 

@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6931875276339398061}
   m_Layer: 0
-  m_Name: FirePoint
+  m_Name: DFirePoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -25,7 +25,7 @@ Transform:
   m_GameObject: {fileID: 1167725959815255606}
   serializedVersion: 2
   m_LocalRotation: {x: -0.0000000055879354, y: -0.00000006519258, z: 0.99999416, w: -0.0034348906}
-  m_LocalPosition: {x: 0.04, y: 0.91, z: 0.08}
+  m_LocalPosition: {x: 0.075, y: 0.432, z: 0.08}
   m_LocalScale: {x: 1.1933522, y: 1.3131646, z: 0.99625}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -42,6 +42,7 @@ GameObject:
   - component: {fileID: 7556696842279150625}
   - component: {fileID: 8316705301537836997}
   - component: {fileID: 8158427608141304005}
+  - component: {fileID: -6723106100575889661}
   m_Layer: 0
   m_Name: Drone
   m_TagString: Untagged
@@ -139,12 +140,53 @@ MonoBehaviour:
   orbitRadius: 1
   orbitSpeed: 30
   followSmooth: 5
-  bulletPrefab: {fileID: 5412745503946633329, guid: 903159187bb3db543aae5438d63123ee, type: 3}
   firePoint: {fileID: 6931875276339398061}
   fireRate: 1
-  burstCount: 1
-  burstDelay: 1
   bulletSpeed: 7
-  bulletDamage: 10
   targetRange: 2
-  animator: {fileID: 0}
+--- !u!61 &-6723106100575889661
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6593548474880906621}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 0.64, y: 0.57}
+    newSize: {x: 0.64, y: 0.57}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Size: {x: 0.64, y: 0.57}
+  m_EdgeRadius: 0

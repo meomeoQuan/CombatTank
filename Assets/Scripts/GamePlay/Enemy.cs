@@ -114,12 +114,15 @@ public class Enemy : MonoBehaviour
         if (playerMovement != null)
         {
             playerMovement.TakeDamage(damage);
-        }else
+        }
+        else
         {
             Debug.LogWarning("<color=red>[Enemy]</color> PlayerMovement component not found on player!");
         }
-        
+
     }
+    
+
 
     public void TakeDamage(float damage)
     {
@@ -130,11 +133,21 @@ public class Enemy : MonoBehaviour
         animator.SetBool("IsGetHit", true);
 
         Debug.Log($"<color=yellow>[Enemy]</color> Got hit! HP: {currentHP:F1}/{maxHP}");
-
+        StartCoroutine(ResetHitAnimation());
         if (currentHP <= 0)
             Die();
     }
 
+    private IEnumerator ResetHitAnimation()
+{
+    // Wait for the hit animation to finish (adjust duration as needed)
+    yield return new WaitForSeconds(0.9f); // Match your hit anim length!
+
+    if (!isDead) // Don't reset if already dead
+    {
+        animator.SetBool("IsGetHit", false);
+    }
+}
     private void Die()
     {
         isDead = true;
@@ -148,7 +161,7 @@ public class Enemy : MonoBehaviour
         Debug.Log("<color=gray>[Enemy]</color> Skeleton is dead 💀");
 
         GetComponent<Collider2D>().enabled = false;
-        Destroy(gameObject, 1.8f);
+        Destroy(gameObject, 2f);
     }
 
     // === HEALTHBAR SUPPORT ===

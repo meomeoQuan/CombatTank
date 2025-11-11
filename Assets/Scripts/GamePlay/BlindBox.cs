@@ -8,8 +8,14 @@ public class BlindBox : MonoBehaviour
     private int currentHealth;
 
     [Header("Feedback Effects")]
-    // public GameObject destructionEffectPrefab;
+    public GameObject destructionEffectPrefab;
+    public GameObject splashEffectPrefab;
     public float finalDisplayDuration = 0.5f;
+
+    [Header("Audio Settings")]
+    public AudioClip hitSound;          // Âm thanh khi bị bắn
+    public AudioClip explosionSound;    // Âm thanh khi nổ
+    public AudioClip splashSound;       // Âm thanh khi rơi xuống nước
 
     [Header("Tank Interaction Settings")]
     public float pushSpeed = 1.5f; // Tốc độ box bị đẩy khi tank chạm vào
@@ -91,7 +97,6 @@ public class BlindBox : MonoBehaviour
         }
     }
 
-    // REMOVED: Toàn bộ Coroutine và OnTriggerExit2D cho việc đẩy không còn cần thiết nữa
     // Logic mới trong FixedUpdate và OnTriggerStay2D đã xử lý tất cả các trường hợp
     void OnTriggerEnter2D(Collider2D other)
     {
@@ -115,12 +120,20 @@ public class BlindBox : MonoBehaviour
                 Destroy(other.gameObject);
             }
         }
+
+        if (other.CompareTag("River"))
+        {
+            Debug.Log("BlindBox has fallen into the river!");
+            FallIntoRiver();
+            return; // Dừng lại để không xử lý các va chạm khác
+        }
+
         // ... other collision logic for hitting bots, walls, etc.
     }
     #endregion
 
 
-    #region Damage and Destruction
+    #region Damage and Destruction 
 
     public void TakeDamage(int damageAmount)
     {
@@ -131,10 +144,15 @@ public class BlindBox : MonoBehaviour
 
         if (currentHealth <= 0)
         {
+            if (explosionSound != null)
+            {
+                AudioSource.PlayClipAtPoint(explosionSound, transform.position);
+            }
             DestroyBox();
         }
         else
         {
+            AudioSource.PlayClipAtPoint(hitSound, transform.position);
             StartCoroutine(FlashDamageEffect());  // hàm kiểu IEnumerator để chạy bất đồng bộ (không chặn luồng chính)
         }
     }
@@ -149,10 +167,10 @@ public class BlindBox : MonoBehaviour
         if (animator != null) animator.SetBool("isDestroyed", true);
         
 
-        // if (destructionEffectPrefab != null)
-        // {
-        //     Instantiate(destructionEffectPrefab, transform.position, Quaternion.identity);
-        // }
+         if (destructionEffectPrefab != null)
+        {
+            Instantiate(destructionEffectPrefab, transform.position, Quaternion.identity);
+        }
 
 
         //  Logic trao phần thưởng ---
@@ -196,4 +214,26 @@ public class BlindBox : MonoBehaviour
     }
 
     #endregion
+
+    private void FallIntoRiver()
+    {
+        isDestroyed = true; // Đánh dấu là đã "bị phá hủy" để ngăn các hành vi khác
+
+        // Tắt collider ngay lập tức
+        if (boxCollider != null) boxCollider.enabled = false;
+        if (rb != null) rb.simulated = false; // Tắt hoàn toàn vật lý
+
+        if (splashSound != null)
+        {
+            AudioSource.PlayClipAtPoint(splashSound, transform.position);
+        }
+
+        if (splashEffectPrefab != null)
+        {
+            Instantiate(splashEffectPrefab, transform.position, Quaternion.identity);
+        }
+
+        // Hủy GameObject ngay lập tức hoặc sau một delay ngắn
+        Destroy(gameObject, 0.1f);
+    }
 }

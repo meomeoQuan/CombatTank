@@ -12,6 +12,9 @@ public class PowerUpManager : MonoBehaviour
     [Header("UI")]
     public TMP_Text rewardDisplayText; // Kéo TMP_Text vào đây để hiển thị reward
 
+    [Header("Audio Settings")]
+    public AudioClip powerUpSound;
+
     [Header("Player Components")]
     public ArrowShooter arrowShooter; // Ô trống sẽ hiện ra trong Inspector
     private DualPlayerMovement playerMovement;
@@ -76,7 +79,10 @@ public class PowerUpManager : MonoBehaviour
         {
             StartCoroutine(ShowRewardText(reward.rewardName));
         }
-
+        if (powerUpSound != null)
+        {
+            AudioSource.PlayClipAtPoint(powerUpSound, transform.position);
+        }
         switch (reward.rewardType)
         {
             case RewardType.Health:

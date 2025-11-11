@@ -14,6 +14,9 @@ public class Bullet : MonoBehaviour
     private Collider2D col;
     private bool isExploding = false;
 
+    [Header("Audio Settings")]
+    public AudioClip shootSound;  
+
 
     public void Initialize(OwnerType ownerType, int damageValue)
     {
@@ -24,6 +27,7 @@ public class Bullet : MonoBehaviour
         isExploding = false;
         if (animator != null) animator.SetBool("isExploding", false);
         if (col != null) col.enabled = true;
+        AudioSource.PlayClipAtPoint(shootSound, transform.position);
     }
 
     void Awake()

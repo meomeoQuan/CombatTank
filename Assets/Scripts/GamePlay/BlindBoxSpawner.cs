@@ -41,17 +41,17 @@ public class BlindBoxSpawner : MonoBehaviour
     }
 
     // (Tùy chọn) Vẽ các điểm spawn trong Scene View để dễ nhìn
-    void OnDrawGizmos()
-    {
-        if (spawnPoints != null)
-        {
-            Gizmos.color = Color.blue; // Màu xanh lam cho điểm spawn
-            foreach (Vector2 point in spawnPoints)
-            {
-                Gizmos.DrawWireSphere(point, 3f); // Vẽ hình cầu tại mỗi điểm spawn
-            }
-        }
-    }
+    //void OnDrawGizmos()
+    //{
+    //    if (spawnPoints != null)
+    //    {
+    //        Gizmos.color = Color.blue; // Màu xanh lam cho điểm spawn
+    //        foreach (Vector2 point in spawnPoints)
+    //        {
+    //            Gizmos.DrawWireSphere(point, 3f); // Vẽ hình cầu tại mỗi điểm spawn
+    //        }
+    //    }
+    //}
 }
 
 

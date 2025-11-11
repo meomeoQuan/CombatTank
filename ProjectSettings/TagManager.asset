@@ -5,6 +5,7 @@ TagManager:
   serializedVersion: 3
   tags:
   - Bullet
+  - River
   layers:
   - Default
   - TransparentFX
@@ -21,7 +22,7 @@ TagManager:
   - Tank2
   - 
   - 
-  - 
+  - FX
   - 
   - 
   - 
@@ -74,6 +75,9 @@ TagManager:
     locked: 0
   - name: GroundDEMO
     uniqueID: 982821229
+    locked: 0
+  - name: FX
+    uniqueID: 1040871809
     locked: 0
   m_RenderingLayers:
   - Default

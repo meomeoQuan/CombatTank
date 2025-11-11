@@ -202,6 +202,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: '::'
   maxHealth: 3
-  destructionDelay: 0.2
+  destructionEffectPrefab: {fileID: 2215366500132703879, guid: bcbf2a82289fbae4a86ed136cd0587d9, type: 3}
+  splashEffectPrefab: {fileID: 2601595655633176843, guid: 0c7099234bd83434e8ce9c37b4b04ceb, type: 3}
   finalDisplayDuration: 2
-  destructionEffectPrefab: {fileID: 0}
+  hitSound: {fileID: 8300000, guid: c9e93bb5fea01204b892aa6c38fa4505, type: 3}
+  explosionSound: {fileID: 8300000, guid: c9e93bb5fea01204b892aa6c38fa4505, type: 3}
+  splashSound: {fileID: 8300000, guid: ef3d8fc72055b8e4e8d98daf8bd43dda, type: 3}
+  pushSpeed: 1.5

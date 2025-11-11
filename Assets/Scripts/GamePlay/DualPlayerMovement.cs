@@ -3,11 +3,12 @@ using Assets.Scripts.DataController;
 using Assets.Scripts.Models.Characters;
 using UnityEngine.UI;
 
+[RequireComponent(typeof(AudioSource))] // Tự động thêm AudioSource nếu chưa có
 public class DualPlayerMovement : MonoBehaviour
 {
     public enum CharacterType { CharacterA, CharacterB }
     public CharacterType characterType;
-    public PowerUpManager powerUpManager;
+    //public PowerUpManager powerUpManager;
     private Character characterData;
     private Rigidbody2D rb;
     private Vector2 movement;
@@ -18,6 +19,9 @@ public class DualPlayerMovement : MonoBehaviour
     // HP hiện tại (có thể bị trừ khi trúng đạn)
     public int currentHP { get; private set; }
     public int maxHP { get; private set; }
+    [Header("Audio Settings")]
+    public AudioClip engineSound; // Kéo file âm thanh động cơ vào đây
+    private AudioSource audioSource;
 
     // Ranh giới di chuyển
     public BoxCollider2D boundaryCollider;
@@ -27,6 +31,17 @@ public class DualPlayerMovement : MonoBehaviour
     [SerializeField] private float turnSmoothing = 10f; // Mượt xoay hướng tank
     // private float lastMoveMagnitude = 0f;
     //========================================== SETUP DỮ LIỆU VÀ DI CHUYỂN CHO NHÂN VẬT ========================================
+    void Awake() // Dùng Awake để lấy component
+    {
+        rb = GetComponent<Rigidbody2D>();
+        // ADDED: Lấy component AudioSource
+        audioSource = GetComponent<AudioSource>();
+        if (audioSource == null)
+        {
+            Debug.LogError("AudioSource component not found on the tank!");
+        }
+    }
+
     void Start()
     {
         // Tho
@@ -55,13 +70,21 @@ public class DualPlayerMovement : MonoBehaviour
         {
             boundary = boundaryCollider.bounds;
         }
+
+        if (engineSound != null && audioSource != null)
+        {
+            audioSource.clip = engineSound;
+        }
     }
     //========================================== DI CHUYỂN NHÂN VẬT ========================================
     void Update()
     {
         if (!GameManager.Instance || !GameManager.Instance.IsGameRunning)
-
+        {
+            if (audioSource.isPlaying)
+                audioSource.Stop();
             return; // Chặn mọi input khi game chưa chạy hoặc đã kết thúc
+        }
 
         if (characterType == CharacterType.CharacterA)
         {
@@ -87,7 +110,7 @@ public class DualPlayerMovement : MonoBehaviour
             float angle = Mathf.LerpAngle(currentAngle, targetAngle, Time.deltaTime * turnSmoothing);
             transform.rotation = Quaternion.Euler(0, 0, angle);
         }
-
+        HandleMovementAudio();
     }
 
     void FixedUpdate()
@@ -195,4 +218,25 @@ public class DualPlayerMovement : MonoBehaviour
             healthImage.fillAmount = (float)currentHP / maxHP;
         }
     }
+    private void HandleMovementAudio()
+    {
+        // Kiểm tra xem có đang di chuyển không
+        if (movement.sqrMagnitude > 0.01f)
+        {
+            // Nếu đang di chuyển và âm thanh chưa phát, hãy bật nó lên
+            if (!audioSource.isPlaying)
+            {
+                audioSource.Play();
+            }
+        }
+        else
+        {
+            // Nếu đứng yên và âm thanh đang phát, hãy tắt nó đi
+            if (audioSource.isPlaying)
+            {
+                audioSource.Stop();
+            }
+        }
+    }
+
 }

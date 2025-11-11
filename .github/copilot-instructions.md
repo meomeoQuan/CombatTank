@@ -8,7 +8,7 @@
   - Layers:
     - Default, TransparentFX, Ignore Raycast, Water, UI, Ground, Bullet1, Bullet2, Obstacle, Tank1, Tank2
 - Active game object:
-  - Name: CinemachineCamera
+  - Name: HealthBar
   - Tag: Untagged
-  - Layer: Default
+  - Layer: UI
 <!-- UNITY CODE ASSIST INSTRUCTIONS END -->

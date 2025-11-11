@@ -33,8 +33,12 @@ public class PlayerMovement : MonoBehaviour
 private void Awake()
 {
     _rigibody = GetComponent<Rigidbody2D>();
-    _camera = Camera.main;
+        _camera = Camera.main;
 
+    // KEEP PLAYER ACROSS SCENES!
+    
+
+    
     // ⚠️ Check if HealthController was assigned in Inspector
     if (healthController == null)
     {
@@ -42,8 +46,11 @@ private void Awake()
         return;
     }
 
-    currentHP = maxHP;
+    // Load HP from SceneController!
+    currentHP = SenceControllerMap2.PlayerCurrentHP;
     healthController.UpdateHealth(currentHP, maxHP);
+    
+    Debug.Log($"[Player] Loaded HP: {currentHP}/{maxHP}");
 }
 
 private void Update()
@@ -110,13 +117,11 @@ public void TakeDamage(int damageAmount)
     currentHP -= damageAmount;
     if (currentHP < 0) currentHP = 0;
 
-    // Update health bar
-    if (healthController != null)
-    {
-            healthController.UpdateHealth(currentHP, maxHP);
-        Debug.Log($"Hp: {currentHP}/{maxHP}");
-    }
-    Debug.Log($"no hp: {currentHP}");
+    // SAVE TO GLOBAL!
+    SenceControllerMap2.SavePlayerHP(currentHP);
+    
+    healthController.UpdateHealth(currentHP, maxHP);
+    
     if (currentHP == 0)
     {
         OnDeath.Invoke();

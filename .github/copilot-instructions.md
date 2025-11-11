@@ -8,7 +8,7 @@
   - Layers:
     - Default, TransparentFX, Ignore Raycast, Water, UI, Ground, Bullet1, Bullet2, Obstacle, Tank1, Tank2
 - Active game object:
-  - Name: FillBar
+  - Name: Boss
   - Tag: Untagged
-  - Layer: UI
+  - Layer: Default
 <!-- UNITY CODE ASSIST INSTRUCTIONS END -->

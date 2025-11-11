@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using Mono.Cecil.Cil;
 
 public class Enemy : MonoBehaviour
 {
@@ -109,6 +110,15 @@ public class Enemy : MonoBehaviour
     {
         Debug.Log($"<color=red>[Enemy]</color> Attacked player for {damage} damage!");
         // TODO: player HP logic here
+        var playerMovement = player.GetComponent<PlayerMovement>();
+        if (playerMovement != null)
+        {
+            playerMovement.TakeDamage(damage);
+        }else
+        {
+            Debug.LogWarning("<color=red>[Enemy]</color> PlayerMovement component not found on player!");
+        }
+        
     }
 
     public void TakeDamage(float damage)

@@ -14,7 +14,7 @@ public class EnemyAttack : MonoBehaviour
     if (player != null)
     {
         player.TakeDamage((int)_damageAmount);
-        Debug.Log($"<color=red>[Enemy]</color> Hit! Damage: {_damageAmount}");
+        Debug.Log($"<color=red>[SkeletonEnemy]</color> Hit! Damage: {_damageAmount}");
     }
 }
 }

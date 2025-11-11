@@ -6,13 +6,15 @@ public class EnemyAttack : MonoBehaviour
     [SerializeField]
     private float _damageAmount;
 
-    private void OnCollisionEnter2D(Collision2D collision)
+   private void OnCollisionEnter2D(Collision2D collision)
+{
+    if (!collision.gameObject.CompareTag("Player")) return;
+
+    var player = collision.gameObject.GetComponent<PlayerMovement>();
+    if (player != null)
     {
-        if (collision.gameObject.GetComponent<PlayerMovement>()) //ktra xem có phải người chơi va chạm không
-        {
-            var healthController = collision.gameObject.GetComponent<HealthController>();
-            Debug.Log($"<color=red>[Enemy]</color> Attacking player, dealing <b>{_damageAmount}</b> damage!");
-            healthController.TakeDamage(_damageAmount);
-        }
+        player.TakeDamage((int)_damageAmount);
+        Debug.Log($"<color=red>[Enemy]</color> Hit! Damage: {_damageAmount}");
     }
+}
 }

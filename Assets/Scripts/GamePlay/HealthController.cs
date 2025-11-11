@@ -32,12 +32,13 @@ public class HealthController : MonoBehaviour
 public void UpdateHealth(int currentHP, int maxHP)
 {
     if (fillBar == null)
-        Debug.LogError("fillBar is NULL! Assign it in the Inspector.", this);
-    
+    {
+        Debug.LogError("fillBar is NULL! Assign FillBar Image in HealthController.", this);
+        return;
+    }
 
-    if (fillBar != null)
-        fillBar.fillAmount = (float)currentHP / (float)maxHP;
-  
+    fillBar.fillAmount = (float)currentHP / (float)maxHP;
+    Debug.Log($"HealthController: Updated fillBar to {fillBar.fillAmount}");  // ← ADD THIS
 }
 
     public void TakeDamage(float damageAmount)

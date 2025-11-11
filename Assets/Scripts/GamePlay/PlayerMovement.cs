@@ -105,20 +105,23 @@ private void Update()
         _movementInput = inputValue.Get<Vector2>();
     }
 
-    public void TakeDamage(int damageAmount)
+public void TakeDamage(int damageAmount)
+{
+    currentHP -= damageAmount;
+    if (currentHP < 0) currentHP = 0;
+
+    // Update health bar
+    if (healthController != null)
     {
-        currentHP -= damageAmount;
-        if (currentHP < 0)
-        {
-            currentHP = 0;
-        }
-        healthController.UpdateHealth(currentHP, maxHP);
-        if (currentHP == 0)
-        {
-            OnDeath.Invoke();
-            // Xử lý khi người chơi chết (ví dụ: kết thúc trò chơi, tải lại cấp độ, v.v.)
-        }
+            healthController.UpdateHealth(currentHP, maxHP);
+        Debug.Log($"Hp: {currentHP}/{maxHP}");
     }
+    Debug.Log($"no hp: {currentHP}");
+    if (currentHP == 0)
+    {
+        OnDeath.Invoke();
+    }
+}
     
   
     public void Death()

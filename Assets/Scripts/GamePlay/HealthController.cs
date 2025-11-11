@@ -2,6 +2,7 @@
 using UnityEngine.Events;
 using UnityEngine.UI;
 using TMPro;
+// User health controller to manage health, damage, and death
 public class HealthController : MonoBehaviour
 {
     // Start is called once before the first execution of Update after the MonoBehaviour is created

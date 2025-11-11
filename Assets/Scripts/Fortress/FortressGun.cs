@@ -151,11 +151,13 @@ public class FortressGun : MonoBehaviour
         if (shotComp != null)
         {
             Vector2 shootDir = (target.position - firePoint.position).normalized;
-            shotComp.Launch(shootDir, shotComp.speed, shotComp.damage);
+            shotComp.damage = 10; // hoặc giá trị bạn muốn
+            shotComp.Launch(shootDir, shotComp.speed, gameObject); // truyền shooter là chính FortressGun
         }
 
         if (animator != null) animator.SetTrigger("Shoot"); // 🧩 Kích hoạt animation bắn
     }
+
     IEnumerator Reload()
     {
         if (isReloading || isDead) yield break;

@@ -1,0 +1,96 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &1755570727639577864
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 6593548474880906621, guid: 214a7a186eead5547a829016f6c75509, type: 3}
+      propertyPath: m_Name
+      value: HealDrone Variant
+      objectReference: {fileID: 0}
+    - target: {fileID: 7556696842279150625, guid: 214a7a186eead5547a829016f6c75509, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -6.781
+      objectReference: {fileID: 0}
+    - target: {fileID: 7556696842279150625, guid: 214a7a186eead5547a829016f6c75509, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -4.061
+      objectReference: {fileID: 0}
+    - target: {fileID: 7556696842279150625, guid: 214a7a186eead5547a829016f6c75509, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7556696842279150625, guid: 214a7a186eead5547a829016f6c75509, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7556696842279150625, guid: 214a7a186eead5547a829016f6c75509, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7556696842279150625, guid: 214a7a186eead5547a829016f6c75509, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7556696842279150625, guid: 214a7a186eead5547a829016f6c75509, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7556696842279150625, guid: 214a7a186eead5547a829016f6c75509, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7556696842279150625, guid: 214a7a186eead5547a829016f6c75509, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7556696842279150625, guid: 214a7a186eead5547a829016f6c75509, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8316705301537836997, guid: 214a7a186eead5547a829016f6c75509, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 4782719663148999334, guid: 91712d3ee92b7e940ae5192ebfb73164, type: 3}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 6593548474880906621, guid: 214a7a186eead5547a829016f6c75509, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 10753314082139187}
+  m_SourcePrefab: {fileID: 100100000, guid: 214a7a186eead5547a829016f6c75509, type: 3}
+--- !u!1 &4890336492064317557 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6593548474880906621, guid: 214a7a186eead5547a829016f6c75509, type: 3}
+  m_PrefabInstance: {fileID: 1755570727639577864}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &10753314082139187
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4890336492064317557}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 027b6fa896e55ab409631c50b1945455, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::HealDrone
+  player: {fileID: 0}
+  orbitRadius: 3
+  orbitSpeed: 60
+  followSmooth: 5
+  firePoint: {fileID: 0}
+  fireRate: 1
+  bulletSpeed: 3
+  targetRange: 8
+  fireCooldown: 0
+  minDistanceFromPlayer: 1
+  healAmount: 10
+  healRate: 1
+  healRange: 3

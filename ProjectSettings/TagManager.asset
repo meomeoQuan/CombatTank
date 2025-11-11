@@ -13,15 +13,15 @@ TagManager:
   - Water
   - UI
   - Ground
+  - 
+  - 
   - Bullet1
   - Bullet2
   - Obstacle
-  - 
   - Tank1
   - Tank2
   - Minimap
-  - 
-  - 
+  - Enemy
   - 
   - 
   - 
@@ -53,6 +53,9 @@ TagManager:
     locked: 0
   - name: Ground2
     uniqueID: 2904118679
+    locked: 0
+  - name: Collectable
+    uniqueID: 1154990813
     locked: 0
   - name: Button
     uniqueID: 4170260543

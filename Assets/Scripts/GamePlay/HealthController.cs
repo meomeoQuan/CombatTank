@@ -3,60 +3,23 @@ using UnityEngine.Events;
 
 public class HealthController : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-
     [SerializeField]
     private float _currentHealth;
 
     [SerializeField]
     private float _maximumHealth;
 
-    public float RemainingHealthPercentage
-    {
-        get
-        {
-            return _currentHealth / _maximumHealth;
-        }
-    }
+    public float CurrentHealth => _currentHealth;
+    public float MaximumHealth => _maximumHealth;
 
-    public bool IsInvincible { get; set; } //cho phép bất khả chiến bại sau mỗi lần nhận sát thương 
+    public float RemainingHealthPercentage => _currentHealth / _maximumHealth;
 
-    public UnityEvent OnDied; //gọi sự kiện này khi hết máu -> chết
-    public UnityEvent OnDamaged; //nhận sát thương để kích hoạt bất khả chiến bại 
+    public bool IsInvincible { get; set; } // cho phép bất khả chiến bại
 
-    //public void TakeDamage(float damageAmount)
-    //{
-    //    if (_currentHealth == 0) //ktra lượng máu có = 0 
-    //    {
-    //        return;
-    //    }
+    public UnityEvent OnDied;    // Khi hết máu
+    public UnityEvent OnDamaged; // Khi nhận sát thương
 
-    //    if (IsInvincible)
-    //    {
-    //        return;
-    //    }
-
-    //    _currentHealth -= damageAmount;
-
-    //    if (_currentHealth < 0) //Tránh máu là số âm
-    //    {
-    //        _currentHealth = 0;
-    //    }
-
-    //    if(_currentHealth == 0)
-    //    {
-    //        OnDied.Invoke();
-    //    }
-
-    //    else
-    //    {
-    //        OnDamaged.Invoke();
-    //    }
-
-
-
-    //}
-
+    // ================== Take Damage ==================
     public void TakeDamage(float damageAmount)
     {
         if (_currentHealth == 0)
@@ -74,31 +37,32 @@ public class HealthController : MonoBehaviour
         _currentHealth -= damageAmount;
         if (_currentHealth < 0) _currentHealth = 0;
 
-        Debug.Log($"🩸 {gameObject.name} nhận {damageAmount} sát thương, máu còn: {_currentHealth}");
+        Debug.Log($"🩸 {gameObject.name} nhận {damageAmount} sát thương, máu còn: {_currentHealth}/{_maximumHealth}");
 
         if (_currentHealth == 0)
         {
             Debug.Log($"☠ {gameObject.name} đã chết!");
-            OnDied.Invoke();
+            OnDied?.Invoke();
         }
         else
         {
-            OnDamaged.Invoke();
+            OnDamaged?.Invoke();
         }
     }
 
-
-    public void AddHealth(float amountToAdd) //thêm máu
+    // ================== Add Health ==================
+    public void AddHealth(float amountToAdd)
     {
-        if (_currentHealth == _maximumHealth) //nếu đã đạt máu tối đa thì không cần làm gì cả
+        if (_currentHealth >= _maximumHealth)
         {
+            Debug.Log($"{gameObject.name} máu đã đầy, không cần hồi.");
             return;
         }
-        _currentHealth += amountToAdd;
 
-        if (_currentHealth > _maximumHealth)  //nếu máu hiện tại lớn hơn máu tối đa
-        {
-            _currentHealth = _maximumHealth; //đặt máu hiện tại = máu tối đa
-        }
+        _currentHealth += amountToAdd;
+        if (_currentHealth > _maximumHealth)
+            _currentHealth = _maximumHealth;
+
+        Debug.Log($"💚 {gameObject.name} được hồi {amountToAdd} HP, máu hiện tại: {_currentHealth}/{_maximumHealth}");
     }
 }

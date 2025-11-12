@@ -87,9 +87,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AttackDrone
   player: {fileID: 0}
-  orbitRadius: 1
+  orbitRadius: 3
   orbitSpeed: 60
   followSmooth: 5
+  orbitAngle: 0
   firePoint: {fileID: 4119724965583483973}
   fireRate: 1
   bulletSpeed: 8

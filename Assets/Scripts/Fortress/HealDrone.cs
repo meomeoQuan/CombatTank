@@ -21,7 +21,6 @@ public class HealDrone : Drone
             healCooldown = 1f / Mathf.Max(0.01f, healRate);
         }
     }
-
     void Heal()
     {
         Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position, healRange);
@@ -37,8 +36,6 @@ public class HealDrone : Drone
             }
         }
     }
-
-
     void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.green;

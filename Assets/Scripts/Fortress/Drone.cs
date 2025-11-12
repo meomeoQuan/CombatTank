@@ -1,5 +1,4 @@
 using UnityEngine;
-using System.Collections;
 
 public class Drone : MonoBehaviour
 {
@@ -8,19 +7,18 @@ public class Drone : MonoBehaviour
     public float orbitRadius = 3f;
     public float orbitSpeed = 60f;
     public float followSmooth = 5f;
+    [HideInInspector]
+    public float orbitAngle = 0f; // có thể set từ SimpleDroneSwitcher
 
-    [Header("Bắn")]
+    [Header("Targeting & Shooting")]
     public Transform firePoint;
     public float fireRate = 1f;
-    public float bulletSpeed = 3f; // Thử giá trị nhỏ hơn
+    public float bulletSpeed = 3f;
     public float targetRange = 8f;
 
     protected Transform target;
-    private float orbitAngle = 0f;
     public float fireCooldown = 0f;
-
-    [Header("🎮 Cài đặt mục tiêu bay")]
-    public float minDistanceFromPlayer = 1f; // khoảng cách tối thiểu tránh va chạm
+    public float minDistanceFromPlayer = 1f;
 
     void Start()
     {
@@ -39,7 +37,6 @@ public class Drone : MonoBehaviour
 
         OrbitAroundPlayer();
         RotateToTarget();
-
         fireCooldown -= Time.deltaTime;
     }
 
@@ -50,12 +47,9 @@ public class Drone : MonoBehaviour
 
         Vector3 desiredPos = player.position + new Vector3(Mathf.Cos(rad), Mathf.Sin(rad)) * orbitRadius;
 
-        // 🔹 Tránh va chạm với player
         Vector3 dirToPlayer = desiredPos - player.position;
         if (dirToPlayer.magnitude < minDistanceFromPlayer)
-        {
             desiredPos = player.position + dirToPlayer.normalized * minDistanceFromPlayer;
-        }
 
         transform.position = Vector3.Lerp(transform.position, desiredPos, Time.deltaTime * followSmooth);
     }
@@ -63,10 +57,8 @@ public class Drone : MonoBehaviour
     void RotateToTarget()
     {
         Vector3 lookDir = (target != null) ? (target.position - transform.position) : (player.position - transform.position);
-
-        // 🔹 Nếu quá gần player, tránh tính toán hướng quá gần
         if (lookDir.magnitude < 0.1f)
-            lookDir = Vector3.up; // fallback hướng lên
+            lookDir = Vector3.up;
 
         float angle = Mathf.Atan2(lookDir.y, lookDir.x) * Mathf.Rad2Deg - 90f;
         transform.rotation = Quaternion.Euler(0f, 0f, angle);
@@ -93,12 +85,11 @@ public class Drone : MonoBehaviour
 
         target = closestEnemy;
     }
+
     void OnDrawGizmos()
     {
         Gizmos.color = Color.yellow;
         if (player != null)
             Gizmos.DrawWireSphere(player.position, orbitRadius);
-
     }
-
 }

@@ -26,42 +26,45 @@ public class PlayerMovement : MonoBehaviour
 
     // [SerializeField] private bool _isCinematicActive = false;
 
-    private void Onable()
-    {
-        OnDeath.AddListener(Death);
-    }
-private void Awake()
+private void OnEnable()  // ← FIXED: Was "Onable"
 {
-    _rigibody = GetComponent<Rigidbody2D>();
+    OnDeath.AddListener(Death);
+}
+    private void Awake()
+    {
+        _rigibody = GetComponent<Rigidbody2D>();
         _camera = Camera.main;
 
-    // KEEP PLAYER ACROSS SCENES!
-    
+        // KEEP PLAYER ACROSS SCENES!
 
-    
-    // ⚠️ Check if HealthController was assigned in Inspector
-    if (healthController == null)
+    }
+    private void Start()
     {
-        Debug.LogError("HealthController not assigned! Please drag it in the Inspector.");
-        return;
+           // ⚠️ Check if HealthController was assigned in Inspector
+        if (healthController == null)
+        {
+            Debug.LogError("HealthController not assigned! Please drag it in the Inspector.");
+            return;
+        }
+
+        // Load HP from SceneController!
+        currentHP = SenceControllerMap2.PlayerCurrentHP;
+        healthController.UpdateHealth(currentHP, maxHP);
+
+        Debug.Log($"[Player] Loaded HP: {currentHP}/{maxHP}");
     }
 
-    // Load HP from SceneController!
-    currentHP = SenceControllerMap2.PlayerCurrentHP;
-    healthController.UpdateHealth(currentHP, maxHP);
-    
-    Debug.Log($"[Player] Loaded HP: {currentHP}/{maxHP}");
-}
-
-private void Update()
-{
-    if (Keyboard.current.spaceKey.wasPressedThisFrame)
+    private void Update()
     {
-        Key keyPressed = Keyboard.current.spaceKey.keyCode; // Get the key code
-        Debug.Log("Space key code: " + keyPressed);
-        TakeDamage(20);
+        if (Keyboard.current.spaceKey.wasPressedThisFrame)
+        {
+            Key keyPressed = Keyboard.current.spaceKey.keyCode; // Get the key code
+            Debug.Log("Space key code: " + keyPressed);
+            TakeDamage(20);
+        }
     }
-}
+
+
     // Update is called once per frame
     private void FixedUpdate()
     {

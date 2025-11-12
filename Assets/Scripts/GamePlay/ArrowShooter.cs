@@ -233,4 +233,19 @@ public class ArrowShooter : MonoBehaviour
         UpdateAmmoUI();            // Cập nhật UI
         Debug.Log($"[{character}] Reset Ammo: {currentAmmo}/{maxAmmo}");
     }
+    public void ShootFromBot()
+    {
+        if (!isReloading && currentAmmo > 0)
+        {
+            Shoot();
+            //Debug.Log("Bot bắn 1 mũi tên");
+            currentAmmo--;
+            UpdateAmmoUI();
+        }
+        else if (!isReloading && currentAmmo <= 0)
+        {
+            StartCoroutine(Reload());
+        }
+    }
+
 }

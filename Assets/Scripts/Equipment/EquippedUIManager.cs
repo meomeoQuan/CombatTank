@@ -21,7 +21,7 @@ public class EquippedUIManager : MonoBehaviour
     [SerializeField] private EquipmentSlotUI turretSlot;
 
     [Header("References")]
-    [SerializeField] private InventoryUI inventoryUI; // 👈 thêm dòng này
+    [SerializeField] private InventoryUI inventoryUI; 
 
     private List<Character> characters;
     private Character currentCharacter;
@@ -90,17 +90,17 @@ public class EquippedUIManager : MonoBehaviour
             if (eq == null) continue;
 
             if (eqType == typeof(Weapon))
-                weaponSlot.Setup(eq, (e) => OnSlotClicked(eqType, e));
+                weaponSlot.Setup(eq, (e) => OnSlotClicked(eqType, e), inventoryUI);
             else if (eqType == typeof(Armor))
-                hullSlot.Setup(eq, (e) => OnSlotClicked(eqType, e));
+                hullSlot.Setup(eq, (e) => OnSlotClicked(eqType, e), inventoryUI);
             else if (eqType == typeof(Shoes))
-                trackSlot.Setup(eq, (e) => OnSlotClicked(eqType, e));
+                trackSlot.Setup(eq, (e) => OnSlotClicked(eqType, e), inventoryUI);
             else if (eqType == typeof(Pants))
-                engineSlot.Setup(eq, (e) => OnSlotClicked(eqType, e));
+                engineSlot.Setup(eq, (e) => OnSlotClicked(eqType, e), inventoryUI);
             else if (eqType == typeof(Necklace))
-                radarSlot.Setup(eq, (e) => OnSlotClicked(eqType, e));
+                radarSlot.Setup(eq, (e) => OnSlotClicked(eqType, e), inventoryUI);
             else if (eqType == typeof(Hat))
-                turretSlot.Setup(eq, (e) => OnSlotClicked(eqType, e));
+                turretSlot.Setup(eq, (e) => OnSlotClicked(eqType, e), inventoryUI);
         }
     }
 

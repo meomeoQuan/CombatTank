@@ -7,6 +7,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using System.Collections; // Đảm bảo có using System.Collections cho IEnumerator
 
 public class InventoryUI : MonoBehaviour
 {
@@ -41,6 +42,7 @@ public class InventoryUI : MonoBehaviour
     private ScrollRect scroll;                      // ScrollRect chính trong Inventory
 
     private List<EquipmentBase> equipments;         // Danh sách tất cả trang bị
+    // Thuộc tính chỉ đọc để lấy nhân vật hiện tại một cách an toàn
     private Character currentCharacter => equippedUIManager != null ? equippedUIManager.GetCurrentCharacter() : null;
 
     #endregion
@@ -51,7 +53,11 @@ public class InventoryUI : MonoBehaviour
     {
         // Ẩn nút xác nhận khi khởi động
         if (confirmButton != null)
+        {
             confirmButton.gameObject.SetActive(false);
+            // Gán listener cho nút xác nhận
+            confirmButton.onClick.AddListener(OnConfirmButtonClicked);
+        }
 
         equipments = DataController.Equipments;
 
@@ -62,23 +68,31 @@ public class InventoryUI : MonoBehaviour
         scroll = GetComponentInChildren<ScrollRect>();
         if (scroll != null)
         {
-            scroll.onValueChanged.AddListener((_) =>
-            {
-                if (suppressScrollCheck) return;
+            // Lấy ScrollRect của chính contentParent nếu nó là ScrollRect
+            if (scroll == null && contentParent.parent != null)
+                scroll = contentParent.parent.GetComponent<ScrollRect>();
 
-                float currentY = scroll.content.anchoredPosition.y;
-                if (confirmButton != null && confirmButton.gameObject.activeSelf &&
-                    Mathf.Abs(currentY - lastScrollY) > SCROLL_HIDE_THRESHOLD)
+            if (scroll != null)
+            {
+                scroll.onValueChanged.AddListener((_) =>
                 {
-                    HideConfirmButton();
-                }
-            });
+                    if (suppressScrollCheck) return;
+
+                    float currentY = scroll.content.anchoredPosition.y;
+                    if (confirmButton != null && confirmButton.gameObject.activeSelf &&
+                        Mathf.Abs(currentY - lastScrollY) > SCROLL_HIDE_THRESHOLD)
+                    {
+                        HideConfirmButton();
+                    }
+                });
+            }
         }
     }
 
     #endregion
 
     #region 🧱 Populate & Refresh UI
+
     /// <summary>
     /// Hiển thị chỉ những Equipment có cùng Type truyền vào.
     /// Nếu character = null thì sẽ lấy currentCharacter từ manager (nếu có).
@@ -129,6 +143,7 @@ public class InventoryUI : MonoBehaviour
             slotUI.Setup(eq, (e) => OnSlotClicked(e, cc), this);
         }
     }
+
     /// <summary>
     /// Làm mới toàn bộ UI (gọi khi đổi nhân vật hoặc cập nhật dữ liệu)
     /// </summary>
@@ -144,7 +159,7 @@ public class InventoryUI : MonoBehaviour
     }
 
     /// <summary>
-    /// Tạo danh sách các slot item trong Inventory
+    /// Tạo danh sách tất cả các slot item trong Inventory
     /// </summary>
     public void PopulateInventory(Character character)
     {
@@ -187,7 +202,7 @@ public class InventoryUI : MonoBehaviour
         }
 
         // Bấm lại cùng item → toggle tắt nút
-        if (selectedEquipment == equipment && confirmButton.gameObject.activeSelf)
+        if (selectedEquipment == equipment && confirmButton != null && confirmButton.gameObject.activeSelf)
         {
             confirmButton.gameObject.SetActive(false);
             selectedEquipment = null;
@@ -204,14 +219,17 @@ public class InventoryUI : MonoBehaviour
             confirmButtonText.text = isEquippedSelected ? "UNEQUIP" : "EQUIP";
             confirmButton.gameObject.SetActive(true);
 
-            // Ghi lại vị trí scroll để theo dõi
-            lastScrollY = scroll.content.anchoredPosition.y;
-            StartCoroutine(TemporarilySuppressScroll());
+            // Ghi lại vị trí scroll để theo dõi và tránh ẩn nút ngay lập tức
+            if (scroll != null)
+            {
+                lastScrollY = scroll.content.anchoredPosition.y;
+                StartCoroutine(TemporarilySuppressScroll());
+            }
         }
 
         // Căn vị trí nút xác nhận theo vị trí slot
         var slotRect = EventSystem.current.currentSelectedGameObject?.GetComponent<RectTransform>();
-        if (slotRect != null)
+        if (slotRect != null && confirmButton != null)
         {
             var btnRect = confirmButton.GetComponent<RectTransform>();
             var canvasRect = btnRect.parent as RectTransform;
@@ -219,7 +237,8 @@ public class InventoryUI : MonoBehaviour
             Vector2 screenPos = RectTransformUtility.WorldToScreenPoint(null, slotRect.position);
             RectTransformUtility.ScreenPointToLocalPointInRectangle(canvasRect, screenPos, null, out Vector2 localPos);
 
-            // Căn vị trí lên trên hoặc xuống dưới slot
+            // Căn vị trí lên trên hoặc xuống dưới slot, dựa vào vị trí Y của slot
+            // Sử dụng -200 làm ngưỡng: nếu slot nằm thấp (localPos.y < -200), đặt nút lên trên (145), ngược lại đặt xuống dưới (-145).
             btnRect.anchoredPosition = (localPos.y < -200)
                 ? localPos + new Vector2(0, 145)
                 : localPos + new Vector2(0, -145);
@@ -230,6 +249,9 @@ public class InventoryUI : MonoBehaviour
     /// Khi người dùng bấm nút EQUIP/UNEQUIP
     /// </summary>
     public void OnConfirmButtonClicked()
+
+
+
     {
         if (selectedEquipment == null || selectedCharacter == null)
         {
@@ -249,6 +271,7 @@ public class InventoryUI : MonoBehaviour
         }
 
         confirmButton.gameObject.SetActive(false);
+        selectedEquipment = null;
         selectedEquipment = null;
 
         // Làm mới UI
@@ -281,7 +304,7 @@ public class InventoryUI : MonoBehaviour
     /// </summary>
     public void ShowEquipmentInfo(EquipmentBase equipment, Vector3 slotPos)
     {
-        if (equipment == null || infoPanel == null) return;
+        if (equipment == null || infoPanel == null || infoName == null || infoIcon == null || infoDescription == null) return;
 
         infoPanel.SetActive(true);
         infoName.text = equipment.Name;
@@ -311,7 +334,11 @@ public class InventoryUI : MonoBehaviour
         );
 
         RectTransform panelRect = infoPanel.GetComponent<RectTransform>();
-        if (localPos.y < -350)
+        if (localPos.x < -350 && localPos.y > 350)
+            panelRect.anchoredPosition = localPos + new Vector2(300, -150);
+        else if (localPos.x < -350)
+            panelRect.anchoredPosition = localPos + new Vector2(300, 0);
+        else if (localPos.y < -350)
             panelRect.anchoredPosition = localPos + new Vector2(-300, 150);
         else if (localPos.y > 350)
             panelRect.anchoredPosition = localPos + new Vector2(-300, -150);

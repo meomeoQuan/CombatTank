@@ -1,4 +1,6 @@
 ﻿using Assets.Scripts.Models.Equipments;
+using Assets.Scripts.Models.Skills;
+using Assets.Scripts.Models.Drones;
 using UnityEngine;
 
 namespace Assets.Scripts.Models.Factory
@@ -8,6 +10,10 @@ namespace Assets.Scripts.Models.Factory
         private static Sprite LoadIcon(string fileName)
         {
             return Resources.Load<Sprite>($"Equipments/{fileName}");
+        }
+        private static Sprite LoadDrone(string fileName)
+        {
+            return Resources.Load<Sprite>($"Equipments/Drones/{fileName}");
         }
 
         // Armor (Áo)
@@ -351,7 +357,7 @@ namespace Assets.Scripts.Models.Factory
         }
         #endregion
         // Weapon 
-        #region
+        #region Weapon
         public static Weapon CreateL30A1()
         {
             return new Weapon(
@@ -398,6 +404,63 @@ namespace Assets.Scripts.Models.Factory
                 fireRate: 5f
             );
         }
+        #endregion
+        // Drone
+        #region Drone
+
+        public static Drone CreateSupportDrone()
+        {
+            Drone drone = new Drone(
+                id: "drone_support_01",
+                name: "Support Drone MK1",
+                icon: LoadDrone("DroneSupport"),
+                droneMaxHP: 100f,
+                droneAtk: 5f,
+                droneArmor: 10f,
+                cost: 10, 
+                unlockCost: 0,
+                bonusPlayerHPPercent: 0.10f,
+                bonusPlayerArmorPercent: 0.05f
+            );
+
+            // GỌI SKILL FACTORY
+            //Skill slow = SkillFactory.CreateSlowSkill(slowPercent: 0.3f, duration: 3f, cooldown: 12f);
+            Skill heal = SkillFactory.CreateHealSkill(healAmount: 25f, cooldown: 20f);
+
+            //drone.SetSkill(1, slow);
+            drone.SetSkill(2, heal);
+
+            return drone;
+        }
+
+        // Ví dụ Drone A của bạn
+        public static Drone CreateCustomDroneA()
+        {
+            Drone droneA = new Drone(
+                id: "drone_A_custom",
+                name: "Drone A",
+                icon: LoadDrone("DroneAttack"),
+                droneMaxHP: 100f,
+                droneAtk: 10f,
+                droneArmor: 10f,
+                cost: 50, 
+                unlockCost: 500,
+                bonusPlayerHPPercent: 0.1f,
+                bonusPlayerAtkFlat: 5
+            );
+
+            // TẠO SKILL TÙY BIẾN
+            Skill customSkill = SkillFactory.CreateSlowSkill(
+                slowPercent: 0.50f,
+                duration: 3f,
+                cooldown: 5f
+            );
+
+            droneA.SetSkill(1, customSkill);
+
+            return droneA;
+        }
+
         #endregion
     }
 }

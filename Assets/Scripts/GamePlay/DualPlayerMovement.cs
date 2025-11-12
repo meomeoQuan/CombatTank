@@ -19,6 +19,7 @@ public class DualPlayerMovement : MonoBehaviour
     public int currentHP { get; private set; }
     public int maxHP { get; private set; }
 
+
     // Ranh giới di chuyển
     public BoxCollider2D boundaryCollider;
     private Bounds boundary;
@@ -51,7 +52,7 @@ public class DualPlayerMovement : MonoBehaviour
     void Update()
     {
         if (!GameManager.Instance || !GameManager.Instance.IsGameRunning)
-        
+
             return; // 🔒 Chặn mọi input khi game chưa chạy hoặc đã kết thúc
 
         if (characterType == CharacterType.CharacterA)
@@ -77,6 +78,10 @@ public class DualPlayerMovement : MonoBehaviour
             );
         }
 
+    }
+    public void SetAIMovement(Vector2 aiMove)
+    {
+        movement = aiMove;
     }
 
     void FixedUpdate()

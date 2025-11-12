@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Assets.Scripts.Models.Characters;
+using Assets.Scripts.Models.Drones;
 using Assets.Scripts.Models.Equipments;
 using Assets.Scripts.Models.Factory;
 
@@ -9,7 +10,11 @@ namespace Assets.Scripts.DataController
     {
         public static List<Character> Characters { get; private set; } = new List<Character>();
         public static List<EquipmentBase> Equipments { get; private set; } = new List<EquipmentBase>();
+        
+        public static List<Drone> Drones = new List<Drone>();
 
+        public static long Coint = 1000;
+        public static PlayerData Player = new PlayerData(Coint);
         public static void Initialize()
         {
             // ============================================================
@@ -119,7 +124,13 @@ namespace Assets.Scripts.DataController
                 gatlingTurret,
                 targetTurret
             });
-
+            // ============================================================
+            // 👤 DRONES
+            // ============================================================
+            var droneSupport = EquipmentFactory.CreateSupportDrone();
+            var droneDroneA = EquipmentFactory.CreateCustomDroneA();
+            Drones.Add(droneSupport);
+            Drones.Add(droneDroneA);
             // ============================================================
             // 👤 CHARACTERS
             // ============================================================
@@ -132,6 +143,11 @@ namespace Assets.Scripts.DataController
             charA.Equip(basicShoes);
             charA.Equip(basicPants);
             charA.Equip(basicArmor);
+            charA.Equip(basicNecklace);
+            //charA.Equip(droneSupport);
+
+            //Player.AddDrone(droneSupport.Id, 1); 
+            //Player.AddDrone(droneDroneA.Id, 1);
 
             // Character B default equips
             charB.Equip(weaponPlasma);
@@ -140,6 +156,8 @@ namespace Assets.Scripts.DataController
             charB.Equip(ironHeart);
             charB.Equip(basicArmor);
             charB.Equip(basicNecklace);
+            //charB.Equip(droneSupport);
+
 
             // ============================================================
             // 📋 ADD CHARACTERS

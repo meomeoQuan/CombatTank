@@ -6,6 +6,8 @@ TagManager:
   tags:
   - Bullet
   - River
+  - Enemy
+  - FortressGun
   layers:
   - Default
   - TransparentFX
@@ -21,7 +23,7 @@ TagManager:
   - Tank1
   - Tank2
   - 
-  - 
+  - Enemy
   - FX
   - 
   - 
@@ -75,6 +77,9 @@ TagManager:
     locked: 0
   - name: GroundDEMO
     uniqueID: 982821229
+    locked: 0
+  - name: Enemy
+    uniqueID: 2061835913
     locked: 0
   - name: FX
     uniqueID: 1040871809

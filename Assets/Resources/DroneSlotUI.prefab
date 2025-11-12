@@ -148,6 +148,7 @@ GameObject:
   - component: {fileID: 2783731058089277091}
   - component: {fileID: 3163796813093043533}
   - component: {fileID: 5296313610208110999}
+  - component: {fileID: 1679767813357164592}
   m_Layer: 5
   m_Name: DroneSlotUI
   m_TagString: Untagged
@@ -259,6 +260,22 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &1679767813357164592
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4803333135806922905}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 16d550f72e69ab444b0204e1df643772, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DroneSlotUI
+  droneIcon: {fileID: 8189806292469298947}
+  quantityText: {fileID: 5190337743389723770}
+  lockOverlay: {fileID: 2109871952319063400}
+  slotButton: {fileID: 5296313610208110999}
 --- !u!1 &6587903979174908856
 GameObject:
   m_ObjectHideFlags: 0

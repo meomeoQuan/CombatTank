@@ -26,12 +26,16 @@ public class EquippedUIManager : MonoBehaviour
     private List<Character> characters;
     private Character currentCharacter;
 
-    private void Start()
+    private void Awake()
     {
         //==============================NHỚ XÓA========================//
         if (DataController.Equipments == null || DataController.Equipments.Count == 0)
             DataController.Initialize();
         //==============================================================//
+    }
+    private void Start()
+    {
+        
 
         characters = DataController.Characters;
 

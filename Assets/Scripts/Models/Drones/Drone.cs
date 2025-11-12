@@ -19,6 +19,7 @@ namespace Assets.Scripts.Models.Drones
 
         // 3. THUỘC TÍNH MỚI (DÙNG CHO SHOP)
         public long Cost { get; private set; }
+        public long unlockCost { get; private set; }
 
         /// <summary>
         /// Constructor cho Drone
@@ -26,6 +27,7 @@ namespace Assets.Scripts.Models.Drones
         public Drone(string id, string name, Sprite icon,
                      float droneMaxHP, float droneAtk, float droneArmor,
                      long cost, // <<< THÊM MỚI
+                     long unlockCost,
                      float bonusPlayerHPPercent = 0, float bonusPlayerAtkFlat = 0, float bonusPlayerArmorPercent = 0)
             : base(id, name, icon)
         {

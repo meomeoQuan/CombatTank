@@ -1176,7 +1176,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!212 &321021342
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -1780,7 +1780,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DroneUI
   buttonPrefabName: DroneSlotUI
-  numberOfButtons: 10
   buttonsParent: {fileID: 1042890070}
 --- !u!1 &583587016
 GameObject:
@@ -5702,7 +5701,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 181653492740200038, guid: 29d2de4fb1ceab74d940b141e64cd240, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 181653492740200038, guid: 29d2de4fb1ceab74d940b141e64cd240, type: 3}
       propertyPath: m_AnchorMin.x
@@ -5710,7 +5709,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 181653492740200038, guid: 29d2de4fb1ceab74d940b141e64cd240, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 181653492740200038, guid: 29d2de4fb1ceab74d940b141e64cd240, type: 3}
       propertyPath: m_SizeDelta.x
@@ -5750,11 +5749,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 181653492740200038, guid: 29d2de4fb1ceab74d940b141e64cd240, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 181653492740200038, guid: 29d2de4fb1ceab74d940b141e64cd240, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -100
       objectReference: {fileID: 0}
     - target: {fileID: 181653492740200038, guid: 29d2de4fb1ceab74d940b141e64cd240, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -5774,7 +5773,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4803333135806922905, guid: 29d2de4fb1ceab74d940b141e64cd240, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

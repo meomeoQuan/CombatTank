@@ -7,6 +7,9 @@ public class HealthController : MonoBehaviour
     [SerializeField] private float _currentHealth = 100f;
     [SerializeField] private float _maximumHealth = 100f;
 
+    [Header("Colors")]
+[SerializeField] private Color fullColor = Color.red;
+[SerializeField] private Color emptyColor = Color.red;
     public Image fillBar;  // Drag FillBar here (or auto-find)
 
     public float RemainingHealthPercentage => _currentHealth / _maximumHealth;
@@ -42,8 +45,7 @@ public class HealthController : MonoBehaviour
 
         float percentage = (float)currentHP / (float)maxHP;
         fillBar.fillAmount = percentage;
-        fillBar.color = Color.Lerp(Color.red, Color.green, percentage);
-
+   
         Debug.Log($"[HealthController] Updated fillBar to {percentage:P0} ({currentHP}/{maxHP})");
     }
 
@@ -52,7 +54,7 @@ public class HealthController : MonoBehaviour
         if (fillBar == null) return;
         float percentage = RemainingHealthPercentage;
         fillBar.fillAmount = percentage;
-        fillBar.color = Color.Lerp(Color.red, Color.green, percentage);
+       fillBar.color = Color.Lerp(emptyColor, fullColor, percentage); // Now YOU control color
     }
 
     public void TakeDamage(float damageAmount)
